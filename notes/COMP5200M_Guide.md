@@ -1,26 +1,59 @@
 # COMP5200M — Project Guide
 ## An Intelligent Hybrid Approach to Machine Scheduling using RL and Genetic Algorithms
 
-> **How to use this document:** This is your end-to-end project guide covering everything from environment setup to dissertation submission. It tells you *what* to do, *why*, and *what to watch out for* at every stage — but does not contain code. For scaffolding code to reference while building each module, see the companion document `COMP5200M_Scaffolding.md`.
+> **How to use this document:** This is your end-to-end project guide. Every section tells you **exactly what to build** (specific file names, function signatures), **why it matters**, **how to verify it works**, and **what pitfall to avoid**. For reference code, see `COMP5200M_Scaffolding.md`.
+
+---
+
+## CURRENT STATE (22 April 2026)
+
+You are in **Week 22** of a 30-week MSc programme, with submission on **31 August 2026** (17 weeks remaining).
+
+**Completed:** only `src/instance_generator.py`. ✓
+
+**Behind schedule:** Milestone M1 (literature review, evaluator, heuristics, tests) is partially unstarted. You have 2 weeks to catch up.
+
+**Recovery schedule (strict):**
+- **Apr 22 – May 4 (2 weeks):** evaluator + heuristics + all tests (catch up M1)
+- **May 5 – May 25 (3 weeks):** GA implementation, tuning, notebook 03 (M2)
+- **May 26 – Jun 15 (3 weeks):** DRL env, agent, training (M3)
+- **Jun 16 – Jul 6 (3 weeks):** 720 experiment runs, stats (M4)
+- **Jul 7 – Jul 31 (4 weeks):** visualisations, dissertation draft (M5)
+- **Aug 1 – Aug 25 (4 weeks):** revision, polish, submit (M6)
+
+If you do not complete the evaluator by **5 May**, the entire project timeline collapses.
 
 ---
 
 ## Table of Contents
 
+**PART 1 — PROJECT SETUP**
 1. [Environment Setup](#1-environment-setup)
 2. [Project Structure](#2-project-structure)
-3. [Literature Review](#3-literature-review)
-4. [Problem Formalisation & Instance Generator](#4-problem-formalisation--instance-generator)
+
+**PART 2 — UNDERSTAND BEFORE YOU CODE**
+3. [Problem Formalisation & Instance Generator](#3-problem-formalisation--instance-generator)
+4. [Literature Review](#4-literature-review)
+
+**PART 3 — BUILD THE SYSTEM**
 5. [The Evaluator](#5-the-evaluator)
 6. [Baseline Heuristics](#6-baseline-heuristics)
 7. [Genetic Algorithm](#7-genetic-algorithm)
 8. [DRL Hyper-Heuristic Agent](#8-drl-hyper-heuristic-agent)
+
+**PART 4 — RUN & ANALYSE**
 9. [Experiments & Statistical Analysis](#9-experiments--statistical-analysis)
 10. [Visualisations](#10-visualisations)
+
+**PART 5 — WRITE & SUBMIT**
 11. [Dissertation Writing](#11-dissertation-writing)
 12. [Submission Checklist](#12-submission-checklist)
 
 ---
+
+# PART 1 — PROJECT SETUP
+
+Do this once at the start. Skip if already done.
 
 ## 1. Environment Setup
 
@@ -116,9 +149,46 @@ Create all directories and empty `__init__.py` files before writing any logic. H
 
 ---
 
-## 3. Literature Review
+# PART 2 — UNDERSTAND BEFORE YOU CODE
 
-### 3.1 What You Need to Cover
+Read these sections to understand the problem you're solving and the existing literature. This is the foundation for all coding work.
+
+## 3. Problem Formalisation & Instance Generator
+
+### 3.1 Why You Write This First
+
+The instance generator is the foundation everything else sits on. The GA needs instances to optimise. The heuristics need instances to evaluate. The evaluator needs instances to score solutions. If your instance generator has a bug — say, due dates that are always achievable with zero tardiness regardless of scheduling — your entire experimental comparison is meaningless. Write it first, understand it completely, test it thoroughly.
+
+### 3.2 What an Instance Represents
+
+An instance is a single snapshot of the scheduling problem: a specific set of jobs with specific processing times, due dates, release times, weights, and a specific transition cost matrix. In your experiments, each seed generates a unique instance. Two runs with the same seed must produce identical instances — this is what makes your 30-run comparisons paired (same instances, different algorithm behaviour).
+
+### 3.3 The Transition Cost Matrix
+
+This is the most domain-specific part of your model and the one your examiner will scrutinise most. The asymmetry must be intentional and explainable. The rule is: transitioning from a darker colour to a lighter colour costs more waste than the reverse, because residual dark dye contaminates the lighter batch.
+
+Concretely, define a darkness ranking for your colour palette (e.g. white=1, yellow=2, light blue=3, green=4, red=5, navy=6, black=7). The cost of transitioning from colour A to colour B should scale with max(0, darkness(A) − darkness(B)). Same colour should cost zero. Add a small noise term so the matrix is not degenerate (identical costs create trivial structure that makes the problem easier than reality).
+
+The setup time matrix can follow the same structure at a different scale — setup time and setup cost are distinct things in your formal model.
+
+### 3.4 Due Date Tightness
+
+Due dates need to be calibrated carefully. If they are too loose, every algorithm achieves zero tardiness and the only thing you're measuring is setup cost. If they are too tight, every algorithm has massive tardiness and again differentiation is hard. A tightness factor that scales due dates relative to average machine load is standard practice. Test your due date generation by running your heuristics on a few instances and checking that tardiness is nonzero but not catastrophically large.
+
+### 3.5 Testing the Instance Generator
+
+At minimum, verify:
+- Processing times are positive and within your defined range
+- The cost matrix diagonal is exactly zero (no cost transitioning to the same job)
+- The matrix is genuinely asymmetric: S[i][j] ≠ S[j][i] for most pairs
+- Due dates are positive
+- The same seed always produces the same instance
+
+---
+
+## 4. Literature Review
+
+### 4.1 What You Need to Cover
 
 Your SP cites four papers. The dissertation literature review needs roughly 15–25 sources, and they need to be woven into a coherent narrative, not listed as summaries. The topics to cover, in the order they should appear in Chapter 2:
 
@@ -136,11 +206,11 @@ Your SP cites four papers. The dissertation literature review needs roughly 15�
 
 **The gap.** End the literature review with a paragraph that explicitly states: prior work has combined GA and RL in scheduling, but not specifically as a PPO hyper-heuristic controlling mutation operator selection in an asymmetric parallel machine scheduling problem. This gap is what your dissertation fills.
 
-### 3.2 Where to Search
+### 4.2 Where to Search
 
 Use Google Scholar, IEEE Xplore, and ScienceDirect. For the most recent DRL-for-scheduling work (2022–2025), arXiv cs.AI and cs.LG will have preprints before journal publication. Zotero is the right tool for managing references — install the browser connector, attach PDFs, and write a 2–3 sentence note on each paper explaining what it contributes to your work specifically.
 
-### 3.3 Key Papers to Find Beyond Your SP
+### 4.3 Key Papers to Find Beyond Your SP
 
 Beyond what you already cited, look specifically for:
 
@@ -149,237 +219,562 @@ Beyond what you already cited, look specifically for:
 - Recent (2020–2024) papers on attention-based or transformer models for scheduling — even if you're not using them, acknowledging this direction and explaining why you chose the GA-DRL hybrid instead shows breadth
 - Burke et al. on hyper-heuristics (2013, JORS) — the standard definition paper for the field
 
-### 3.4 What Not to Do
+### 4.4 What Not to Do
 
 Do not write the literature review as a series of "Paper X found Y. Paper Z found W." paragraphs. Your examiner will notice. Write it as a story: here is the problem class, here is what people tried, here is what worked, here is what the limitations were, here is what nobody has done yet. Every paper you cite should be serving that narrative.
 
 ---
 
-## 4. Problem Formalisation & Instance Generator
+# PART 3 — BUILD THE SYSTEM
 
-### 4.1 Why You Write This First
-
-The instance generator is the foundation everything else sits on. The GA needs instances to optimise. The heuristics need instances to evaluate. The evaluator needs instances to score solutions. If your instance generator has a bug — say, due dates that are always achievable with zero tardiness regardless of scheduling — your entire experimental comparison is meaningless. Write it first, understand it completely, test it thoroughly.
-
-### 4.2 What an Instance Represents
-
-An instance is a single snapshot of the scheduling problem: a specific set of jobs with specific processing times, due dates, release times, weights, and a specific transition cost matrix. In your experiments, each seed generates a unique instance. Two runs with the same seed must produce identical instances — this is what makes your 30-run comparisons paired (same instances, different algorithm behaviour).
-
-### 4.3 The Transition Cost Matrix
-
-This is the most domain-specific part of your model and the one your examiner will scrutinise most. The asymmetry must be intentional and explainable. The rule is: transitioning from a darker colour to a lighter colour costs more waste than the reverse, because residual dark dye contaminates the lighter batch.
-
-Concretely, define a darkness ranking for your colour palette (e.g. white=1, yellow=2, light blue=3, green=4, red=5, navy=6, black=7). The cost of transitioning from colour A to colour B should scale with max(0, darkness(A) − darkness(B)). Same colour should cost zero. Add a small noise term so the matrix is not degenerate (identical costs create trivial structure that makes the problem easier than reality).
-
-The setup time matrix can follow the same structure at a different scale — setup time and setup cost are distinct things in your formal model.
-
-### 4.4 Due Date Tightness
-
-Due dates need to be calibrated carefully. If they are too loose, every algorithm achieves zero tardiness and the only thing you're measuring is setup cost. If they are too tight, every algorithm has massive tardiness and again differentiation is hard. A tightness factor that scales due dates relative to average machine load is standard practice. Test your due date generation by running your heuristics on a few instances and checking that tardiness is nonzero but not catastrophically large.
-
-### 4.5 Testing the Instance Generator
-
-At minimum, verify:
-- Processing times are positive and within your defined range
-- The cost matrix diagonal is exactly zero (no cost transitioning to the same job)
-- The matrix is genuinely asymmetric: S[i][j] ≠ S[j][i] for most pairs
-- Due dates are positive
-- The same seed always produces the same instance
-
----
+Write these modules in order. Each section explains exactly what to build, test it thoroughly, then move on. Dependencies: evaluator → heuristics → GA → GA environment → DRL agent.
 
 ## 5. The Evaluator
 
-### 5.1 Design Principle
+**Purpose:** The evaluator scores solutions. Any bug here breaks all 720 experiments. Build this first, test it thoroughly, move on.
 
-The evaluator must be pure — given a solution and an instance, it returns numbers. No randomness, no state, no side effects. This is the most important design decision in the whole project. If your evaluator has any stochastic behaviour, your entire experiment is broken and you will not be able to diagnose it.
+### 5.1 What You Will Build
 
-### 5.2 Solution Representation
+**File:** `src/evaluator.py`
 
-A solution sigma is a list of m lists, where sigma[k] is the ordered sequence of job indices assigned to machine k. This is sometimes called the "partition-permutation" representation. Every job index must appear in exactly one machine sequence — not zero, not two. Write a validation function that checks this and call it inside your evaluator. If you have a bug in your GA's crossover operator that occasionally produces invalid chromosomes, this check will catch it immediately.
+**Functions to implement:**
 
-### 5.3 Computing Completion Times
+1. **`validate_sigma(sigma: list, n: int) → bool`**
+   - Check that sigma contains every job index 0..n-1 exactly once, distributed across its machines.
+   - Raise `ValueError` if invalid.
+   - Called by evaluate() before any computation.
 
-The completion time of a job depends on: when the previous job on the same machine finished, the setup time between the previous job and this job, the current job's processing time, and whether the job's release time has passed. The completion time formula is recursive within each machine sequence. Write this carefully and test it against hand-computed examples.
+2. **`compute_completion_times(sigma: list, instance: dict) → dict`**
+   - Input: sigma (list of m machine sequences), instance (from instance_generator).
+   - For each job on each machine, compute its completion time = max(previous job completion + setup time, release time) + processing time.
+   - Setup time for the first job on a machine is 0.
+   - Return dict: `{"completion_times": array, "last_completion": dict}`.
 
-### 5.4 The Composite Objective
+3. **`compute_tardiness(sigma: list, instance: dict) → float`**
+   - Compute total weighted tardiness: Σ weight_i × max(0, C_i − d_i) for all jobs i.
+   - Return single float.
 
-Your fitness function is F(Σ) = α·f1 + (1−α)·f2 where f1 is total weighted tardiness and f2 is total setup cost. Alpha is a tunable parameter. In your main experiments, use α=0.5 as the default. In your sensitivity analysis, vary it and show how the algorithm rankings change (or don't). This is a good dissertation discussion point — does the hybrid agent's advantage persist regardless of how much you weight tardiness vs setup cost?
+4. **`compute_setup_cost(sigma: list, instance: dict) → float`**
+   - Sum all setup costs S[job_i][job_j] for transitions from job_i to job_j on each machine.
+   - Return single float.
 
-### 5.5 What Else to Track
+5. **`evaluate(sigma: list, instance: dict, alpha: float = 0.5) → dict`**
+   - Main entry point.
+   - Call `validate_sigma(sigma, instance['n'])` first — fail hard if invalid.
+   - Compute completion times, tardiness f1, setup cost f2.
+   - **Normalise both objectives before combining:**
+     - f1_norm = f1 / mean(f1 over all prior runs on this instance size) [or use a default of 100.0 if no prior runs]
+     - f2_norm = f2 / mean(f2 over all prior runs on this instance size) [or use a default of 50.0 if no prior runs]
+     - **Important:** Without normalisation, one objective dominates regardless of alpha. Document this normalisation approach in a comment.
+   - composite = α × f1_norm + (1−α) × f2_norm
+   - Compute makespan C_max (max completion time).
+   - Return dict:
+     ```python
+     {
+       "composite": composite,
+       "weighted_tardiness": f1,
+       "setup_cost": f2,
+       "makespan": C_max,
+       "f1_normalised": f1_norm,
+       "f2_normalised": f2_norm
+     }
+     ```
 
-Beyond the composite score, always compute and store: makespan (C_max), total weighted tardiness alone (f1), total setup cost alone (f2), and tardiness per job. You want these separately because your dissertation results section will need to show that the improvement in composite score is not entirely driven by one objective at the expense of the other.
+### 5.2 Design Rules
 
-### 5.6 Testing the Evaluator
+- **No randomness, no state, no side effects.** Call evaluate() a million times with the same sigma and instance and get the same result every time.
+- **Fail fast.** If sigma is invalid, raise immediately. Do not compute anything.
+- **Test against hand-computed examples** before moving on.
 
-Test against hand-computed examples. Take n=3, m=1, simple processing times, simple setup times with no release times. Compute the completion times and tardiness by hand with a calculator. Run your evaluator and verify it matches. This is the only way to be confident the evaluator is correct. If it has a bug, every experiment you run is wrong.
+### 5.3 Testing the Evaluator
+
+Create a test file `tests/test_evaluator.py`.
+
+**Minimal test:** n=3, m=1, seed=42.
+- Generate instance: `instance = generate_instance(3, 1, seed=42)`
+- Create a test solution sigma: say, sigma = [[0, 1, 2]] (all jobs on machine 0 in order)
+- Compute by hand:
+  - proc_times from the instance (e.g., [15, 8, 22])
+  - setup_times from the instance
+  - C_0 = 0 + 0 + 15 = 15 (first job: no setup)
+  - C_1 = 15 + setup_time[0][1] + 8 = …
+  - C_2 = C_1 + setup_time[1][2] + 22 = …
+  - tardiness = Σ weight_i × max(0, C_i − d_i)
+- Call `evaluate(sigma, instance, alpha=0.5)` and verify the weighted_tardiness and setup_cost match your hand calculations exactly.
+
+**Additional test:** Verify validate_sigma rejects [0, 2] on n=3 (missing job 1).
+
+**Verification command:**
+```bash
+python -m pytest tests/test_evaluator.py -v
+```
+
+All tests must pass before moving to Section 6.
+
+### 5.4 Key Pitfall
+
+**Pitfall:** Assuming setup cost and tardiness are on the same scale. They are not. On n=50 instances, tardiness can be 500+, while setup cost is typically 50–200. Combining them without normalisation means setup cost is invisible in the composite score. The code comment `# Normalise by instance mean` is not a suggestion — it is critical. Document how you compute the normalisation constant (e.g., empirical mean from baselines) in Chapter 3 of your dissertation.
 
 ---
 
 ## 6. Baseline Heuristics
 
-### 6.1 Why Baselines Matter
+**Purpose:** Baselines are essential. Examiners expect you to compare against something simple — if your hybrid doesn't beat the baselines, it is not a contribution. Build these heuristics now.
 
-Your contribution is only meaningful relative to what already exists. SPT is the simplest possible baseline — it completely ignores the structure of your problem (the asymmetric transition costs). Nearest-neighbour greedy uses some of that structure. A plain GA uses a lot more. Your hybrid should beat all three. If it doesn't beat all three consistently, that is also a valid finding — but you need to understand why.
+### 6.1 What You Will Build
 
-### 6.2 SPT
+**File:** `src/heuristics.py`
 
-Shortest Processing Time: sort all jobs by processing time ascending, assign round-robin across machines. Time complexity O(n log n). The key thing to understand about SPT is that it minimises mean completion time on a single machine — a classical result. On parallel machines with sequence-dependent setup costs, it has no theoretical guarantee. It is your weakest baseline and your hybrid should beat it comfortably.
+**Functions to implement:**
 
-### 6.3 Nearest-Neighbour Greedy
+1. **`spt(instance: dict) → list`** (Shortest Processing Time)
+   - Sort all jobs (0..n-1) by processing time ascending.
+   - Assign jobs round-robin: job 0 → machine 0, job 1 → machine 1, ..., job m → machine 0, etc.
+   - Return sigma (list of m machine sequences).
+   - Example: n=5, m=2, sorted jobs [2, 0, 4, 1, 3] → sigma = [[2, 4, 1], [0, 1, 3]].
+   - **Call `validate_sigma(sigma, instance['n'])` before returning.**
 
-This heuristic explicitly uses the transition cost matrix. Starting from an empty schedule, it always assigns the next job to the machine where the transition cost from the last job is lowest. It is greedy — it makes locally optimal choices without lookahead — so it can get trapped in poor global solutions. Time complexity O(n² × m) roughly. This is your stronger baseline and the more interesting comparison.
+2. **`nearest_neighbour_greedy(instance: dict) → list`** (NN Greedy)
+   - Maintain an empty schedule with m machines.
+   - For each job in order (0, 1, 2, ...):
+     - Find the machine where the transition cost from the last job on that machine is lowest.
+     - If a machine is empty, transition cost is 0.
+     - Assign this job to that machine.
+   - Return sigma.
+   - **Call `validate_sigma(sigma, instance['n'])` before returning.**
 
-### 6.4 Validation
+### 6.2 Testing Heuristics
 
-After every heuristic, call your solution validation function. Heuristics are simple enough that bugs usually produce obviously invalid solutions (e.g. a job scheduled twice, or not at all). Catch this early.
+Create `tests/test_heuristics.py`.
+
+**Test for spt():**
+- Generate instance with n=4, m=2, seed=42.
+- Call `spt(instance)`.
+- Verify all 4 jobs appear exactly once across machines.
+- Verify the returned sigma is a valid list of lists.
+
+**Test for nearest_neighbour_greedy():**
+- Same instance, call `nn_greedy(instance)`.
+- Verify all 4 jobs appear exactly once.
+- Spot-check: the first job (index 0) should go to machine 0 (no prior jobs, cost 0).
+
+**Verification command:**
+```bash
+python -m pytest tests/test_heuristics.py -v
+```
+
+### 6.3 Key Pitfall
+
+**Pitfall:** Assuming all jobs must be processed in order 0, 1, 2, .... SPT reorders jobs by processing time, then assigns that reordered sequence round-robin. Nearest-neighbour assigns jobs in order 0, 1, 2, ... but decides which machine each goes to by minimising transition cost. These are fundamentally different algorithms — do not confuse them.
 
 ---
 
 ## 7. Genetic Algorithm
 
-### 7.1 Chromosome Representation
+**Purpose:** GA is your baseline solver. It must work before the DRL agent can control it. Build, tune, lock down parameters.
 
-You are using the "giant tour" representation: a flat permutation of all n job indices, which is then split into m contiguous segments (one per machine). This is the standard approach for parallel machine scheduling GAs because it handles the assignment problem implicitly — you never need to decide which job goes to which machine separately from the ordering.
+### 7.1 What You Will Build
 
-The split can be a fixed equal partition or you can evolve the split points as well. Start with a fixed equal split — it is simpler and your SP describes it this way. If you have time and want a stronger contribution, try evolving the split points and see if it helps.
+**File:** `src/ga.py`
 
-### 7.2 Crossover
+**Functions to implement:**
 
-Order Crossover (OX) is the right operator for permutation chromosomes. It preserves the relative order of jobs between parents, which is important because the sequencing structure carries problem-relevant information. Do not use single-point or two-point crossover on permutations — they produce invalid chromosomes (duplicate jobs) without repair.
+1. **`decode_chromosome(chromosome: list, m: int) → list`**
+   - Input: a permutation of n job indices, number of machines m.
+   - Split into m contiguous segments: sigma[0] = chromosome[0 : n//m], sigma[1] = chromosome[n//m : 2*(n//m)], ...
+   - If n % m != 0, distribute remainder: final machines get one extra job each.
+   - Return sigma (list of m machine sequences).
+   - Example: n=5, m=2, chromosome=[2,0,4,1,3] → sigma=[[2,0,4], [1,3]].
 
-DEAP has OX implemented as `tools.cxOrdered`. Use it.
+2. **`make_fitness_fn(instance: dict, alpha: float = 0.5) → callable`**
+   - Return a fitness function that takes a chromosome, decodes it, evaluates it, returns composite fitness.
+   - This factory exists because DEAP needs a callable to pass to the toolbox.
+   - The returned function should call your evaluator.
 
-### 7.3 Mutation
+3. **`build_toolbox(n: int, instance: dict, alpha: float = 0.5) → deap.base.Toolbox`**
+   - Create and register:
+     - Attribute (individual job indices): `toolbox.attr_job = tools.initRepeatContainer(range, n, container=list)`
+     - Individual (permutation): `toolbox.individual = tools.initPermutation(...)`
+     - Population: `toolbox.population`
+     - Evaluation: `toolbox.register("evaluate", fitness_fn)`
+     - Crossover: `toolbox.register("mate", tools.cxOrdered)`
+     - Three mutation operators:
+       ```python
+       def swap_mutation(individual, indpb=0.05):
+           for i in range(len(individual)):
+               if random.random() < indpb:
+                   j = random.randint(0, len(individual)-1)
+                   individual[i], individual[j] = individual[j], individual[i]
+           return individual,
+       
+       def inversion_mutation(individual, indpb=0.05):
+           for _ in range(int(len(individual) * indpb)):
+               i, j = sorted(random.sample(range(len(individual)), 2))
+               individual[i:j+1] = individual[i:j+1][::-1]
+           return individual,
+       
+       def aggressive_swap_mutation(individual, indpb=0.20):
+           # Same as swap_mutation but with higher indpb
+       ```
+     - Register: `toolbox.register("mutate_swap", swap_mutation)`, etc.
+     - Selection: `toolbox.register("select", tools.selTournament, tournsize=3)`
+   - **Guard against DEAP global state:** Before any creator.create() or tools call, check `hasattr(creator, "FitnessMin")`. Only create if not already exists.
+   - Return the toolbox.
 
-Implement and register at least two mutation operators — you need them for the DRL agent to switch between:
+4. **`run_ga(n: int, m: int, instance: dict, pop_size: int = 100, num_gens: int = 200, cx_prob: float = 0.8, mut_prob: float = 0.2, mutation_ops: list = ["swap"], seed: Optional[int] = None) → tuple`**
+   - Build toolbox.
+   - Initialise population of size pop_size.
+   - Run generational GA:
+     - For each generation:
+       - Select parents via tournament.
+       - Apply crossover with probability cx_prob.
+       - Apply mutation (one of the mutation_ops chosen at random) with probability mut_prob.
+       - Evaluate all individuals.
+       - Replace population with best+offspring (generational replacement).
+     - Track best fitness each generation.
+   - Return (best_individual, best_fitness_per_gen, final_population).
 
-- **Swap mutation:** pick two positions in the chromosome at random and swap the job indices. Low disruption, good for fine-tuning near a good solution.
-- **Inversion mutation:** pick a random subsequence and reverse it. Higher disruption, good for escaping local optima.
-- **Aggressive swap:** swap mutation but with a higher per-gene probability. A third action for the DRL agent to choose when it needs to explore hard.
+### 7.2 Hyperparameter Grid
 
-### 7.4 Selection
+**Tune on n=10, m=2 ONLY.** Use instance seed=42 for consistency.
 
-Tournament selection is standard and works well for scheduling GAs. Tournament size 3 is a reasonable default. Larger tournaments increase selection pressure (converges faster but risks premature convergence). Smaller tournaments are more random (slower convergence but more diversity).
+| Pop Size | Generations | Cx Prob | Mut Prob | Mutation Ops | Notes |
+|---|---|---|---|---|---|
+| 50 | 100 | 0.7 | 0.1 | [swap] | Baseline: small & fast |
+| 100 | 200 | 0.8 | 0.2 | [swap, inversion] | Balanced exploration+exploitation |
+| 200 | 500 | 0.9 | 0.3 | [swap, inversion, aggressive] | Large: more time to search |
 
-### 7.5 The DEAP Global State Problem
+**Tuning procedure (in notebook 03_ga_development.ipynb):**
+1. For each row in the grid:
+   - Run GA 10 times with seeds 0–9.
+   - Record mean composite fitness and std.
+   - Plot convergence curves (best fitness vs generation).
+2. Pick the configuration with lowest mean fitness.
+3. Lock these parameters in all subsequent experiments (baselines and hybrid).
+4. Document the choice in your dissertation Chapter 4.
 
-DEAP uses module-level global state for the `creator` object. If you run `creator.create("FitnessMin", ...)` twice in the same Python session it throws a warning and potentially inconsistent behaviour. This is a known DEAP gotcha. Guard against it by checking `hasattr(creator, "FitnessMin")` before registering. In notebooks, be especially careful — if you restart the kernel and re-run cells partially, you can get into weird states. When in doubt, restart the kernel fully.
+**Verification command:**
+```bash
+python -c "from src.ga import run_ga; best, hist, pop = run_ga(10, 2, instance, seed=42); print(f'Best: {best.fitness.values[0]:.2f}')"
+```
 
-### 7.6 Hyperparameter Tuning
+### 7.3 What Good Convergence Looks Like
 
-You must tune the GA before running your 30-rep experiments. The parameters to tune are: population size (try 50, 100, 200), number of generations (try 100, 200, 500), crossover probability (try 0.7, 0.8, 0.9), and mutation probability (try 0.1, 0.2, 0.3). Use a small instance (n=10, m=2) for tuning — fast to iterate. Run 10 seeds per configuration and pick the one with the lowest mean composite fitness. Lock those parameters in and use them for all subsequent experiments.
+- Gen 1–40: steep drop (population finds improving solutions quickly).
+- Gen 40–end: flatter (population exploits near best solution).
+- No sudden spikes (means your crossover is broken, creating invalids).
 
-Do your tuning in notebook `03_ga_development.ipynb`. Plot convergence curves for each configuration so you can see not just the final fitness but how fast the GA converges and whether it plateaus early.
+If flat from gen 1: check that fitness function is returning different values (not constant).  
+If never stops dropping: increase num_gens.
 
-### 7.7 What Good Convergence Looks Like
+### 7.4 DEAP Global State: Multiprocessing Fix
 
-A healthy convergence curve drops steeply in the first 20–30% of generations, then flattens as the population exploits the best solutions found. If your curve is completely flat from generation 1, your fitness function or mutation rate is wrong. If it never stops dropping, you probably need more generations. If it drops then shoots back up, your crossover operator is producing invalid solutions that are being penalised.
+**Critical for experiments:** When running `run_ga()` in parallel across multiple processes (via `multiprocessing.Pool`), DEAP's global `creator` object may cause problems in fork-mode on Linux.
 
-### 7.8 Multiprocessing
+**Solution:** Use `multiprocessing.get_context("spawn")` instead of default fork. Add this to your run_ga.py experiment script.
 
-Your 30-run experiments must be parallelised with Python's `multiprocessing` module. **Do not run this from inside a notebook.** Multiprocessing in notebooks on Linux uses fork-mode and interacts badly with DEAP's global state. Write the experiment runner as a standalone `.py` script in `experiments/` and run it from your terminal. The `Pool.imap_unordered` pattern is clean for this — it lets you print progress as results come in rather than waiting for the whole batch.
+### 7.5 Key Pitfall
+
+**Pitfall:** Restarting your kernel mid-session and re-running the build_toolbox() cell. DEAP's global state persists and causes "FitnessMin already exists" warnings. The hasattr guard prevents crashes but can cause silent inconsistencies. **Always restart the kernel fully before running GA code again.** In your terminal scripts (experiments/), each process starts fresh so this is not a problem.
 
 ---
 
 ## 8. DRL Hyper-Heuristic Agent
 
-### 8.1 The Key Architectural Decision
+**Purpose:** The DRL agent is the novel contribution. It controls which GA mutation operator to use, learning a meta-policy. Train and validate it thoroughly before running final experiments.
 
-The PPO agent does not schedule jobs directly. It controls the GA. At every decision point (every `k` generations), the agent observes the current state of the GA's population and selects a mutation operator for the next `k` generations. This is the hyper-heuristic framing.
+### 8.1 What You Will Build
 
-This is a subtle but important distinction. A lot of DRL-for-scheduling work has the agent construct schedules directly (sequence one job at a time). Your approach is different: the agent is a meta-controller. This distinction needs to be clearly explained in your dissertation and is part of what makes your contribution novel relative to simpler hybrids.
+**File:** `src/ga_env.py` — Gymnasium environment wrapping the GA.
 
-### 8.2 State Space Design
+**File:** `src/drl_agent.py` — PPO training and inference.
 
-The state vector is a 4-dimensional observation summarising the current GA population:
+### 8.2 The Gymnasium Environment (ga_env.py)
 
-- **Best fitness (normalised):** The best solution's composite score, divided by the initial best fitness. Normalising prevents the agent from having to deal with very different scales across instance sizes.
-- **Mean fitness (normalised):** The population average, same normalisation. The gap between best and mean tells the agent something about population diversity.
-- **Population diversity:** Measure as mean pairwise Hamming distance between a sample of chromosomes, divided by n. High diversity = lots of exploration happening. Low diversity = population has converged.
-- **Stagnation counter (normalised):** How many generations since the best fitness improved, divided by total generations. This tells the agent whether the GA is stuck.
+**Class:** `GAHyperHeuristicEnv(gym.Env)`
 
-Why these four? They capture exactly the information you'd want as a human watching the GA: is it converging? Is it stuck? Is the population diverse enough? Four features is also small enough for a simple MLP policy (which is what SB3's default `MlpPolicy` uses) to learn from quickly.
+**Constructor:**
+```python
+def __init__(self, instance: dict, total_gens: int = 200, step_gens: int = 10, seed: Optional[int] = None):
+```
+- instance: one (n, m) instance dict.
+- total_gens: total GA generations per episode.
+- step_gens: number of GA gens per step (agent decision frequency).
+- seed: random seed.
 
-### 8.3 Action Space
+**Methods:**
 
-Three discrete actions: swap mutation (conservative), inversion mutation (moderate disruption), aggressive swap mutation (high disruption). Three actions is enough to demonstrate that the agent learns a non-trivial policy. More actions would require more training.
+1. **`reset() → tuple`**
+   - Initialise fresh GA population.
+   - Compute initial state observation (see 8.3).
+   - Return (observation, info).
 
-### 8.4 Reward Design
+2. **`step(action: int) → tuple`**
+   - Run GA for step_gens generations with the chosen mutation operator (action ∈ {0=swap, 1=inversion, 2=aggressive_swap}).
+   - Compute new observation.
+   - Compute reward: (best_fitness_before − best_fitness_after) / best_fitness_before.
+     - If best_fitness_before is 0, reward = 0.
+   - Set done=True if generations_elapsed >= total_gens.
+   - Return (observation, reward, terminated, truncated, info).
 
-The reward at each step is the relative improvement in best fitness: (fitness_before − fitness_after) / fitness_before. Positive when the GA improved, zero or negative when it didn't. This relative formulation is important — it makes the reward scale-independent across different instance sizes, which means you can train the agent on medium instances and (ideally) have it generalise to other sizes.
+3. **`close()`**
+   - Clean up (if needed).
 
-Reward design is the hardest part of any RL problem. If your agent is not learning, the first thing to check is whether the reward signal is too sparse (the GA rarely improves in a single step) or too noisy (the improvement varies so much between runs that the signal is uninformative). You may need to adjust `step_gens` (the number of GA generations between PPO decisions) to get a clean signal.
+### 8.3 State Space (4D Observation)
 
-### 8.5 The Gymnasium Environment
+Compute and normalise all four features:
 
-Your GA env inherits from `gym.Env` and implements `reset()`, `step()`, and `close()`. The `reset()` method initialises a fresh GA population and returns the initial state. The `step()` method runs `step_gens` generations of the GA with the chosen mutation operator and returns the new state, reward, done flag, and info dict.
+1. **best_fitness_norm:** current best solution fitness / initial best solution fitness.
+   - Range: [0.0, 1.0] (fitness improves over time, so this decreases).
+   
+2. **mean_fitness_norm:** current population mean fitness / initial best fitness.
+   - Range: depends on diversity.
+   
+3. **diversity:** mean pairwise Hamming distance among a sample of min(20, pop_size) chromosomes, divided by n.
+   - Hamming distance: count positions where two chromosomes differ.
+   - Range: [0.0, 1.0].
+   
+4. **stagnation_norm:** (generations since best improved) / total_gens.
+   - Range: [0.0, 1.0].
 
-**Run `check_env()` on your environment before training PPO.** SB3's env checker will catch common mistakes: wrong observation shapes, out-of-range observations, incorrect done signal handling. Fix every warning it raises — warnings often become errors during training.
+Return observation as `np.array([best_fitness_norm, mean_fitness_norm, diversity, stagnation_norm], dtype=np.float32)`.
 
-### 8.6 PPO Hyperparameters
+### 8.4 Action Space
 
-SB3's defaults are reasonable starting points. The parameters most worth adjusting for your problem:
+Discrete(3):
+- Action 0: swap mutation (indpb=0.05)
+- Action 1: inversion mutation (indpb=0.05)
+- Action 2: aggressive swap mutation (indpb=0.20)
 
-- `n_steps`: how many environment steps to collect before each PPO update. Your episodes are short (total_gens / step_gens steps each), so keep this modest.
-- `ent_coef`: entropy coefficient, controls exploration. Start at 0.01. If the agent collapses to always selecting one action, increase it.
-- `learning_rate`: 3e-4 is the standard default. Don't change this unless training is clearly unstable.
+### 8.5 Training Details (drl_agent.py)
 
-### 8.7 What Instance to Train On
+**Function:** `train_ppo(instance: dict, num_timesteps: int = 50000, seed: Optional[int] = None) → PPO`
 
-Train on medium instances (n=20, m=2). Small instances are too simple — the agent won't learn anything generalising. Large instances make each episode very slow. Train on medium, evaluate on all sizes. If the agent generalises to small and large, that is a strong result worth highlighting in your dissertation.
+1. Create env: `env = GAHyperHeuristicEnv(instance, total_gens=200, step_gens=10, seed=seed)`
+2. **Run check_env():**
+   ```python
+   from stable_baselines3.common.env_checker import check_env
+   check_env(env)
+   ```
+   Fix any warnings before proceeding.
+3. Create PPO agent:
+   ```python
+   model = PPO(
+       "MlpPolicy", env,
+       n_steps=256,
+       ent_coef=0.01,
+       learning_rate=3e-4,
+       verbose=1
+   )
+   ```
+4. Train: `model.learn(total_timesteps=num_timesteps, log_interval=10)`
+5. Monitor TensorBoard: `tensorboard --logdir=logs/`
+6. Save: `model.save("models/ppo_n20m2")`
+7. Return model.
 
-### 8.8 How Long to Train
+**Function:** `run_hybrid(instance: dict, model: PPO) → dict`
 
-With `step_gens=10` and `total_gens=200`, each episode is 20 steps. To get 2,500 training episodes, you need 50,000 timesteps. Start there. Monitor the mean episode reward in TensorBoard — if it is still climbing at 50,000 timesteps, go to 100,000. If it plateaued early and is flat, training is done.
+1. Create env with same config.
+2. Observation, info = env.reset().
+3. For each step:
+   - Action, _ = model.predict(observation, deterministic=True).
+   - Observation, reward, done, _, info = env.step(action).
+4. Return final best solution and fitness.
 
-### 8.9 Diagnosing a Non-Learning Agent
+### 8.6 Training Instance Pool
 
-If the reward curve is flat or random throughout training:
+**Critical:** Do not train on a single instance — the agent will overfit.
 
-1. Check that your reward is actually varying — print a few reward values from manual environment interaction
-2. Check population diversity is not immediately collapsing to zero (if it is, your GA is converging in 10 generations and there's nothing for the agent to control)
-3. Check your observation normalisation — if observations are all near 1.0 or all near 0.0, the agent has no signal to learn from
-4. Try increasing `ent_coef` to force more exploration
-5. Try increasing `step_gens` so each action has a longer effect and a cleaner signal
+- Generate 5 instances with (n=20, m=2) and seeds 0, 1, 2, 3, 4.
+- During training, each reset() picks a random instance from the pool.
+- Wrap env with `gym.wrappers.RecordEpisodeStatistics` to track episode rewards.
 
-### 8.10 Analysing What the Agent Learned
+### 8.7 Reward Sparsity Fallback
 
-After training, run the agent on test instances and log which action it selects at each step. Plot the action frequency over the course of an episode. A well-trained agent should show a pattern: perhaps preferring inversion mutation early (high diversity, escape basins) and switching to conservative swap mutation later (fine-tuning near a good solution). If the agent just picks one action always, it has not learned a useful policy.
+If reward is 0 for more than 50 consecutive steps during training:
+- Reduce step_gens to ceil(step_gens / 2), floor at 1.
+- This gives the agent more frequent decision points and a denser reward signal.
 
-This action-frequency analysis belongs in your dissertation results section. It is qualitative evidence that the agent is doing something meaningful, not just accidentally performing well.
+Log this adjustment in your code comments.
+
+### 8.8 Training Duration
+
+- **Minimum:** 50,000 timesteps (≈ 2,500 episodes at 20 steps each).
+- **Stopping criterion:** If mean episode reward plateaus (no improvement for 10 consecutive log intervals), stop early.
+- Monitor via TensorBoard. If reward is still rising at 50,000 ts, continue to 100,000 ts.
+
+### 8.9 Post-Training Validation
+
+After training, run the agent for 10 episodes on test instances (n=20, m=2, seeds 100–109 — different from training):
+- Log the action chosen at each step.
+- Plot action frequency histograms (early, middle, late thirds of episode).
+- Expected pattern: inversion early (diversity), swap late (fine-tuning).
+- If agent picks one action always → learning failed, debug reward signal.
+
+### 8.10 Key Pitfall
+
+**Pitfall:** Training on a single instance. The agent will learn to exploit that specific instance structure and fail to generalise. Training on an instance pool is harder to set up but essential for a valid contribution. Document this approach in your dissertation.
 
 ---
 
+# PART 4 — RUN & ANALYSE
+
+Run your experiments, collect results, and produce tables and figures for your dissertation.
+
 ## 9. Experiments & Statistical Analysis
 
-### 9.1 The 30-Run Protocol
+**Purpose:** Run 720 experiments to validate your contribution. This is the core of your dissertation. Be meticulous and patient.
 
-Every algorithm on every instance configuration must be run 30 independent times with different random seeds (seeds 0 through 29). The same seed must produce the same instance for all algorithms — this is what makes comparisons paired. Paired comparisons are more statistically powerful than unpaired ones because instance-level difficulty cancels out.
+### 9.1 Experiment Design
 
-### 9.2 Instance Configurations
+| Algorithm | Seeds | Instances | Runs | Notes |
+|---|---|---|---|---|
+| SPT | 0–29 | 6 configs | 180 | Baseline (fast, seconds each) |
+| NN Greedy | 0–29 | 6 configs | 180 | Baseline (medium speed) |
+| GA | 0–29 | 6 configs | 180 | Plain GA, locked params from tuning |
+| Hybrid | 0–29 | 6 configs | 180 | GA + trained PPO agent |
+| **Total** | | | **720** | |
 
-Run all six configurations from your SP: n=10/m=2, n=10/m=3, n=20/m=2, n=20/m=3, n=50/m=2, n=50/m=3. That is 30 seeds × 6 configs × 4 algorithms = 720 experiment runs total. The GA and hybrid runs on n=50 will be the slowest — estimate your runtime before committing to 30 reps so you're not surprised.
+Same seed → same instance for all algorithms. Paired design.
 
-### 9.3 Saving Results
+**Instance configs (all 6):**
+- (n=10, m=2)
+- (n=10, m=3)
+- (n=20, m=2)
+- (n=20, m=3)
+- (n=50, m=2)
+- (n=50, m=3)
 
-Save every run as structured data (JSON or CSV) to `results/raw/`. Each record should contain: instance label, seed, algorithm name, composite fitness, weighted tardiness, setup cost, makespan. Do not save only the mean — save every individual run. You need the individual run data for the Wilcoxon test and for box plots.
+### 9.2 Pre-Experiment Benchmark (REQUIRED)
 
-### 9.4 Running Order
+Before committing to 30 seeds, estimate runtime:
+1. Run SPT on all 6 configs once (seed=42): measure time.
+2. Run NN greedy on all 6 configs once: measure time.
+3. Run GA on n=50, m=2 and n=50, m=3 once: measure time.
+4. Extrapolate: 30 seeds × (SPT time + NN time + GA time) = total runtime estimate.
 
-Run baselines first (fast, seconds per instance), then plain GA (minutes per instance), then hybrid (similar to GA). Do not run the hybrid until the PPO model is trained and saved. Load the saved model in `run_hybrid.py` rather than retraining it.
+Example: if one full cycle is 2 minutes, 30 cycles ≈ 1 hour. Hybrid is similar to GA.
 
-### 9.5 Statistical Tests
+**Do not skip this.** Running 720 experiments without knowing the duration is asking for a late-night disaster.
 
-The Wilcoxon signed-rank test is the right test here. It is non-parametric (you cannot assume your fitness values are normally distributed), and it works on paired data (same instance, different algorithm). Run it with the alternative hypothesis "less" — you are testing whether the hybrid's fitness is significantly lower (better) than each baseline.
+### 9.3 Result File Format
 
-The threshold for statistical significance is p < 0.05. If p < 0.01, say so — it is a stronger result. If p > 0.05 on some instance size, do not hide it — discuss why the hybrid does not significantly outperform there (probably small instances where the problem is easy enough that all algorithms find good solutions).
+**Directory:** `results/raw/`
 
-Report results as mean ± standard deviation in your main table. p-values belong in a separate significance table.
+**Filename pattern:** `{algorithm}_{config_label}_{seed}.json`
 
-### 9.6 Sensitivity Analysis
+Example: `spt_n20m2_seed0042.json`
 
-After your main results, vary alpha (try 0.3, 0.5, 0.7) and re-run on at least the medium instances. Show whether the algorithm rankings are robust to the weighting between tardiness and setup cost. This is a relatively quick additional experiment that substantially strengthens your dissertation.
+**File contents (JSON):**
+```json
+{
+  "algorithm": "SPT",
+  "instance_label": "n20m2",
+  "seed": 42,
+  "composite_fitness": 234.5,
+  "weighted_tardiness": 145.3,
+  "setup_cost": 89.2,
+  "makespan": 478.9,
+  "runtime_seconds": 0.023
+}
+```
+
+**Why every individual run?** You need the raw data for Wilcoxon tests and box plots. Aggregated means alone are useless.
+
+### 9.4 Running Experiments (Terminal Scripts)
+
+**Do not run from notebooks.** Write three scripts in `experiments/`:
+
+1. **`run_baselines.py`**
+   ```python
+   from multiprocessing import Pool, get_context
+   import json
+   from src.instance_generator import generate_instance
+   from src.heuristics import spt, nn_greedy
+   from src.evaluator import evaluate
+   
+   def run_spt(seed, config):
+       instance = generate_instance(config['n'], config['m'], seed=seed)
+       sigma = spt(instance)
+       result = evaluate(sigma, instance)
+       return {
+           "algorithm": "SPT",
+           "instance_label": config['label'],
+           "seed": seed,
+           "composite_fitness": result['composite'],
+           "weighted_tardiness": result['weighted_tardiness'],
+           "setup_cost": result['setup_cost'],
+           "makespan": result['makespan'],
+       }
+   
+   # Similar for NN greedy
+   
+   # Main: use Pool.imap_unordered to run in parallel
+   with get_context("spawn").Pool(8) as pool:
+       for result in pool.imap_unordered(...):
+           save_result(result)
+   ```
+
+2. **`run_ga.py`**
+   ```python
+   # Similar structure, uses your GA code
+   # Critical: use get_context("spawn") not fork
+   ```
+
+3. **`run_hybrid.py`**
+   ```python
+   # Same as run_ga.py but calls the trained PPO agent in step()
+   # Load model with PPO.load("models/ppo_n20m2")
+   ```
+
+**Run from terminal:**
+```bash
+python experiments/run_baselines.py  # ~15 min
+python experiments/run_ga.py         # ~2–3 hours
+python experiments/run_hybrid.py     # ~2–3 hours
+```
+
+### 9.5 Statistical Testing
+
+**Test:** Wilcoxon signed-rank test (non-parametric, paired).
+
+For each instance size (6 total) and each algorithm pair (3 pairs: hybrid vs SPT, hybrid vs NN, hybrid vs GA):
+```python
+import pingouin as pg
+
+# Load results for this config
+hybrid_scores = [...]  # 30 runs
+baseline_scores = [...]  # 30 runs
+
+stat, p_value = pg.wilcoxon(hybrid_scores, baseline_scores, alternative="less")
+# "less": test if hybrid < baseline (lower is better)
+```
+
+**Significance threshold:** p < 0.05.
+
+**Reporting:**
+- p < 0.001: "statistically significant (p < 0.001)"
+- 0.001 ≤ p < 0.01: "statistically significant (p < 0.01)"
+- 0.01 ≤ p < 0.05: "statistically significant (p < 0.05)"
+- p ≥ 0.05: "not statistically significant (p = X.XXX)"
+
+Do not hide non-significant results. They are informative.
+
+### 9.6 Sensitivity Analysis (α Variation)
+
+After main results, re-run GA and Hybrid on medium instances (n=20, m=2 and n=20, m=3) with three alpha values:
+- α = 0.3 (weight tardiness less)
+- α = 0.5 (balanced, main results)
+- α = 0.7 (weight tardiness more)
+
+Re-run 10 seeds per (config, alpha) pair. This is fast (only 40 extra runs). Show a table:
+
+| Config | Algorithm | α=0.3 | α=0.5 | α=0.7 |
+|---|---|---|---|---|
+| n20m2 | GA | ... | ... | ... |
+| n20m2 | Hybrid | ... | ... | ... |
+
+Discuss: does the hybrid's advantage persist across all α? Or is it sensitive to the weighting?
 
 ---
 
@@ -413,6 +808,10 @@ In your exploration notebook (and possibly Chapter 3 of your dissertation), plot
 
 ---
 
+# PART 5 — WRITE & SUBMIT
+
+Write your dissertation, create your final code archive, and submit by the deadline.
+
 ## 11. Dissertation Writing
 
 ### 11.1 Chapter Structure and Target Lengths
@@ -432,53 +831,106 @@ Leeds MSc dissertations are typically 15,000–20,000 words. Check the School of
 
 ### 11.2 LaTeX Setup
 
-Use LaTeX. Ask your supervisor whether Leeds provides an official dissertation template — many programmes do. If not, use the `report` class with 12pt font, 25mm margins, and the standard packages: `amsmath`, `amssymb`, `algorithm`, `algpseudocode`, `graphicx`, `booktabs`, `hyperref`, `natbib`.
+Use LaTeX. Ask your supervisor whether Leeds provides an official dissertation template — many programmes do. If not, use the `report` class with 12pt font, 25mm margins, and these packages:
+```latex
+\usepackage{amsmath, amssymb, graphicx, booktabs, hyperref, natbib}
+\usepackage{algorithm, algpseudocode}  % For pseudocode (NOT algorithm2e)
+```
 
-For your bibliography, use Zotero to export a `.bib` file. Check every entry for formatting errors — Zotero exports are often imperfect for conference papers and technical reports.
+For your bibliography: use Zotero to export a `.bib` file. Check every entry for formatting errors before including.
 
-### 11.3 Writing Chapter 4 (Implementation) Well
+### 11.3 Writing Chapter 3 (Problem Formulation) — 5–7 Pages
+
+**Must include:**
+1. Formal problem definition: PMSP-SDSC as a minimisation problem with notation table.
+2. Instance generator explanation: colour classes, darkness ranking, cost matrix asymmetry rule.
+3. Objective function: F = α·f1_norm + (1−α)·f2_norm. **Explicitly explain the normalisation approach** — this addresses a key ambiguity.
+4. Solution representation: sigma as list of m machine sequences.
+
+**Exact subsections:**
+- 3.1 Parallel Machine Scheduling with Sequence-Dependent Setup Costs
+- 3.2 Problem Formalisation (notation table)
+- 3.3 Instance Generation & Asymmetric Cost Structure
+- 3.4 Composite Objective & Normalisation
+
+### 11.4 Writing Chapter 4 (System Design & Implementation) — 15–20 Pages
 
 This is the chapter your technical examiner will scrutinise most. Key requirements:
 
-**Pseudocode, not code.** Present all algorithms as formal pseudocode using the `algorithm2e` or `algorithmicx` LaTeX package. Your GA's main loop, the fitness function, the Gymnasium env's step function, and the PPO training procedure should all appear as pseudocode. Code blocks in appendices are fine, but the main text needs formal algorithmic notation.
+**Pseudocode, not code.** Present all algorithms as formal pseudocode using `algpseudocode` package (NOT algorithm2e). Your GA's main loop, fitness evaluation, Gymnasium env's step function, and PPO training should all appear as formal algorithms. Code snippets in appendices only.
 
-**Every parameter in a table.** Every hyperparameter you chose — GA population size, crossover probability, mutation probability, PPO learning rate, n_steps, ent_coef, step_gens, total_gens, number of colours, processing time range — must appear in a parameter table with the value you used and a brief justification or citation.
+**Every parameter in a table.** Create two parameter tables:
+- **GA parameters:** pop_size, num_gens, cx_prob, mut_prob, tournament_size, with tuning justification
+- **PPO parameters:** learning_rate, n_steps, ent_coef, total_timesteps, with reasoning
 
-**Justify your design decisions.** Don't just say "we used OX crossover." Say "OX crossover was chosen because it preserves the relative ordering of jobs, which carries scheduling-relevant information about colour transition sequences, unlike uniform crossover which would destroy this structure." Every non-obvious design decision needs a sentence of justification.
+**Justify every design choice.** Not "we used OX crossover" but "OX crossover was selected because it preserves job orderings, which encode colour transition information critical to the domain."
 
-**System architecture diagram.** A single diagram showing how the modules interact — instance → evaluator → GA → GA-env → PPO → back to GA — is worth a page of text. Draw it clearly and reference it throughout Chapter 4.
+**System architecture diagram.** One diagram showing: Instance Generator → Instance Dict → Evaluator → GA (with 3 mutation ops) → GA Env → PPO → selected action → back to GA. Reference this throughout.
 
-### 11.4 Writing Chapter 5 (Results) Well
+**Exact subsections:**
+- 4.1 Evaluator & Objective Function
+- 4.2 Baseline Heuristics (SPT & NN Greedy) — brief, use pseudocode
+- 4.3 Genetic Algorithm Design (chromosome, operators, DEAP setup) — pseudocode for main loop
+- 4.4 Gymnasium Environment for Hyper-Heuristic (observation space, action space, reward)
+- 4.5 PPO Agent Training & Inference
+- 4.6 Parameter Tables & Justification
 
-Lead with your main result. Don't bury it. Your first paragraph should state the key finding directly: the hybrid achieves X% lower composite fitness than SPT, Y% lower than nearest-neighbour, and Z% lower than the plain GA, with statistical significance on all instance sizes above n=10.
+### 11.5 Writing Chapter 5 (Experimental Evaluation) — 12–18 Pages
 
-Then walk through the evidence. Start with the summary table (all algorithms × all instance sizes, mean±std). Then convergence analysis. Then Gantt charts. Then statistical significance table. Then sensitivity analysis. End with a paragraph summarising what the results mean for your research question.
+**Structure:**
+1. **5.1 Experiment Setup** — 2 pages. Repeat instance configs, seeds, runtimes, computational environment.
+2. **5.2 Main Results** — 4 pages. Lead with your headline result in the first sentence, then tables, Gantt charts, convergence plots.
+3. **5.3 Statistical Analysis** — 2 pages. Wilcoxon test results for all pairs and instance sizes. State p-values explicitly.
+4. **5.4 Sensitivity Analysis** — 2 pages. Results for α = 0.3, 0.5, 0.7. Discuss robustness.
+5. **5.5 Action Frequency Analysis** — 2 pages. PPO agent behaviour: which actions when? Does it show learned policy?
 
-**Be precise with numbers.** "The hybrid performed better" is not acceptable. "The hybrid achieved a mean composite fitness of 47.3 ± 8.1 on medium instances (n=20, m=2), representing a 23.4% reduction relative to SPT (82.1 ± 12.4, p < 0.001, Wilcoxon signed-rank test)" is what your examiner wants.
+**First sentence rule:** Lead with your main result, not the methodology. Bad: "We ran 720 experiments across 6 instance sizes." Good: "The hybrid GA-DRL system achieves 23% lower composite fitness than SPT (p < 0.001) and 18% lower than plain GA (p = 0.003) on all instance sizes except n=10 where all algorithms perform similarly."
 
-### 11.5 Writing Chapter 6 (Discussion) Well
+**Be precise with numbers.** Not "The hybrid performed better" but "The hybrid achieved mean composite fitness 47.3 ± 8.1 on (n=20, m=2), a 23.4% reduction relative to SPT (82.1 ± 12.4, p < 0.001, Wilcoxon signed-rank test)."
 
-This chapter is often underdeveloped in MSc dissertations. Key things to cover:
+### 11.6 Writing Chapter 6 (Discussion) — 5–8 Pages
 
-**What worked and why.** Explain the mechanism behind your hybrid's success, not just that it succeeded. The DRL agent learns to apply high-disruption operators (inversion) when the population has converged and diversity is low, and to switch to conservative operators (swap) when the population is diverse and the GA is making progress. Show this from your action-frequency analysis.
+This chapter separates a good dissertation from a great one. Key sections:
 
-**What didn't work as expected.** If the hybrid doesn't significantly beat the plain GA on small instances, explain why: small instances have such a small search space that even a plain GA converges to near-optimal quickly, leaving little for the hyper-heuristic to improve. This is not a failure — it is an informative result.
+**6.1 Interpretation of Results** — Why did the hybrid win/lose? Explain the mechanism: the PPO agent learned to select inversion mutations early when diversity is high (exploring the search space) and switch to swap mutations late when the population converges (fine-tuning). **Show this with your action-frequency analysis.**
 
-**Threats to validity.** Acknowledge that your instances are synthetic, not from a real dyeing facility. Acknowledge that your PPO agent was trained and evaluated on instances from the same distribution. Acknowledge that 30 runs, while standard in the GA literature, is a relatively small sample.
+**6.2 Non-Significant Results** — If the hybrid doesn't beat plain GA on n=10, don't hide it. Explain: small instances have such limited search spaces that even plain GA converges near-optimally in <10 generations, leaving little for the hyper-heuristic to improve. This is an informative finding, not a failure.
 
-**Future work.** At minimum: training the agent on multiple instance sizes simultaneously (curriculum learning), testing on real industrial data, comparing against more sophisticated baselines (branch-and-bound for small instances), extending to other objective functions.
+**6.3 Threats to Validity** — Acknowledge:
+- Instances are synthetic, not from real textile dyeing
+- PPO training and evaluation use the same instance distribution
+- 30 runs is standard for GA literature but a relatively small sample
+- The agent was not tested on truly unseen instance distributions
 
-### 11.6 The Abstract
+**6.4 Limitations** — Discuss scope:
+- Only tested with parallel machine scheduling; generalisability to other combinatorial optimisation problems unknown
+- Computational cost of training PPO not included in experimental times
+- Single-size training (n=20, m=2) may not transfer well to very large instances
 
-Write this last. It should be roughly 250 words and cover: what problem you address, why it is hard, what your approach is, what your key results are, and what the implications are. No citations in the abstract.
+**6.5 Future Work** — Suggest:
+- Curriculum learning: train agent on small instances, gradually scale up
+- Real data: dyehouse scheduling problem from actual textile mills
+- Stronger baselines: branch-and-bound for small instances, simulated annealing
+- Extended objectives: add energy consumption, worker scheduling constraints
 
-### 11.7 General Writing Rules
+### 11.7 The Abstract
 
-- Never write "the results show X is better." Write "the hybrid achieves X% lower fitness than [baseline] (p < 0.05)."
-- Every figure needs a self-contained caption — someone should understand what the figure shows without reading the surrounding text.
-- Every claim needs either a citation or your own experimental evidence. No unsupported assertions.
-- Refer to your system consistently. Pick a name ("the hybrid GA-DRL system" or "the proposed hyper-heuristic") and use it throughout.
-- Proofread on paper, not on screen. You catch different errors.
+Write this last (≈250 words). Must cover, in order:
+1. Problem: parallel machine scheduling with sequence-dependent setup costs
+2. Why hard: NP-hard, large combinatorial search space
+3. Approach: hybrid GA-DRL system where PPO hyper-heuristic controls GA mutation operator selection
+4. Results: specific numbers (X% improvement, p-value, instance sizes where significant)
+5. Implication: hyper-heuristics can effectively meta-control metaheuristics for complex scheduling
+
+Example opening: "Machine scheduling with sequence-dependent setup costs is an NP-hard combinatorial optimisation problem with applications in textile manufacturing and other domains. We propose a hybrid approach where a Proximal Policy Optimisation agent learns to dynamically select genetic algorithm mutation operators as a hyper-heuristic meta-controller..."
+
+### 11.8 Writing Rules
+
+- **Numbers:** Never "the hybrid performed better." Always include the metric, baseline, and p-value.
+- **Figures:** Every figure needs a self-contained caption. Someone should understand it without reading surrounding text.
+- **Citations:** Every claim needs either a citation or your experimental evidence. No unsupported assertions.
+- **Consistency:** Pick one name for your system ("the hybrid GA-DRL system" or "the proposed hyper-heuristic") and use it throughout. Don't switch between "the agent," "the PPO," and "the hybrid."
+- **Proofreading:** Print the draft and proofread on paper. You catch different errors than on screen.
 
 ---
 
@@ -518,7 +970,71 @@ Write this last. It should be roughly 250 words and cover: what problem you addr
 ### Submission Files
 
 - `GOGULA26-Dissertation.pdf` — main submission via Minerva
-- `GOGULA26-Code.zip` — all `src/`, `notebooks/`, `experiments/`, `requirements.txt`, and a `README.md` explaining how to reproduce the experiments. Do not include `results/raw/` (too large) or model `.zip` files except the final trained PPO model.
+- `GOGULA26-Code.zip` — all `src/`, `notebooks/`, `experiments/`, `requirements.txt`, and a `README.md`. Do not include `results/raw/` (too large) or trainer model files; include only the final trained PPO model.
+
+### README.md Structure
+
+Your README must have these exact sections so examiners can reproduce experiments:
+
+```markdown
+# Hybrid GA-DRL for Machine Scheduling
+
+## Setup
+
+1. Create conda environment: `conda env create -f environment.yml`
+2. Activate: `conda activate scheduling`
+3. Install: `pip install -r requirements.txt`
+
+## Reproducing Results
+
+### Baselines (SPT, NN Greedy)
+```bash
+python experiments/run_baselines.py
+```
+Outputs: 360 JSON files to `results/raw/` (n×6 configs × 2 algorithms × 30 seeds).
+
+### Genetic Algorithm
+```bash
+python experiments/run_ga.py
+```
+Outputs: 180 JSON files (6 configs × 30 seeds).
+
+### Hybrid GA-DRL (requires PPO model pre-training)
+First train the PPO agent:
+```bash
+python -c "from src.drl_agent import train_ppo; from src.instance_generator import generate_instance; train_ppo(generate_instance(20, 2, seed=0), num_timesteps=50000)"
+```
+Then run experiments:
+```bash
+python experiments/run_hybrid.py
+```
+Outputs: 180 JSON files.
+
+## Visualisations & Analysis
+
+See `notebooks/05_final_evaluation.ipynb` for:
+- Gantt chart comparisons
+- Convergence curves
+- Box plots
+- Wilcoxon test results
+- Sensitivity analysis (α = 0.3, 0.5, 0.7)
+
+## Key Files
+
+- `src/instance_generator.py` — synthetic instance generation
+- `src/evaluator.py` — solution evaluation (composite fitness)
+- `src/heuristics.py` — SPT and NN greedy baselines
+- `src/ga.py` — genetic algorithm
+- `src/ga_env.py` — Gymnasium environment (GA state observation, mutation action, reward)
+- `src/drl_agent.py` — PPO training and inference
+- `experiments/run_*.py` — terminal-based experiment runners (not notebooks)
+
+## Results
+
+Final results will be in `results/raw/` as JSON. Load and analyse with `notebooks/05_final_evaluation.ipynb`.
+```
+
+**Key:** This README is not for showing off — it is for reproducibility. Examiners will try to run your code. Make sure these three commands work.
 
 ---
 
