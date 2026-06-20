@@ -179,9 +179,9 @@ class GAHyperHeuristicEnv(gym.Env):
             self.stagnation_count += 1
 
         self.current_step += 1
-        terminated = self.current_step >= self.max_steps
+        truncated = self.current_step >= self.max_steps
 
-        return self._obs(), float(reward), terminated, False, {}
+        return self._obs(), float(reward), False, truncated, {}
 
     def get_best_result(self) -> dict:
         """Call after episode ends. Returns same format as evaluator.evaluate()."""

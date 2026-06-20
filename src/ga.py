@@ -156,5 +156,4 @@ def run_ga(
         "makespan": best_result["makespan"],
         "best_sigma": best_sigma,
         "logbook": logbook,
-        "hof": hof,
     }

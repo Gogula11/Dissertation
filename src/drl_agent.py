@@ -3,6 +3,7 @@ PPO training and inference for the GA hyper-heuristic.
 """
 
 import os
+import random
 import numpy as np
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv
@@ -79,7 +80,6 @@ def run_hybrid(
     Run the GA with the trained PPO hyper-heuristic.
     Returns same result dict format as run_ga().
     """
-    import random
     if seed is not None:
         random.seed(seed)
         np.random.seed(seed)
