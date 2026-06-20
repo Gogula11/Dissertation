@@ -14,7 +14,7 @@ from src.ga import run_ga
 ALPHA = 0.5
 N_SEEDS = 30
 # Lock these down after tuning in notebook 03
-GA_PARAMS = {"n_gen": 50, "pop_size": 100, "cx_prob": 0.9, "mut_prob": 0.2}
+GA_PARAMS = {"n_gen": 200, "pop_size": 100, "cx_prob": 0.9, "mut_prob": 0.2}
 
 
 def run_one(args):

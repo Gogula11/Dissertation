@@ -31,6 +31,7 @@ def train_ppo(
     total_timesteps: int = 100_000,
     save_path: str = "models/ppo_hyperheuristic",
     verbose: int = 1,
+    pop_size: int = 100,
 ) -> PPO:
     """
     Train a PPO agent on a pool of GA environments.
@@ -40,7 +41,7 @@ def train_ppo(
     save_dir = os.path.dirname(save_path) if os.path.dirname(save_path) else "."
     os.makedirs(save_dir, exist_ok=True)
 
-    vec_env = DummyVecEnv([make_env_fn(instance_pool)])
+    vec_env = DummyVecEnv([make_env_fn(instance_pool, pop_size=pop_size)])
 
     log_dir = "logs/ppo_tensorboard"
     os.makedirs(log_dir, exist_ok=True)

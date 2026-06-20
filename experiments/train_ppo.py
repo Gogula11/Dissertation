@@ -6,19 +6,22 @@ Run from project root: python experiments/train_ppo.py
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from src.instance_generator import generate_instance
+from src.instance_generator import generate_instance, INSTANCE_CONFIGS
 from src.drl_agent import train_ppo
 
 TOTAL_TIMESTEPS = 100_000
 SAVE_PATH = "models/ppo_hyperheuristic"
+TRAIN_SEEDS = list(range(10))
 
 
 def run():
-    train_seeds = list(range(5))
     instance_pool = [
-        generate_instance(n=10, m=2, seed=s) for s in train_seeds
+        generate_instance(n=cfg["n"], m=cfg["m"], seed=s)
+        for cfg in INSTANCE_CONFIGS
+        for s in TRAIN_SEEDS
     ]
-    print(f"Training on {len(instance_pool)} instances (seeds {train_seeds})")
+    print(f"Training on {len(instance_pool)} instances "
+          f"({len(INSTANCE_CONFIGS)} configs x {len(TRAIN_SEEDS)} seeds)")
     print(f"Timesteps: {TOTAL_TIMESTEPS}")
     print(f"Output: {SAVE_PATH}.zip")
 
@@ -27,6 +30,7 @@ def run():
         total_timesteps=TOTAL_TIMESTEPS,
         save_path=SAVE_PATH,
         verbose=1,
+        pop_size=50,
     )
 
 

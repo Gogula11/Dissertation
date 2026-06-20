@@ -46,6 +46,11 @@ def mutInsertion(individual: list, indpb: float = 0.05) -> tuple:
     return (individual,)
 
 
+def mutAggressiveSwap(individual: list, indpb: float = 0.20) -> tuple:
+    """Aggressive swap mutation: higher disruption via mutShuffleIndexes."""
+    return tools.mutShuffleIndexes(individual, indpb=indpb)
+
+
 def make_fitness_fn(instance: dict, alpha: float) -> Callable:
     """Returns a DEAP-compatible fitness function (must return a tuple)."""
     def fitness(individual):
@@ -77,10 +82,11 @@ def build_toolbox(instance: dict, alpha: float = 0.5) -> base.Toolbox:
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
     toolbox.register("evaluate", make_fitness_fn(instance, alpha))
     toolbox.register("mate", tools.cxOrdered)
-    toolbox.register("mutate_swap",      tools.mutShuffleIndexes, indpb=0.05)
-    toolbox.register("mutate_inversion", tools.mutInversion)
-    toolbox.register("mutate_insertion", mutInsertion, indpb=0.15)
-    toolbox.register("mutate",           tools.mutShuffleIndexes, indpb=0.05)
+    toolbox.register("mutate_swap",           tools.mutShuffleIndexes, indpb=0.05)
+    toolbox.register("mutate_inversion",      tools.mutInversion)
+    toolbox.register("mutate_insertion",      mutInsertion, indpb=0.15)
+    toolbox.register("mutate_aggressive_swap", mutAggressiveSwap, indpb=0.20)
+    toolbox.register("mutate",                tools.mutShuffleIndexes, indpb=0.05)
     toolbox.register("select", tools.selTournament, tournsize=3)
 
     return toolbox
@@ -117,6 +123,8 @@ def run_ga(
         toolbox.register("mutate", tools.mutInversion)
     elif mutation_strategy == "insertion":
         toolbox.register("mutate", mutInsertion, indpb=0.15)
+    elif mutation_strategy == "aggressive_swap":
+        toolbox.register("mutate", mutAggressiveSwap, indpb=0.20)
     else:
         toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.05)
 

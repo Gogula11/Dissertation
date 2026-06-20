@@ -24,7 +24,7 @@ import gymnasium as gym
 from gymnasium import spaces
 import random
 
-from src.ga import build_toolbox, decode_chromosome, mutInsertion
+from src.ga import build_toolbox, decode_chromosome
 from src.evaluator import evaluate
 from deap import tools
 
@@ -53,9 +53,9 @@ class GAHyperHeuristicEnv(gym.Env):
 
     observation_space: Box(4,) — [best_norm, mean_norm, diversity, stagnation_norm]
     action_space:      Discrete(3)
-      0 = swap mutation (conservative)
+      0 = swap mutation (conservative, indpb=0.05)
       1 = inversion mutation (moderate)
-      2 = insertion mutation (high disruption)
+      2 = aggressive swap mutation (high disruption, indpb=0.20)
     """
 
     metadata = {"render_modes": []}
@@ -111,7 +111,7 @@ class GAHyperHeuristicEnv(gym.Env):
         elif action == 1:
             self.toolbox.register("mutate", tools.mutInversion)
         else:
-            self.toolbox.register("mutate", mutInsertion, indpb=0.15)
+            self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.20)
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)

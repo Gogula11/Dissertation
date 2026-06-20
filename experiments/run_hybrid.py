@@ -15,7 +15,7 @@ from src.drl_agent import run_hybrid
 ALPHA = 0.5
 N_SEEDS = 30
 MODEL_PATH = "models/ppo_hyperheuristic"
-TOTAL_GENS = 50
+TOTAL_GENS = 200
 
 _worker_model = None
 
