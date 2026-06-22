@@ -20,6 +20,40 @@ The motivating domain for this project is textile dyeing, where batches of fabri
 
 Standard scheduling heuristics, such as Shortest Processing Time, treat all inter-job transitions as having zero or uniform cost. This assumption is violated in the presence of sequence-dependent setup costs, making these heuristics unsuitable for domains such as textile dyeing. Explicit modelling of the asymmetric cost structure is necessary for effective scheduling in such environments.
 
+#### Problem Formalisation
+
+The PMSP-SDSC problem addressed in this project is formally defined as follows. Let J = {0, 1, ..., n-1} be a set of n jobs and M = {0, 1, ..., m-1} be a set of m identical parallel machines. Each job j has a processing time p_j, a due date d_j, a weight w_j (priority), and a release time r_j. Transitioning from job i to job j on the same machine incurs a sequence-dependent setup time s_ij and setup cost c_ij, where c_ij is generally not equal to c_ji.
+
+| Symbol | Definition |
+|--------|-----------|
+| n | Number of jobs |
+| m | Number of identical parallel machines |
+| p_j | Processing time of job j |
+| d_j | Due date of job j |
+| w_j | Priority weight of job j |
+| r_j | Release time of job j (earliest start) |
+| c_ij | Setup cost of transitioning from job i to job j |
+| s_ij | Setup time of transitioning from job i to job j |
+| C_j | Completion time of job j |
+| T_j | Tardiness of job j: max(0, C_j - d_j) |
+| sigma | Solution: list of m machine sequences |
+
+A solution sigma is a partition of the n jobs into m sequences, one per machine, where sigma[k] is the ordered list of jobs assigned to machine k. The completion time C_j for each job is computed by traversing its machine's sequence, accumulating processing times, setup times (between consecutive jobs), and respecting release times.
+
+The weighted tardiness objective is:
+
+f1 = sum over j of w_j * T_j = sum over j of w_j * max(0, C_j - d_j)
+
+The total setup cost objective is:
+
+f2 = sum over k of sum over consecutive pairs (i, j) on machine k of c_ij
+
+These two objectives are normalised to a common scale and combined into a single composite objective:
+
+F = alpha * (f1 / f1_scale) + (1 - alpha) * (f2 / f2_scale)
+
+where f1_scale and f2_scale are upper-bound estimates of each objective component for the given instance, and alpha in [0, 1] controls the trade-off between tardiness and setup cost minimisation.
+
 ### 2.1.3 Classical Heuristics for Scheduling
 
 Classical heuristics for scheduling problems are valued for their simplicity, speed, and deterministic behaviour. They serve as baselines against which more sophisticated methods can be compared.
@@ -30,6 +64,8 @@ The NEH heuristic (Nawaz, Enscore, & Ham, 1983) is an insertion-based constructi
 
 The Nearest-Neighbour Greedy heuristic is a sequential assignment method that builds machine schedules one job at a time. At each step, it selects the machine with the lowest current load and assigns the unscheduled job that minimises the transition cost from that machine's last job. The greedy approach makes locally optimal decisions that may compound into poor global solutions.
 
+Additional heuristics relevant to the PMSP domain include the Earliest Due Date (EDD) rule, which prioritises jobs with the earliest due dates and is optimal for minimising maximum lateness on a single machine, and the Weighted Shortest Processing Time (WSPT) rule, which orders jobs by the ratio of weight to processing time. These heuristics are not included as baselines in this project because they target different objective functions and their performance on the composite PMSP-SDSC objective is expected to be inferior to SPT and NN-Greedy.
+
 These heuristics are included in this project as baselines because they are fast, deterministic, and standard in the scheduling literature. They are not expected to produce optimal solutions for PMSP-SDSC, but they provide a reference point for evaluating the more complex GA and hybrid approaches.
 
 ### 2.1.4 Genetic Algorithms for Scheduling
@@ -37,6 +73,8 @@ These heuristics are included in this project as baselines because they are fast
 Genetic Algorithms are a class of evolutionary optimisation methods inspired by natural selection (Holland, 1975). In the scheduling domain, GAs operate on a population of candidate solutions, iteratively applying selection, crossover, and mutation to produce improved generations.
 
 A common encoding for scheduling problems is the permutation representation, where a chromosome is a permutation of job indices representing the order in which jobs are processed. For the multi-machine case, the giant-tour representation encodes a single permutation of all n jobs, which is then split into m segments corresponding to the machines. This representation has the advantage of naturally handling the job assignment and sequencing decisions simultaneously.
+
+The theoretical foundation of GAs rests on the schema theorem (Holland, 1975) and the building block hypothesis (Goldberg, 1989). A schema is a pattern of gene values with fixed and wildcard positions; short, low-order schemata with above-average fitness are called building blocks. The schema theorem shows that building blocks receive exponentially increasing trials in successive generations under selection, crossover, and mutation. In the permutation encoding context, the relevant schemata are relative orderings of subsets of jobs, and Order Crossover is designed to preserve these order-based building blocks. This theoretical grounding explains why GA frameworks with permutation encoding and crossover operators that preserve relative ordering are effective for scheduling problems, where the ordering of jobs within a machine's sequence is critical to solution quality.
 
 Order Crossover (OX) is a crossover operator designed for permutation representations. It preserves the relative ordering of jobs from one parent while incorporating job positions from the other, maintaining the feasibility of the offspring permutation. This property is important for PMSP-SDSC because the relative ordering of jobs encodes colour transition information that affects setup costs.
 
@@ -52,9 +90,15 @@ Deep Reinforcement Learning combines the sequential decision-making framework of
 
 Proximal Policy Optimisation (Schulman et al., 2017) is a policy gradient method that has become a standard choice for DRL due to its stability and ease of use. PPO employs a clipped surrogate objective that constrains the policy update at each step, preventing destructive large updates that can occur in vanilla policy gradient methods. This trust-region property makes PPO robust to hyperparameter choices and suitable for a wide range of environments.
 
-Prior work has applied DRL to scheduling problems. Zhang et al. (2020) used DRL for dynamic job shop scheduling, where the agent selects dispatching rules based on the current shop floor state. Kool, van Hoof, and Welling (2019) applied attention-based pointer networks to the travelling salesman and vehicle routing problems. These approaches demonstrate that DRL can learn effective heuristics for combinatorial problems, but they typically address the optimisation problem directly, requiring the agent to learn the entire search process from scratch.
+Prior work has applied DRL to scheduling problems. Zhang et al. (2020) used DRL for dynamic job shop scheduling, where the agent selects dispatching rules based on the current shop floor state. Kool, van Hoof, and Welling (2019) applied attention-based pointer networks to the travelling salesman and vehicle routing problems, demonstrating that neural network architectures designed for sequence-to-sequence problems can learn effective heuristics for combinatorial optimisation. These approaches show that DRL can capture complex patterns in scheduling data that are difficult to encode in hand-crafted rules. However, they address the optimisation problem directly, requiring the agent to learn the entire search process from scratch, which demands large action spaces and extensive training.
 
-Compared to Deep Q-Networks (Mnih et al., 2015), PPO offers several advantages for the scheduling domain: it naturally handles continuous state spaces through a Gaussian policy, it provides stable learning through clipped objective functions, and it has been extensively validated across a diverse set of environments in the Gymnasium benchmark suite.
+Compared to Deep Q-Networks (Mnih et al., 2015), PPO offers several advantages for the scheduling domain. DQN uses a value-based approach, learning the Q-function and deriving a policy from it. While effective for discrete action spaces, DQN can be unstable when the Q-function is approximated by a neural network, requiring techniques such as experience replay and target networks. PPO belongs to the policy gradient family, which optimises the policy directly through gradient ascent on expected return. The key innovation in PPO is the clipped surrogate objective:
+
+L_CLIP(theta) = E_t[min(r_t(theta) * A_t, clip(r_t(theta), 1-epsilon, 1+epsilon) * A_t)]
+
+where r_t(theta) is the probability ratio between the new and old policies, A_t is the advantage estimate, and epsilon is a clipping hyperparameter (typically 0.2). This clipping mechanism constrains the policy update to a trust region, preventing destructive large updates that can occur in vanilla policy gradient methods. The result is stable, monotonic improvement that is robust to hyperparameter choices.
+
+The advantages of PPO for the hyper-heuristic scheduling context are threefold. First, the clipped objective ensures stable training across episodes with varying difficulty (different instances from the training pool). Second, the policy gradient formulation naturally handles stochastic policies, allowing exploration during training. Third, PPO has been extensively validated across a diverse set of environments in the Gymnasium benchmark suite and is well-supported in production RL frameworks.
 
 ### 2.1.6 Hyper-heuristics
 
