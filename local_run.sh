@@ -2,6 +2,7 @@
 set -euo pipefail
 
 PROFILE="${1:-all}"
+SMOKE="${2:-}"
 
 source /home/dopedino/miniforge3/bin/activate dissertation
 cd /home/dopedino/Documents/Dissertation
@@ -12,27 +13,27 @@ run_profile() {
     mkdir -p results/raw models logs figures
 
     SECONDS=0
-    python experiments/run_baselines.py --profile "$p"
+    python experiments/run_baselines.py --profile "$p" $SMOKE
     echo "  baselines: ${SECONDS}s ($(($SECONDS/60))m $(($SECONDS%60))s)"
     PROFILE_TOTAL=$SECONDS
 
     SECONDS=0
-    python experiments/train_ppo.py --profile "$p"
+    python experiments/train_ppo.py --profile "$p" $SMOKE
     echo "  train_ppo: ${SECONDS}s ($(($SECONDS/60))m $(($SECONDS%60))s)"
     PROFILE_TOTAL=$((PROFILE_TOTAL + SECONDS))
 
     SECONDS=0
-    python experiments/run_ga.py --profile "$p"
+    python experiments/run_ga.py --profile "$p" $SMOKE
     echo "  run_ga: ${SECONDS}s ($(($SECONDS/60))m $(($SECONDS%60))s)"
     PROFILE_TOTAL=$((PROFILE_TOTAL + SECONDS))
 
     SECONDS=0
-    python experiments/run_hybrid.py --profile "$p"
+    python experiments/run_hybrid.py --profile "$p" $SMOKE
     echo "  run_hybrid: ${SECONDS}s ($(($SECONDS/60))m $(($SECONDS%60))s)"
     PROFILE_TOTAL=$((PROFILE_TOTAL + SECONDS))
 
     SECONDS=0
-    python experiments/run_sensitivity.py --profile "$p"
+    python experiments/run_sensitivity.py --profile "$p" $SMOKE
     echo "  run_sensitivity: ${SECONDS}s ($(($SECONDS/60))m $(($SECONDS%60))s)"
     PROFILE_TOTAL=$((PROFILE_TOTAL + SECONDS))
 

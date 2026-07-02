@@ -364,5 +364,4 @@ INSTANCE_CONFIGS = [
     {"n": 50,  "m": 5,  "label": "large_5m"},
     {"n": 100, "m": 5,  "label": "xlarge_5m"},
     {"n": 100, "m": 10, "label": "xlarge_10m"},
-    {"n": 200, "m": 10, "label": "xxlarge_10m"},
 ]

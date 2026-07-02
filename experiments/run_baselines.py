@@ -43,5 +43,9 @@ def run(profile="baseline"):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
+    parser.add_argument("--smoke", action="store_true", help="Quick smoke test (3 seeds)")
     args = parser.parse_args()
+    if args.smoke:
+        N_SEEDS = 3
+        print("[SMOKE] Overriding baselines params")
     run(profile=args.profile)

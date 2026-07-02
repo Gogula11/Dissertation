@@ -30,6 +30,9 @@ def run_one(args):
 
 
 def run(profile="baseline"):
+    if _SMOKE:
+        _run_sequential(profile)
+        return
     tasks = [(cfg, seed, profile) for cfg in INSTANCE_CONFIGS for seed in range(N_SEEDS)]
     results = {cfg["label"]: [] for cfg in INSTANCE_CONFIGS}
 
@@ -45,8 +48,29 @@ def run(profile="baseline"):
     print(f"Saved: {path}")
 
 
+def _run_sequential(profile):
+    os.makedirs("results/raw", exist_ok=True)
+    results = {}
+    for cfg in _CFG_LIST:
+        for seed in range(N_SEEDS):
+            label, data = run_one((cfg, seed, profile))
+            results.setdefault(label, []).append(data)
+            print(f"  Done [{profile}]: {label} seed={data['seed']}")
+    path = f"results/raw/ga_{profile}.json"
+    with open(path, "w") as f:
+        json.dump(results, f, indent=2)
+    print(f"Saved: {path}")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
+    parser.add_argument("--smoke", action="store_true", help="Quick smoke test (tiny config, 3 seeds, n_gen=10)")
     args = parser.parse_args()
+    _SMOKE = args.smoke
+    _CFG_LIST = [c for c in INSTANCE_CONFIGS if c["label"] == "tiny_2m"] if _SMOKE else INSTANCE_CONFIGS
+    if _SMOKE:
+        N_SEEDS = 3
+        GA_PARAMS = {**GA_PARAMS, "n_gen": 10}
+        print("[SMOKE] Overriding GA params")
     run(profile=args.profile)

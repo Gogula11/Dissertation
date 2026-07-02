@@ -38,5 +38,11 @@ def run(profile="baseline"):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
+    parser.add_argument("--smoke", action="store_true", help="Quick smoke test (tiny config, 2 seeds, 1k steps)")
     args = parser.parse_args()
+    if args.smoke:
+        TOTAL_TIMESTEPS = 1_000
+        TRAIN_CONFIGS = [c for c in INSTANCE_CONFIGS if c["label"] == "tiny_2m"]
+        TRAIN_SEEDS = list(range(2))
+        print("[SMOKE] Overriding training params")
     run(profile=args.profile)
