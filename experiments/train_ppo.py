@@ -9,9 +9,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from src.instance_generator import generate_instance, INSTANCE_CONFIGS
 from src.drl_agent import train_ppo
 
-TOTAL_TIMESTEPS = 50_000
-TRAIN_CONFIGS = [c for c in INSTANCE_CONFIGS if "medium" in c["label"]]
-TRAIN_SEEDS = list(range(5))
+TOTAL_TIMESTEPS = 100_000
+TRAIN_CONFIGS = INSTANCE_CONFIGS
+TRAIN_SEEDS = list(range(10))
 
 
 def run(profile="baseline"):

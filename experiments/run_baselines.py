@@ -12,7 +12,7 @@ from src.heuristics import spt, nearest_neighbour_greedy
 from src.evaluator import evaluate
 
 ALPHA = 0.5
-N_SEEDS = 30
+N_SEEDS = 50
 
 
 def run(profile="baseline"):

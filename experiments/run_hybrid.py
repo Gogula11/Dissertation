@@ -13,8 +13,8 @@ from src.instance_generator import generate_instance, INSTANCE_CONFIGS
 from src.drl_agent import run_hybrid
 
 ALPHA = 0.5
-N_SEEDS = 30
-TOTAL_GENS = 200
+N_SEEDS = 50
+TOTAL_GENS = 300
 
 _worker_model = None
 

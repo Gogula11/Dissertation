@@ -14,10 +14,9 @@ from src.ga import run_ga
 from src.drl_agent import run_hybrid
 
 ALPHAS = [0.3, 0.5, 0.7]
-N_SEEDS = 10
-CONFIGS = [{"n": 20, "m": 2, "label": "medium_2m"},
-           {"n": 20, "m": 3, "label": "medium_3m"}]
-TOTAL_GENS = 50
+N_SEEDS = 30
+CONFIGS = INSTANCE_CONFIGS
+TOTAL_GENS = 100
 
 
 def run_one(args):

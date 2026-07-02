@@ -12,8 +12,8 @@ from src.instance_generator import generate_instance, INSTANCE_CONFIGS
 from src.ga import run_ga
 
 ALPHA = 0.5
-N_SEEDS = 30
-GA_PARAMS = {"n_gen": 200, "pop_size": 100, "cx_prob": 0.9, "mut_prob": 0.2}
+N_SEEDS = 50
+GA_PARAMS = {"n_gen": 300, "pop_size": 100, "cx_prob": 0.9, "mut_prob": 0.2}
 
 
 def run_one(args):

@@ -106,8 +106,8 @@ class GAHyperHeuristicEnv(gym.Env):
         best_norm = np.clip(best / denom, 0.0, 1.0)
         mean_norm = np.clip(mean / denom, 0.0, 1.0)
 
-        n_norm = inst["n"] / 50.0
-        m_norm = inst["m"] / 5.0
+        n_norm = inst["n"] / 200.0
+        m_norm = inst["m"] / 10.0
         n_jobs = inst["n"]
         diag_mask = np.eye(n_jobs, dtype=bool)
         off_diag = inst["setup_cost"][~diag_mask]
