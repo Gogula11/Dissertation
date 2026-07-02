@@ -9,19 +9,20 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from src.instance_generator import generate_instance, INSTANCE_CONFIGS
 from src.drl_agent import train_ppo
 
-TOTAL_TIMESTEPS = 100_000
-TRAIN_SEEDS = list(range(10))
+TOTAL_TIMESTEPS = 50_000
+TRAIN_CONFIGS = [c for c in INSTANCE_CONFIGS if "medium" in c["label"]]
+TRAIN_SEEDS = list(range(5))
 
 
 def run(profile="baseline"):
     save_path = f"models/ppo_hyperheuristic_{profile}"
     instance_pool = [
         generate_instance(n=cfg["n"], m=cfg["m"], seed=s, profile=profile)
-        for cfg in INSTANCE_CONFIGS
+        for cfg in TRAIN_CONFIGS
         for s in TRAIN_SEEDS
     ]
     print(f"Training [{profile}] on {len(instance_pool)} instances "
-          f"({len(INSTANCE_CONFIGS)} configs x {len(TRAIN_SEEDS)} seeds)")
+          f"({len(TRAIN_CONFIGS)} configs x {len(TRAIN_SEEDS)} seeds)")
     print(f"Timesteps: {TOTAL_TIMESTEPS}")
     print(f"Output: {save_path}.zip")
 
