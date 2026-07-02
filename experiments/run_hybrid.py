@@ -43,7 +43,7 @@ def run(profile="baseline"):
     results = {cfg["label"]: [] for cfg in INSTANCE_CONFIGS}
 
     init = lambda: setattr(__import__(__name__), '_worker_model', PPO.load(model_path))
-    with get_context("spawn").Pool(initializer=init) as pool:
+    with get_context("fork").Pool(initializer=init) as pool:
         for label, data in pool.imap_unordered(run_one, tasks):
             results[label].append(data)
             print(f"  Done [{profile}]: {label} seed={data['seed']} composite={data['composite']:.2f}")

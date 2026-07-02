@@ -33,7 +33,7 @@ def run(profile="baseline"):
     tasks = [(cfg, seed, profile) for cfg in INSTANCE_CONFIGS for seed in range(N_SEEDS)]
     results = {cfg["label"]: [] for cfg in INSTANCE_CONFIGS}
 
-    with get_context("spawn").Pool() as pool:
+    with get_context("fork").Pool() as pool:
         for label, data in pool.imap_unordered(run_one, tasks):
             results[label].append(data)
             print(f"  Done [{profile}]: {label} seed={data['seed']}")

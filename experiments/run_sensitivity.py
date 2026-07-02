@@ -49,7 +49,7 @@ def run(profile="baseline"):
     tasks = [(cfg, seed, alpha, profile) for cfg in CONFIGS for seed in range(N_SEEDS) for alpha in ALPHAS]
     results = {}
 
-    with get_context("spawn").Pool(initializer=lambda: setattr(__import__(__name__), '_worker_model', PPO.load(model_path))) as pool:
+    with get_context("fork").Pool() as pool:
         for entry in pool.imap_unordered(run_one, tasks):
             label = entry.pop("cfg_label")
             results.setdefault(label, []).append(entry)
