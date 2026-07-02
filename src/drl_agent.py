@@ -29,10 +29,12 @@ def make_env_fn(instance_pool, total_gens=200, step_gens=10, pop_size=100, alpha
 
 def train_ppo(
     instance_pool: list,
-    total_timesteps: int = 100_000,
+    total_timesteps: int = 20_000,
     save_path: str = "models/ppo_hyperheuristic",
     verbose: int = 1,
-    pop_size: int = 100,
+    pop_size: int = 25,
+    total_gens: int = 100,
+    step_gens: int = 10,
 ) -> PPO:
     """
     Train a PPO agent on a pool of GA environments.
@@ -42,7 +44,7 @@ def train_ppo(
     save_dir = os.path.dirname(save_path) if os.path.dirname(save_path) else "."
     os.makedirs(save_dir, exist_ok=True)
 
-    vec_env = DummyVecEnv([make_env_fn(instance_pool, pop_size=pop_size)])
+    vec_env = DummyVecEnv([make_env_fn(instance_pool, pop_size=pop_size, total_gens=total_gens, step_gens=step_gens)])
 
     log_dir = "logs/ppo_tensorboard"
     os.makedirs(log_dir, exist_ok=True)
@@ -52,8 +54,8 @@ def train_ppo(
         vec_env,
         verbose=verbose,
         learning_rate=3e-4,
-        n_steps=512,
-        batch_size=64,
+        n_steps=4096,
+        batch_size=256,
         n_epochs=10,
         gamma=0.99,
         ent_coef=0.01,
