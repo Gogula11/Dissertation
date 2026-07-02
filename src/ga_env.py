@@ -24,7 +24,7 @@ import gymnasium as gym
 from gymnasium import spaces
 import random
 
-from src.ga import build_toolbox, decode_chromosome
+from src.ga import build_toolbox, decode_chromosome, mutInsertion
 from src.evaluator import evaluate
 from deap import tools
 
@@ -51,11 +51,12 @@ class GAHyperHeuristicEnv(gym.Env):
     """
     Gymnasium env where PPO controls the GA's mutation operator selection.
 
-    observation_space: Box(4,) — [best_norm, mean_norm, diversity, stagnation_norm]
+    observation_space: Box(8,) — [best_norm, mean_norm, diversity, stagnation_norm,
+                                  n_norm, m_norm, cost_mean_norm, darkness_mean_norm]
     action_space:      Discrete(3)
       0 = swap mutation (conservative, indpb=0.05)
-      1 = inversion mutation (moderate)
-      2 = aggressive swap mutation (high disruption, indpb=0.20)
+      1 = inversion mutation (segment reversal)
+      2 = insertion mutation (remove-and-reinsert, indpb=0.15)
     """
 
     metadata = {"render_modes": []}
@@ -82,7 +83,7 @@ class GAHyperHeuristicEnv(gym.Env):
         self.alpha = alpha
         self.max_steps = total_gens // step_gens
 
-        self.observation_space = spaces.Box(low=0.0, high=1.0, shape=(4,), dtype=np.float32)
+        self.observation_space = spaces.Box(low=0.0, high=1.0, shape=(8,), dtype=np.float32)
         self.action_space = spaces.Discrete(3)
 
         # Initialised in reset()
@@ -95,6 +96,7 @@ class GAHyperHeuristicEnv(gym.Env):
         self.last_best = None
 
     def _obs(self) -> np.ndarray:
+        inst = self.instance
         fitnesses = [ind.fitness.values[0] for ind in self.pop]
         best = float(min(fitnesses))
         mean = float(np.mean(fitnesses))
@@ -103,7 +105,19 @@ class GAHyperHeuristicEnv(gym.Env):
         stag = min(self.stagnation_count / max(self.max_steps, 1), 1.0)
         best_norm = np.clip(best / denom, 0.0, 1.0)
         mean_norm = np.clip(mean / denom, 0.0, 1.0)
-        return np.array([best_norm, mean_norm, div, stag], dtype=np.float32)
+
+        n_norm = inst["n"] / 50.0
+        m_norm = inst["m"] / 5.0
+        n_jobs = inst["n"]
+        diag_mask = np.eye(n_jobs, dtype=bool)
+        off_diag = inst["setup_cost"][~diag_mask]
+        cost_mean_norm = off_diag.mean() / max(off_diag.max(), 1e-6)
+        darkness_mean_norm = inst["colour_darkness"].mean() / 10.0
+
+        return np.array([
+            best_norm, mean_norm, div, stag,
+            n_norm, m_norm, cost_mean_norm, darkness_mean_norm,
+        ], dtype=np.float32)
 
     def _apply_action(self, action: int):
         if action == 0:
@@ -111,7 +125,7 @@ class GAHyperHeuristicEnv(gym.Env):
         elif action == 1:
             self.toolbox.register("mutate", tools.mutInversion)
         else:
-            self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.20)
+            self.toolbox.register("mutate", mutInsertion, indpb=0.15)
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)

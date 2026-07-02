@@ -44,7 +44,6 @@ Three profiles defined in `src/instance_generator.py`:
 | Profile | Colours | Segments | Chemistry | Colour–proc corr | Asymmetry |
 |---------|---------|----------|-----------|-----------------|-----------|
 | `baseline` | 7 (categorical) | off | none | off | off |
-| `enhanced` | 7 (continuous) | on | mild | mild | mild |
 | `realistic` | 12 (continuous) | on | full | full | full |
 
 Run each profile in sequence:
@@ -56,13 +55,6 @@ python experiments/train_ppo.py --profile baseline
 python experiments/run_ga.py --profile baseline
 python experiments/run_hybrid.py --profile baseline
 python experiments/run_sensitivity.py --profile baseline
-
-# === ENHANCED PROFILE ===
-python experiments/run_baselines.py --profile enhanced
-python experiments/train_ppo.py --profile enhanced
-python experiments/run_ga.py --profile enhanced
-python experiments/run_hybrid.py --profile enhanced
-python experiments/run_sensitivity.py --profile enhanced
 
 # === REALISTIC PROFILE ===
 python experiments/run_baselines.py --profile realistic
@@ -93,7 +85,7 @@ Outputs by profile:
 | `run_hybrid` | ~1–2 hrs | Reuses GA population + PPO inference |
 | `run_sensitivity` | ~5 min | medium_2m + medium_3m only, 10 seeds |
 
-**Total: ~3–6 hrs per profile, ~10–18 hrs all three.** Can parallelise across profiles on separate machines.
+**Total: ~3–6 hrs per profile, ~6–12 hrs both.** Can parallelise across profiles on separate machines.
 
 ---
 
@@ -106,15 +98,20 @@ After all experiments complete, open and **run all cells**:
 | `05_final_evaluation.ipynb` | Box plots, Wilcoxon tests, α sensitivity, export LaTeX tables |
 | `06_visualisations.ipynb` | Gantt chart (SPT vs Hybrid), convergence plot (GA vs Hybrid) |
 
-Before running 05, set `PROFILE = "baseline"` (or `"enhanced"` / `"realistic"`) at the top of the loading cell to select which results to analyse.
+Before running 05, set `PROFILE = "baseline"` or `"realistic"` at the top of the loading cell to select which results to analyse.
 
-Outputs: `figures/05_*.png`, `06_*.png`, `results_summary.csv`, `results_summary.tex`
+Outputs (namespace per profile, run once for each):
+
+- `figures/05_boxplots_composite_{PROFILE}.png`
+- `figures/05_sensitivity_alpha_{PROFILE}.png`
+- `results_summary_{PROFILE}.csv`, `results_summary_{PROFILE}.tex`, `results_full_{PROFILE}.tex`
+- `figures/06_*.png` (not profile-dependent)
 
 ---
 
 ## Key Changes Since Original
 
-- `generate_instance()` now has a `profile` param (baseline/enhanced/realistic)
+- `generate_instance()` now has a `profile` param (baseline/realistic)
 - Colour families expanded from 7 → 12 (white→black)
 - Customer segments (premium/standard/economy) with weight + tightness spread
 - Chemistry-based setup cost (`direct`/`reactive`/`vat` with cross-type penalties)

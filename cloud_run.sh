@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # cloud_run.sh — Full experiment pipeline for cloud VM
 # Usage: bash cloud_run.sh [profile]
-#   profile: "baseline" (default), "enhanced", "realistic", or "all"
+#   profile: "baseline" (default), "realistic", or "all"
 set -euo pipefail
 
 PROFILE="${1:-all}"
@@ -42,14 +42,13 @@ run_profile() {
 case "$PROFILE" in
     all)
         run_profile baseline
-        run_profile enhanced
         run_profile realistic
         ;;
-    baseline|enhanced|realistic)
+    baseline|realistic)
         run_profile "$PROFILE"
         ;;
     *)
-        echo "Usage: $0 [baseline|enhanced|realistic|all]"
+        echo "Usage: $0 [baseline|realistic|all]"
         exit 1
         ;;
 esac

@@ -101,30 +101,30 @@ Controls all above in presets. The main knob experimenters touch.
 
 | Param       | Values                                            | Default        |
 | ----------- | ------------------------------------------------- | -------------- |
-| `profile` | `"baseline"` / `"enhanced"` / `"realistic"` | `"baseline"` |
+| `profile` | `"baseline"` / `"realistic"` | `"baseline"` |
 
 ---
 
 ## Defaults Per Profile
 
-| Param               | Baseline        | Enhanced        | Realistic                 |
-| ------------------- | --------------- | --------------- | ------------------------- |
-| colour_model        | categorical     | continuous      | continuous                |
-| n_colours           | 7               | 7               | 12                        |
-| colour_dist         | uniform         | skewed          | skewed                    |
-| colour_clustering   | 0               | 0.2             | 0.3                       |
-| asymmetry_strength  | 1.0             | 1.5             | 2.0                       |
-| chemistry_penalty   | false           | true            | true                      |
-| proc_dist           | uniform         | uniform         | exponential               |
-| proc_colour_corr    | 0               | 0.5             | 0.8                       |
-| due_date_type       | distinct        | distinct        | window                    |
-| tightness           | 1.5             | 1.5             | 1.2                       |
-| customer_segments   | false           | true            | true                      |
-| machine_type        | identical       | uniform         | unrelated                 |
-| machine_eligibility | false           | false           | true                      |
-| release_fraction    | 0               | 0.2             | 0.4                       |
-| objective           | composite       | composite       | composite                 |
-| alpha_sweep         | [0.3, 0.5, 0.7] | [0.1, 0.5, 0.9] | [0.0, 0.3, 0.5, 0.7, 1.0] |
+| Param               | Baseline        | Realistic                 |
+| ------------------- | --------------- | ------------------------- |
+| colour_model        | categorical     | continuous                |
+| n_colours           | 7               | 12                        |
+| colour_dist         | uniform         | skewed                    |
+| colour_clustering   | 0               | 0.3                       |
+| asymmetry_strength  | 1.0             | 2.0                       |
+| chemistry_penalty   | false           | true                      |
+| proc_dist           | uniform         | exponential               |
+| proc_colour_corr    | 0               | 0.8                       |
+| due_date_type       | distinct        | window                    |
+| tightness           | 1.5             | 1.2                       |
+| customer_segments   | false           | true                      |
+| machine_type        | identical       | unrelated                 |
+| machine_eligibility | false           | true                      |
+| release_fraction    | 0               | 0.4                       |
+| objective           | composite       | composite                 |
+| alpha_sweep         | [0.3, 0.5, 0.7] | [0.0, 0.3, 0.5, 0.7, 1.0] |
 
 ---
 
@@ -132,12 +132,12 @@ Controls all above in presets. The main knob experimenters touch.
 
 | Experiment                  | Sweep these                                  | Hold fixed                      |
 | --------------------------- | -------------------------------------------- | ------------------------------- |
-| Main comparison (4 methods) | profile ∈ {baseline, enhanced}              | seed, alpha=0.5, tightness=1.5  |
+| Main comparison (4 methods) | profile ∈ {baseline, realistic}              | seed, alpha=0.5, tightness=1.5  |
 | Tightness sensitivity       | tightness ∈ [0.8, 1.0, 1.5, 2.0]            | profile=baseline, alpha=0.5     |
 | Alpha sensitivity           | alpha ∈ [0.0, 0.1, 0.3, 0.5, 0.7, 0.9, 1.0] | profile=baseline, tightness=1.5 |
 | Colour model effect         | colour_model, n_colours                      | profile=baseline, alpha=0.5     |
-| Customer segment effect     | segment_mix, segment_weight_spread           | profile=enhanced, alpha=0.5     |
-| Machine heterogeneity       | machine_type, machine_speed_spread           | profile=enhanced, alpha=0.5     |
+| Customer segment effect     | segment_mix, segment_weight_spread           | profile=realistic, alpha=0.5    |
+| Machine heterogeneity       | machine_type, machine_speed_spread           | profile=realistic, alpha=0.5    |
 
 Total new code params: ~25. ~15 controlled by `profile` metaparameter. Experimenter sees **6 knobs**: `(n, m, seed, profile, alpha, tightness)`.
 
@@ -332,30 +332,6 @@ PROFILES = {
         "objective": "composite",
         "earliness_penalty": False,
     },
-    "enhanced": {
-        "colour_model": "continuous",
-        "n_colours": 7,
-        "colour_dist": "skewed",
-        "colour_clustering": 0.2,
-        "asymmetry_strength": 1.5,
-        "chemistry_penalty": True,
-        "setup_cost_scale": 10.0,
-        "setup_time_scale": 0.1,
-        "min_cleaning_cost": 0.5,
-        "proc_dist": "uniform",
-        "proc_min": 5,
-        "proc_max": 31,
-        "proc_colour_corr": 0.5,
-        "proc_outlier_prob": 0.02,
-        "due_date_type": "distinct",
-        "tightness": 1.5,
-        "customer_segments": True,
-        "machine_type": "uniform",
-        "machine_eligibility": True,
-        "release_fraction": 0.2,
-        "objective": "composite",
-        "earliness_penalty": False,
-    },
     "realistic": {
         "colour_model": "continuous",
         "n_colours": 10,
@@ -431,4 +407,4 @@ def validate_instance(inst: dict) -> list[str]:
 
 ## Key Metric
 
-After implementation, run hybrid vs GA on both baseline and enhanced profiles. If hybrid's advantage grows under enhanced (colour-correlated proc times + customer segments + chemistry penalties + release times), that is publishable evidence of the method's robustness to realistic problem complexity.
+After implementation, run hybrid vs GA on both baseline and realistic profiles. If hybrid's advantage holds or grows under realistic assumptions (colour-correlated proc times + customer segments + chemistry penalties + release times), that is evidence of the method's robustness to realistic problem complexity.

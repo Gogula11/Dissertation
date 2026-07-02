@@ -1,6 +1,6 @@
 """
 Sensitivity analysis: rerun GA + Hybrid on medium configs with α∈{0.3, 0.5, 0.7}, parallelised.
-Run from project root: python experiments/run_sensitivity.py [--profile baseline|enhanced|realistic]
+Run from project root: python experiments/run_sensitivity.py [--profile baseline|realistic]
 Requires trained PPO model at models/ppo_hyperheuristic_{profile}.zip
 """
 
@@ -41,15 +41,18 @@ def run_one(args):
 _worker_model = None
 
 
-def run(profile="baseline"):
+def _init_worker(model_path):
     global _worker_model
+    _worker_model = PPO.load(model_path, device="cpu")
+
+
+def run(profile="baseline"):
     model_path = f"models/ppo_hyperheuristic_{profile}"
-    _worker_model = PPO.load(model_path)
 
     tasks = [(cfg, seed, alpha, profile) for cfg in CONFIGS for seed in range(N_SEEDS) for alpha in ALPHAS]
     results = {}
 
-    with get_context("fork").Pool() as pool:
+    with get_context("spawn").Pool(initializer=_init_worker, initargs=(model_path,)) as pool:
         for entry in pool.imap_unordered(run_one, tasks):
             label = entry.pop("cfg_label")
             results.setdefault(label, []).append(entry)
@@ -65,6 +68,6 @@ def run(profile="baseline"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="baseline", choices=["baseline", "enhanced", "realistic"])
+    parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
     args = parser.parse_args()
     run(profile=args.profile)

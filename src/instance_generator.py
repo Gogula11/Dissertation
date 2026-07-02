@@ -148,16 +148,6 @@ PROFILES = {
         "proc_colour_corr": 0.0,
         "customer_segments": False,
     },
-    "enhanced": {
-        "colour_model": "continuous",
-        "n_colours": 7,
-        "colour_dist": "skewed",
-        "colour_clustering": 0.2,
-        "asymmetry_strength": 1.5,
-        "chemistry_penalty": True,
-        "proc_colour_corr": 0.5,
-        "customer_segments": True,
-    },
     "realistic": {
         "colour_model": "continuous",
         "n_colours": 12,
@@ -198,7 +188,7 @@ def generate_instance(
         m:         number of machines
         seed:      random seed for reproducibility
         tightness: due-date tightness factor (lower = tighter deadlines)
-        profile:   "baseline", "enhanced", or "realistic". Overrides individual colour/customer params.
+        profile:   "baseline" or "realistic". Overrides individual colour/customer params.
         customer_segments: enable premium/standard/economy segments
         segment_mix: (premium, standard, economy) proportions
         segment_weight_spread: ratio of highest to lowest segment weight

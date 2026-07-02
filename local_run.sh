@@ -44,14 +44,13 @@ OVERALL_START=$SECONDS
 case "$PROFILE" in
     all)
         run_profile baseline
-        run_profile enhanced
         run_profile realistic
         ;;
-    baseline|enhanced|realistic)
+    baseline|realistic)
         run_profile "$PROFILE"
         ;;
     *)
-        echo "Usage: $0 [baseline|enhanced|realistic|all]"
+        echo "Usage: $0 [baseline|realistic|all]"
         exit 1
         ;;
 esac

@@ -1,6 +1,6 @@
 """
 Train PPO on a pool of instances.
-Run from project root: python experiments/train_ppo.py [--profile baseline|enhanced|realistic]
+Run from project root: python experiments/train_ppo.py [--profile baseline|realistic]
 """
 
 import sys, os, argparse
@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from src.instance_generator import generate_instance, INSTANCE_CONFIGS
 from src.drl_agent import train_ppo
 
-TOTAL_TIMESTEPS = 20_000
+TOTAL_TIMESTEPS = 50_000
 TRAIN_CONFIGS = [c for c in INSTANCE_CONFIGS if "medium" in c["label"]]
 TRAIN_SEEDS = list(range(5))
 
@@ -37,6 +37,6 @@ def run(profile="baseline"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="baseline", choices=["baseline", "enhanced", "realistic"])
+    parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
     args = parser.parse_args()
     run(profile=args.profile)

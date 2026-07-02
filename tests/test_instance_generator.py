@@ -11,12 +11,6 @@ def test_validate_valid_instance_default():
     assert errors == [], f"Expected no errors, got: {errors}"
 
 
-def test_validate_valid_instance_profile_enhanced():
-    inst = generate_instance(n=10, m=3, seed=42, profile="enhanced")
-    errors = validate_instance(inst)
-    assert errors == [], f"Enhanced profile errors: {errors}"
-
-
 def test_validate_valid_instance_profile_realistic():
     inst = generate_instance(n=20, m=2, seed=7, profile="realistic")
     errors = validate_instance(inst)
@@ -26,7 +20,7 @@ def test_validate_valid_instance_profile_realistic():
 def test_validate_valid_instance_all_sizes():
     sizes = [(5, 2), (10, 2), (30, 3), (50, 3), (100, 5)]
     for n, m in sizes:
-        for profile in ("baseline", "enhanced", "realistic"):
+        for profile in ("baseline", "realistic"):
             inst = generate_instance(n=n, m=m, seed=0, profile=profile)
             errs = validate_instance(inst)
             assert errs == [], f"{profile} ({n}x{m}): {errs}"

@@ -1,6 +1,6 @@
 """
 Run plain GA for all instance configs, 30 seeds each, parallelised.
-Run from project root: python experiments/run_ga.py [--profile baseline|enhanced|realistic]
+Run from project root: python experiments/run_ga.py [--profile baseline|realistic]
 Do NOT run this from a notebook — multiprocessing + DEAP global state = problems.
 """
 
@@ -33,7 +33,7 @@ def run(profile="baseline"):
     tasks = [(cfg, seed, profile) for cfg in INSTANCE_CONFIGS for seed in range(N_SEEDS)]
     results = {cfg["label"]: [] for cfg in INSTANCE_CONFIGS}
 
-    with get_context("fork").Pool() as pool:
+    with get_context("spawn").Pool() as pool:
         for label, data in pool.imap_unordered(run_one, tasks):
             results[label].append(data)
             print(f"  Done [{profile}]: {label} seed={data['seed']}")
@@ -47,6 +47,6 @@ def run(profile="baseline"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="baseline", choices=["baseline", "enhanced", "realistic"])
+    parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
     args = parser.parse_args()
     run(profile=args.profile)

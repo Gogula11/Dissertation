@@ -1,7 +1,7 @@
 """
 Run SPT and nearest-neighbour baselines across all instance configs.
 Saves to results/raw/baselines.json
-Run from project root: python experiments/run_baselines.py [--profile baseline|enhanced|realistic]
+Run from project root: python experiments/run_baselines.py [--profile baseline|realistic]
 """
 
 import json, sys, os, argparse
@@ -42,6 +42,6 @@ def run(profile="baseline"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="baseline", choices=["baseline", "enhanced", "realistic"])
+    parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
     args = parser.parse_args()
     run(profile=args.profile)

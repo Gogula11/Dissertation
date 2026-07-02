@@ -1,7 +1,7 @@
 """
 Run hybrid GA+DRL for all instance configs, 30 seeds each, parallelised.
 Requires a trained PPO model at models/ppo_hyperheuristic_{profile}.zip
-Run from project root: python experiments/run_hybrid.py [--profile baseline|enhanced|realistic]
+Run from project root: python experiments/run_hybrid.py [--profile baseline|realistic]
 """
 
 import json, sys, os, argparse
@@ -19,9 +19,9 @@ TOTAL_GENS = 200
 _worker_model = None
 
 
-def init_worker(model_path):
+def _init_worker(model_path):
     global _worker_model
-    _worker_model = PPO.load(model_path)
+    _worker_model = PPO.load(model_path, device="cpu")
 
 
 def run_one(args):
@@ -42,8 +42,7 @@ def run(profile="baseline"):
     tasks = [(cfg, seed, profile) for cfg in INSTANCE_CONFIGS for seed in range(N_SEEDS)]
     results = {cfg["label"]: [] for cfg in INSTANCE_CONFIGS}
 
-    init = lambda: setattr(__import__(__name__), '_worker_model', PPO.load(model_path))
-    with get_context("fork").Pool(initializer=init) as pool:
+    with get_context("spawn").Pool(initializer=_init_worker, initargs=(model_path,)) as pool:
         for label, data in pool.imap_unordered(run_one, tasks):
             results[label].append(data)
             print(f"  Done [{profile}]: {label} seed={data['seed']} composite={data['composite']:.2f}")
@@ -57,6 +56,6 @@ def run(profile="baseline"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="baseline", choices=["baseline", "enhanced", "realistic"])
+    parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
     args = parser.parse_args()
     run(profile=args.profile)
