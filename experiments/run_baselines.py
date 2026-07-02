@@ -1,10 +1,10 @@
 """
 Run SPT and nearest-neighbour baselines across all instance configs.
 Saves to results/raw/baselines.json
-Run from project root: python experiments/run_baselines.py
+Run from project root: python experiments/run_baselines.py [--profile baseline|enhanced|realistic]
 """
 
-import json, sys, os
+import json, sys, os, argparse
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from src.instance_generator import generate_instance, INSTANCE_CONFIGS
@@ -15,13 +15,13 @@ ALPHA = 0.5
 N_SEEDS = 30
 
 
-def run():
+def run(profile="baseline"):
     results = {cfg["label"]: {"spt": [], "nn_greedy": []} for cfg in INSTANCE_CONFIGS}
 
     for cfg in INSTANCE_CONFIGS:
-        print(f"Running baselines: {cfg['label']}")
+        print(f"Running baselines [{profile}]: {cfg['label']}")
         for seed in range(N_SEEDS):
-            inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed)
+            inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed, profile=profile)
             for name, fn in [("spt", spt), ("nn_greedy", nearest_neighbour_greedy)]:
                 sigma = fn(inst)
                 ev = evaluate(sigma, inst, alpha=ALPHA)
@@ -34,10 +34,14 @@ def run():
                 })
 
     os.makedirs("results/raw", exist_ok=True)
-    with open("results/raw/baselines.json", "w") as f:
+    path = f"results/raw/baselines_{profile}.json"
+    with open(path, "w") as f:
         json.dump(results, f, indent=2)
-    print("Saved: results/raw/baselines.json")
+    print(f"Saved: {path}")
 
 
 if __name__ == "__main__":
-    run()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--profile", default="baseline", choices=["baseline", "enhanced", "realistic"])
+    args = parser.parse_args()
+    run(profile=args.profile)

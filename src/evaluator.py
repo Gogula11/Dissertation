@@ -73,18 +73,67 @@ def compute_makespan(C: np.ndarray) -> float:
     return float(C.max())
 
 
-def estimate_scales(instance: dict) -> tuple:
-    """Estimate normalisation scales from instance data.
+def _estimate_scales_schedule(instance: dict, order: list) -> tuple:
+    """Evaluate a job-ordering-based schedule (round-robin to machines)."""
+    m = instance["m"]
+    sigma = [[] for _ in range(m)]
+    for idx, job in enumerate(order):
+        sigma[idx % m].append(int(job))
+    C = compute_completion_times(sigma, instance)
+    T = compute_tardiness(C, instance)
+    f1 = compute_weighted_tardiness(T, instance)
+    f2 = compute_setup_cost(sigma, instance)
+    return f1, f2
 
-    Returns (f1_scale, f2_scale) where:
-      f1_scale: upper bound on weighted tardiness
-      f2_scale: upper bound on setup cost
+
+def estimate_scales(instance: dict, rng=None) -> tuple:
+    """Estimate normalisation scales from heuristic and random schedules.
+
+    Runs SPT, NN-Greedy, and a random schedule; takes max of all three
+    × 1.5 margin. Ensures both f1 and f2 scalars have similar magnitude
+    so the composite objective trades them fairly.
+
+    Returns (f1_scale, f2_scale).
     """
+    if rng is None:
+        rng = np.random.default_rng()
     n = instance["n"]
-    max_C = float(instance["proc_times"].sum() + instance["setup_time"].max() * n)
-    f1_scale = float(np.dot(instance["weights"], np.maximum(0, max_C - instance["due_dates"])))
-    f2_scale = float(np.max(instance["setup_cost"]) * max(n - 1, 1))
-    return max(f1_scale, 1.0), max(f2_scale, 1.0)
+    m = instance["m"]
+    proc = instance["proc_times"]
+    setup_cost = instance["setup_cost"]
+
+    # SPT
+    f1_spt, f2_spt = _estimate_scales_schedule(instance, list(np.argsort(proc)))
+
+    # NN-Greedy (avoids circular import from heuristics.py)
+    scheduled = set()
+    nn_order = []
+    last_on_machine = {}
+    for _ in range(n):
+        best = None
+        best_cost = float("inf")
+        for job in range(n):
+            if job in scheduled:
+                continue
+            machine = len(nn_order) % m
+            last = last_on_machine.get(machine)
+            cost = setup_cost[last][job] if last is not None else 0.0
+            if cost < best_cost:
+                best_cost = cost
+                best = job
+        scheduled.add(best)
+        last_on_machine[len(nn_order) % m] = best
+        nn_order.append(best)
+    f1_nn, f2_nn = _estimate_scales_schedule(instance, nn_order)
+
+    # Random permutation (guarantees non-zero tardiness on most instances)
+    rand_order = list(range(n))
+    rng.shuffle(rand_order)
+    f1_rand, f2_rand = _estimate_scales_schedule(instance, rand_order)
+
+    f1_scale = max(max(f1_spt, f1_nn, f1_rand) * 1.5, 1.0)
+    f2_scale = max(max(f2_spt, f2_nn, f2_rand) * 1.5, 1.0)
+    return f1_scale, f2_scale
 
 
 def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5,

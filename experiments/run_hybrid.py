@@ -1,10 +1,10 @@
 """
 Run hybrid GA+DRL for all instance configs, 30 seeds each, parallelised.
-Requires a trained PPO model at models/ppo_hyperheuristic.zip
-Run from project root: python experiments/run_hybrid.py
+Requires a trained PPO model at models/ppo_hyperheuristic_{profile}.zip
+Run from project root: python experiments/run_hybrid.py [--profile baseline|enhanced|realistic]
 """
 
-import json, sys, os
+import json, sys, os, argparse
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from multiprocessing import get_context
@@ -14,20 +14,19 @@ from src.drl_agent import run_hybrid
 
 ALPHA = 0.5
 N_SEEDS = 30
-MODEL_PATH = "models/ppo_hyperheuristic"
 TOTAL_GENS = 200
 
 _worker_model = None
 
 
-def init_worker():
+def init_worker(model_path):
     global _worker_model
-    _worker_model = PPO.load(MODEL_PATH)
+    _worker_model = PPO.load(model_path)
 
 
 def run_one(args):
-    cfg, seed = args
-    inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed)
+    cfg, seed, profile = args
+    inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed, profile=profile)
     result = run_hybrid(inst, _worker_model, seed=seed, total_gens=TOTAL_GENS, alpha=ALPHA)
     return cfg["label"], {
         "seed":               seed,
@@ -38,20 +37,26 @@ def run_one(args):
     }
 
 
-def run():
-    tasks = [(cfg, seed) for cfg in INSTANCE_CONFIGS for seed in range(N_SEEDS)]
+def run(profile="baseline"):
+    model_path = f"models/ppo_hyperheuristic_{profile}"
+    tasks = [(cfg, seed, profile) for cfg in INSTANCE_CONFIGS for seed in range(N_SEEDS)]
     results = {cfg["label"]: [] for cfg in INSTANCE_CONFIGS}
 
-    with get_context("spawn").Pool(initializer=init_worker) as pool:
+    init = lambda: setattr(__import__(__name__), '_worker_model', PPO.load(model_path))
+    with get_context("spawn").Pool(initializer=init) as pool:
         for label, data in pool.imap_unordered(run_one, tasks):
             results[label].append(data)
-            print(f"  Done: {label} seed={data['seed']} composite={data['composite']:.2f}")
+            print(f"  Done [{profile}]: {label} seed={data['seed']} composite={data['composite']:.2f}")
 
     os.makedirs("results/raw", exist_ok=True)
-    with open("results/raw/hybrid.json", "w") as f:
+    path = f"results/raw/hybrid_{profile}.json"
+    with open(path, "w") as f:
         json.dump(results, f, indent=2)
-    print("Saved: results/raw/hybrid.json")
+    print(f"Saved: {path}")
 
 
 if __name__ == "__main__":
-    run()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--profile", default="baseline", choices=["baseline", "enhanced", "realistic"])
+    args = parser.parse_args()
+    run(profile=args.profile)
