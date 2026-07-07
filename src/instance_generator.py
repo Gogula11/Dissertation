@@ -56,8 +56,11 @@ CHEM_COMPAT = {
     ("direct", "direct"):    0.0,
     ("direct", "reactive"):  0.3,
     ("direct", "vat"):       0.5,
+    ("reactive", "direct"):  0.3,
     ("reactive", "reactive"):0.1,
     ("reactive", "vat"):     0.6,
+    ("vat", "direct"):       0.5,
+    ("vat", "reactive"):     0.6,
     ("vat", "vat"):          0.1,
 }
 
