@@ -55,12 +55,4 @@ def test_heuristics_deterministic():
     assert sigma_c == sigma_d
 
 
-if __name__ == "__main__":
-    test_spt_returns_all_jobs()
-    test_spt_correct_machine_count()
-    test_spt_even_distribution()
-    test_nn_greedy_returns_all_jobs()
-    test_nn_greedy_correct_machine_count()
-    test_nn_greedy_no_empty_machines()
-    test_heuristics_deterministic()
-    print("All heuristic tests passed.")
+

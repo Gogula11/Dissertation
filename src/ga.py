@@ -14,7 +14,7 @@ import numpy as np
 from typing import List, Optional, Callable
 from deap import base, creator, tools, algorithms
 
-from src.evaluator import evaluate
+from src.evaluator import evaluate, estimate_scales
 
 
 def decode_chromosome(individual: list, m: int) -> List[List[int]]:
@@ -46,21 +46,18 @@ def mutInsertion(individual: list, indpb: float = 0.05) -> tuple:
     return (individual,)
 
 
-def mutAggressiveSwap(individual: list, indpb: float = 0.20) -> tuple:
-    """Aggressive swap mutation: higher disruption via mutShuffleIndexes."""
-    return tools.mutShuffleIndexes(individual, indpb=indpb)
 
-
-def make_fitness_fn(instance: dict, alpha: float) -> Callable:
+def make_fitness_fn(instance: dict, alpha: float, f1_scale: float, f2_scale: float) -> Callable:
     """Returns a DEAP-compatible fitness function (must return a tuple)."""
     def fitness(individual):
         sigma = decode_chromosome(list(individual), instance["m"])
-        result = evaluate(sigma, instance, alpha=alpha)
+        result = evaluate(sigma, instance, alpha=alpha, f1_scale=f1_scale, f2_scale=f2_scale)
         return (result["composite"],)
     return fitness
 
 
-def build_toolbox(instance: dict, alpha: float = 0.5) -> base.Toolbox:
+def build_toolbox(instance: dict, alpha: float = 0.5,
+                 f1_scale: float = None, f2_scale: float = None) -> base.Toolbox:
     """
     Construct and return a DEAP Toolbox for this instance.
 
@@ -80,12 +77,8 @@ def build_toolbox(instance: dict, alpha: float = 0.5) -> base.Toolbox:
     toolbox.register("indices", random.sample, range(n), n)
     toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.indices)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-    toolbox.register("evaluate", make_fitness_fn(instance, alpha))
+    toolbox.register("evaluate", make_fitness_fn(instance, alpha, f1_scale, f2_scale))
     toolbox.register("mate", tools.cxOrdered)
-    toolbox.register("mutate_swap",           tools.mutShuffleIndexes, indpb=0.05)
-    toolbox.register("mutate_inversion",      tools.mutInversion)
-    toolbox.register("mutate_insertion",      mutInsertion, indpb=0.15)
-    toolbox.register("mutate_aggressive_swap", mutAggressiveSwap, indpb=0.20)
     toolbox.register("mutate",                tools.mutShuffleIndexes, indpb=0.05)
     toolbox.register("select", tools.selTournament, tournsize=3)
 
@@ -117,14 +110,13 @@ def run_ga(
         random.seed(seed)
         np.random.seed(seed)
 
-    toolbox = build_toolbox(instance, alpha)
+    f1_scale, f2_scale = estimate_scales(instance)
+    toolbox = build_toolbox(instance, alpha, f1_scale, f2_scale)
 
     if mutation_strategy == "inversion":
         toolbox.register("mutate", tools.mutInversion)
     elif mutation_strategy == "insertion":
         toolbox.register("mutate", mutInsertion, indpb=0.15)
-    elif mutation_strategy == "aggressive_swap":
-        toolbox.register("mutate", mutAggressiveSwap, indpb=0.20)
     else:
         toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.05)
 
@@ -147,7 +139,7 @@ def run_ga(
     )
 
     best_sigma = decode_chromosome(list(hof[0]), instance["m"])
-    best_result = evaluate(best_sigma, instance, alpha)
+    best_result = evaluate(best_sigma, instance, alpha, f1_scale=f1_scale, f2_scale=f2_scale)
 
     return {
         "best_fitness": best_result["composite"],

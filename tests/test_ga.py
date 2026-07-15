@@ -56,11 +56,6 @@ def test_ga_different_seeds_different_results():
     assert r1["best_fitness"] != r2["best_fitness"]
 
 
-def test_ga_aggressive_swap_mutation():
-    inst = generate_instance(n=10, m=2, seed=0)
-    result = run_ga(inst, n_gen=5, pop_size=10, seed=42, mutation_strategy="aggressive_swap")
-    assert result["best_fitness"] > 0
-
 
 def test_decode_chromosome_preserves_jobs():
     ind = list(range(10))
@@ -69,12 +64,4 @@ def test_decode_chromosome_preserves_jobs():
     assert flat == list(range(10))
 
 
-if __name__ == "__main__":
-    test_ga_runs_and_returns_dict()
-    test_ga_sigma_valid()
-    test_ga_swap_mutation()
-    test_ga_inversion_mutation()
-    test_ga_aggressive_swap_mutation()
-    test_ga_different_seeds_different_results()
-    test_decode_chromosome_preserves_jobs()
-    print("All GA tests passed.")
+

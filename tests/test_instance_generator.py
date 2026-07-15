@@ -2,70 +2,7 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 import numpy as np
-from src.instance_generator import generate_instance, validate_instance
-
-
-def test_validate_valid_instance_default():
-    inst = generate_instance(n=10, m=3, seed=42)
-    errors = validate_instance(inst)
-    assert errors == [], f"Expected no errors, got: {errors}"
-
-
-def test_validate_valid_instance_profile_realistic():
-    inst = generate_instance(n=20, m=2, seed=7, profile="realistic")
-    errors = validate_instance(inst)
-    assert errors == [], f"Realistic profile errors: {errors}"
-
-
-def test_validate_valid_instance_all_sizes():
-    sizes = [(5, 2), (10, 2), (30, 3), (50, 3), (100, 5)]
-    for n, m in sizes:
-        for profile in ("baseline", "realistic"):
-            inst = generate_instance(n=n, m=m, seed=0, profile=profile)
-            errs = validate_instance(inst)
-            assert errs == [], f"{profile} ({n}x{m}): {errs}"
-
-
-def test_validate_catches_negative_proc_times():
-    inst = generate_instance(n=10, m=2, seed=0)
-    inst["proc_times"][0] = -1.0
-    errors = validate_instance(inst)
-    assert "proc_times" in str(errors)
-
-
-def test_validate_catches_shape_mismatch():
-    inst = generate_instance(n=10, m=2, seed=0)
-    inst["weights"] = np.array([1.0, 2.0])
-    errors = validate_instance(inst)
-    assert any("shape" in e.lower() for e in errors)
-
-
-def test_validate_catches_negative_setup_cost():
-    inst = generate_instance(n=10, m=2, seed=0)
-    inst["setup_cost"][0, 1] = -5.0
-    errors = validate_instance(inst)
-    assert any("negative" in e for e in errors)
-
-
-def test_validate_catches_nonzero_diagonal():
-    inst = generate_instance(n=10, m=2, seed=0)
-    inst["setup_time"][3, 3] = 1.0
-    errors = validate_instance(inst)
-    assert any("diagonal" in e for e in errors)
-
-
-def test_validate_catches_bad_chemistries():
-    inst = generate_instance(n=10, m=2, seed=0, profile="realistic")
-    inst["chemistries"][2] = "invalid_chem"
-    errors = validate_instance(inst)
-    assert any("chemistries" in e for e in errors)
-
-
-def test_validate_catches_negative_colour_ids():
-    inst = generate_instance(n=10, m=2, seed=0)
-    inst["colour_ids"][0] = -1
-    errors = validate_instance(inst)
-    assert any("negative" in e for e in errors)
+from src.instance_generator import generate_instance
 
 
 def test_setup_time_scale_default_backward_compat():
@@ -84,3 +21,36 @@ def test_setup_time_scale_doubled():
 def test_setup_time_scale_zero():
     inst = generate_instance(n=10, m=2, seed=0, setup_time_scale=0.0)
     assert inst["setup_time"].max() == 0.0
+
+
+def test_realistic_profile_uses_continuous_colours_and_segments():
+    inst = generate_instance(n=20, m=3, seed=7, profile="realistic")
+    assert set(inst["chemistries"]).issubset({"direct", "reactive", "vat"})
+    assert len(inst["chemistries"]) == 20
+    assert inst["colour_darkness"].min() >= 1.0
+    assert inst["colour_darkness"].max() <= 10.0
+    assert inst["setup_cost"].shape == (20, 20)
+    assert inst["setup_time"].shape == (20, 20)
+    assert not np.allclose(inst["weights"], 1.0)
+
+
+def test_sample_colours_uniform_dist():
+    from src.instance_generator import _sample_colours
+    rng = np.random.default_rng(0)
+    ids, darkness, chems = _sample_colours(10, 5, "uniform", 0.0, rng)
+    assert len(ids) == 10
+    assert len(darkness) == 10
+    assert len(chems) == 10
+
+
+def test_baseline_profile_categorical():
+    inst = generate_instance(n=10, m=2, seed=0, profile="baseline")
+    assert all(c == "" for c in inst["chemistries"])
+    assert np.allclose(inst["weights"], 1.0)
+    assert inst["colour_ids"].max() <= 6
+
+
+def test_categorical_with_proc_colour_corr():
+    inst = generate_instance(n=10, m=2, seed=0, profile="baseline", proc_colour_corr=0.5)
+    assert all(c == "" for c in inst["chemistries"])
+    assert not np.allclose(inst["proc_times"], inst["proc_times"][0])  # varied by darkness

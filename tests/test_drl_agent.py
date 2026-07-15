@@ -8,7 +8,7 @@ from src.drl_agent import make_env_fn, run_hybrid
 
 def test_make_env_fn():
     inst = generate_instance(n=10, m=2, seed=0)
-    fn = make_env_fn(inst, total_gens=10, step_gens=5, pop_size=5)
+    fn = make_env_fn([inst], total_gens=10, step_gens=5, pop_size=5)
     env = fn()
     assert env.observation_space.shape == (8,)
     assert env.action_space.n == 3
@@ -31,7 +31,16 @@ def test_run_hybrid_returns_result():
     assert "makespan" in result
 
 
-if __name__ == "__main__":
-    test_make_env_fn()
-    test_run_hybrid_returns_result()
-    print("All drl_agent tests passed.")
+def test_train_ppo_smoke(tmp_path):
+    from src.drl_agent import train_ppo
+    inst = generate_instance(n=5, m=2, seed=0)
+    save_path = str(tmp_path / "ppo_test")
+    model = train_ppo(
+        [inst], total_timesteps=2, save_path=save_path,
+        verbose=0, pop_size=5, total_gens=2, step_gens=2,
+    )
+    assert model is not None
+    assert os.path.exists(save_path + ".zip")
+
+
+

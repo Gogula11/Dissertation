@@ -38,42 +38,22 @@ def run_one(args):
 
 
 def run(profile="baseline"):
-    if _SMOKE:
-        _run_sequential(profile)
-        return
     model_path = f"models/ppo_hyperheuristic_{profile}"
-    tasks = [(cfg, seed, profile) for cfg in INSTANCE_CONFIGS for seed in range(N_SEEDS)]
-    results = {cfg["label"]: [] for cfg in INSTANCE_CONFIGS}
+    tasks = [(cfg, seed, profile) for cfg in _CFG_LIST for seed in range(N_SEEDS)]
+    results = {cfg["label"]: [] for cfg in _CFG_LIST}
 
-    with get_context("spawn").Pool(initializer=_init_worker, initargs=(model_path,)) as pool:
-        for label, data in pool.imap_unordered(run_one, tasks):
+    if _SMOKE:
+        _init_worker(model_path)
+        for label, data in map(run_one, tasks):
             results[label].append(data)
             print(f"  Done [{profile}]: {label} seed={data['seed']} composite={data['composite']:.2f}")
+    else:
+        with get_context("spawn").Pool(initializer=_init_worker, initargs=(model_path,)) as pool:
+            for label, data in pool.imap_unordered(run_one, tasks):
+                results[label].append(data)
+                print(f"  Done [{profile}]: {label} seed={data['seed']} composite={data['composite']:.2f}")
 
     os.makedirs("results/raw", exist_ok=True)
-    path = f"results/raw/hybrid_{profile}.json"
-    with open(path, "w") as f:
-        json.dump(results, f, indent=2)
-    print(f"Saved: {path}")
-
-
-def _run_sequential(profile):
-    model_path = f"models/ppo_hyperheuristic_{profile}"
-    model = PPO.load(model_path, device="cpu")
-    os.makedirs("results/raw", exist_ok=True)
-    results = {}
-    for cfg in _CFG_LIST:
-        for seed in range(N_SEEDS):
-            inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed, profile=profile)
-            result = run_hybrid(inst, model, seed=seed, total_gens=TOTAL_GENS, alpha=ALPHA)
-            results.setdefault(cfg["label"], []).append({
-                "seed": seed,
-                "composite": result["composite"],
-                "weighted_tardiness": result["weighted_tardiness"],
-                "setup_cost": result["setup_cost"],
-                "makespan": result["makespan"],
-            })
-            print(f"  Done [{profile}]: {cfg['label']} seed={seed} composite={result['composite']:.2f}")
     path = f"results/raw/hybrid_{profile}.json"
     with open(path, "w") as f:
         json.dump(results, f, indent=2)

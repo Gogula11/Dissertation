@@ -2,10 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 
-COLOUR_MAP = {
-    0: "#FFFACD", 1: "#FFD700", 2: "#87CEEB",
-    3: "#228B22", 4: "#DC143C", 5: "#000080", 6: "#1C1C1C",
-}
+from src.instance_generator import COLOUR_HEX
 
 def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None):
     if ax is None:
@@ -24,7 +21,7 @@ def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None):
                 ax.barh(k, st, left=t, height=0.35,
                         color="lightgrey", edgecolor="black", hatch="//", linewidth=0.5)
                 t += st
-            colour = COLOUR_MAP.get(int(colours[job]), "#cccccc")
+            colour = COLOUR_HEX.get(int(colours[job]), "#cccccc")
             ax.barh(k, float(proc[job]), left=t, height=0.6,
                     color=colour, edgecolor="black", linewidth=0.5)
             ax.text(t + proc[job]/2, k, str(job),
@@ -35,6 +32,6 @@ def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None):
     ax.set_yticklabels([f"Machine {k}" for k in range(m)])
     ax.set_xlabel("Time units")
     ax.set_title(title)
-    patches = [mpatches.Patch(color=c, label=f"Colour {i}") for i, c in COLOUR_MAP.items()]
+    patches = [mpatches.Patch(color=c, label=f"Colour {i}") for i, c in COLOUR_HEX.items()]
     ax.legend(handles=patches, loc="upper right", fontsize=7, ncol=4)
     return ax

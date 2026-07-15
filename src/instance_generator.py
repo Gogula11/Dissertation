@@ -31,6 +31,11 @@ COLOUR_DARKNESS = {
 }
 N_COLOURS = len(COLOUR_DARKNESS)
 
+COLOUR_HEX = {
+    0: "#FFFACD", 1: "#FFD700", 2: "#87CEEB",
+    3: "#228B22", 4: "#DC143C", 5: "#000080", 6: "#1C1C1C",
+}
+
 # Colour families — continuous model
 COLOUR_FAMILIES = {
     "white":    {"base": 1.0, "shade_std": 0.3,  "chemistry": "direct"},
@@ -170,55 +175,17 @@ def generate_instance(
     seed: Optional[int] = None,
     tightness: float = 1.5,
     profile: Optional[str] = None,
-    customer_segments: Optional[bool] = None,
-    segment_mix: tuple = (0.2, 0.5, 0.3),
-    segment_weight_spread: float = 3.0,
-    segment_tightness_spread: float = 2.25,
-    colour_model: Optional[str] = None,
-    n_colours: Optional[int] = None,
-    colour_dist: Optional[str] = None,
-    colour_clustering: Optional[float] = None,
     proc_colour_corr: Optional[float] = None,
-    asymmetry_strength: Optional[float] = None,
-    chemistry_penalty: Optional[bool] = None,
     setup_time_scale: float = 0.1,
 ) -> dict:
     """
     Generate one synthetic PMSP-SDSC instance.
-
-    Args:
-        n:         number of jobs
-        m:         number of machines
-        seed:      random seed for reproducibility
-        tightness: due-date tightness factor (lower = tighter deadlines)
-        profile:   "baseline" or "realistic". Overrides individual colour/customer params.
-        customer_segments: enable premium/standard/economy segments
-        segment_mix: (premium, standard, economy) proportions
-        segment_weight_spread: ratio of highest to lowest segment weight
-        segment_tightness_spread: ratio of loosest to tightest segment tightness
-        colour_model: "categorical" (legacy 7-class) or "continuous" (COLOUR_FAMILIES)
-        n_colours: number of colour families to use (1-12)
-        colour_dist: "uniform" or "skewed" (some families dominate)
-        colour_clustering: prob [0,1] consecutive jobs share same colour
-        proc_colour_corr: strength [0,1] of colour→proc time link (0=none)
-        asymmetry_strength: scales dark→light cost penalty
-        chemistry_penalty: enable chemistry-based cross-type cost
-        setup_time_scale: scales setup_time relative to setup_cost (default 0.1 matches legacy)
-
-        Explicit params override profile defaults when both are set.
-    Returns:
-        instance dict
     """
-    # Resolve profile defaults, then apply explicit overrides
-    p = dict(PROFILES["baseline"])  # start with baseline defaults
+    p = dict(PROFILES["baseline"])
     if profile is not None and profile in PROFILES:
         p.update(PROFILES[profile])
-    for param_name in ("customer_segments", "colour_model", "n_colours",
-                       "colour_dist", "colour_clustering", "proc_colour_corr",
-                       "asymmetry_strength", "chemistry_penalty"):
-        val = locals()[param_name]
-        if val is not None:
-            p[param_name] = val
+    if proc_colour_corr is not None:
+        p["proc_colour_corr"] = proc_colour_corr
 
     customer_segments = p["customer_segments"]
     colour_model = p["colour_model"]
@@ -262,14 +229,10 @@ def generate_instance(
     np.fill_diagonal(setup_time, 0.0)
 
     if customer_segments:
-        seg_weights = np.array([segment_weight_spread, 1.0, 1.0 / segment_weight_spread])
-        seg_tightness = np.array([
-            tightness / segment_tightness_spread,
-            tightness,
-            tightness * segment_tightness_spread,
-        ])
-        seg_idx = rng.choice(3, size=n, p=segment_mix)
-        weights = seg_weights[seg_idx].astype(np.float32)
+        seg_weights = np.array([3.0, 1.0, 1.0/3.0], dtype=np.float32)
+        seg_tightness = np.array([tightness/2.25, tightness, tightness*2.25])
+        seg_idx = rng.choice(3, size=n, p=[0.2, 0.5, 0.3])
+        weights = seg_weights[seg_idx]
         per_job_tightness = seg_tightness[seg_idx]
     else:
         weights = np.ones(n, dtype=np.float32)
@@ -294,64 +257,6 @@ def generate_instance(
         "colour_darkness": colour_darkness,
         "chemistries": chemistries,
     }
-
-
-def validate_instance(inst: dict) -> list[str]:
-    """Validate an instance dict. Returns list of error messages (empty = valid)."""
-    errors = []
-    n = inst["n"]
-    m = inst["m"]
-
-    for key in ("proc_times", "due_dates", "weights", "release"):
-        arr = inst[key]
-        if not isinstance(arr, np.ndarray):
-            errors.append(f"{key}: not ndarray (got {type(arr)})")
-            continue
-        if arr.shape != (n,):
-            errors.append(f"{key}: shape {arr.shape}, expected ({n},)")
-        if not np.issubdtype(arr.dtype, np.floating) and not np.issubdtype(arr.dtype, np.integer):
-            errors.append(f"{key}: dtype {arr.dtype} not numeric")
-        if np.any(arr < 0):
-            errors.append(f"{key}: contains negative values")
-    if np.any(inst["due_dates"] <= 0):
-        errors.append("due_dates: all must be positive")
-
-    for key in ("setup_cost", "setup_time"):
-        arr = inst[key]
-        if not isinstance(arr, np.ndarray):
-            errors.append(f"{key}: not ndarray")
-            continue
-        if arr.shape != (n, n):
-            errors.append(f"{key}: shape {arr.shape}, expected ({n},{n})")
-        if np.any(arr < 0):
-            errors.append(f"{key}: contains negative values")
-        if not np.allclose(np.diag(arr), 0.0):
-            errors.append(f"{key}: diagonal not all zero")
-
-    cids = inst["colour_ids"]
-    if not isinstance(cids, np.ndarray) or cids.shape != (n,):
-        errors.append(f"colour_ids: shape mismatch")
-    elif cids.min() < 0:
-        errors.append("colour_ids: contains negative indices")
-    else:
-        unique_cids = np.unique(cids)
-        if unique_cids.max() >= 100:
-            errors.append(f"colour_ids: max value {unique_cids.max()} unreasonably large")
-
-    darkness = inst["colour_darkness"]
-    if not isinstance(darkness, np.ndarray) or darkness.shape != (n,):
-        errors.append(f"colour_darkness: shape mismatch")
-    if np.any(darkness < 0):
-        errors.append("colour_darkness: contains negative values")
-
-    chemistries = inst["chemistries"]
-    if not isinstance(chemistries, list) or len(chemistries) != n:
-        errors.append(f"chemistries: expected list of length {n}")
-    valid_chems = ["direct", "reactive", "vat"]
-    if any(c not in valid_chems and c != "" for c in chemistries):
-        errors.append(f"chemistries: invalid entries (valid: {valid_chems} or empty string)")
-
-    return errors
 
 
 # Pre-defined experiment configurations

@@ -25,26 +25,17 @@ from gymnasium import spaces
 import random
 
 from src.ga import build_toolbox, decode_chromosome, mutInsertion
-from src.evaluator import evaluate
+from src.evaluator import evaluate, estimate_scales
 from deap import tools
 
 
 def _population_diversity(pop, sample_size: int = 20) -> float:
-    """
-    Mean pairwise normalised Hamming distance between a sample of individuals.
-    Sampled to keep computation fast on large populations.
-    """
     n_ind = min(len(pop), sample_size)
     if n_ind < 2:
         return 0.0
-    n_genes = len(pop[0])
-    total, count = 0.0, 0
-    for i in range(n_ind):
-        for j in range(i + 1, n_ind):
-            diffs = sum(1 for a, b in zip(pop[i], pop[j]) if a != b)
-            total += diffs / n_genes
-            count += 1
-    return total / count if count > 0 else 0.0
+    arr = np.array([list(ind) for ind in pop[:n_ind]])
+    i_idx, j_idx = np.triu_indices(n_ind, k=1)
+    return float((arr[i_idx] != arr[j_idx]).mean())
 
 
 class GAHyperHeuristicEnv(gym.Env):
@@ -94,6 +85,8 @@ class GAHyperHeuristicEnv(gym.Env):
         self.best_at_start = None
         self.stagnation_count = 0
         self.last_best = None
+        self._n_norm = 0.0
+        self._m_norm = 0.0
 
     def _obs(self) -> np.ndarray:
         inst = self.instance
@@ -106,8 +99,6 @@ class GAHyperHeuristicEnv(gym.Env):
         best_norm = np.clip(best / denom, 0.0, 1.0)
         mean_norm = np.clip(mean / denom, 0.0, 1.0)
 
-        n_norm = inst["n"] / 100.0
-        m_norm = inst["m"] / 10.0
         n_jobs = inst["n"]
         diag_mask = np.eye(n_jobs, dtype=bool)
         off_diag = inst["setup_cost"][~diag_mask]
@@ -116,7 +107,7 @@ class GAHyperHeuristicEnv(gym.Env):
 
         return np.array([
             best_norm, mean_norm, div, stag,
-            n_norm, m_norm, cost_mean_norm, darkness_mean_norm,
+            self._n_norm, self._m_norm, cost_mean_norm, darkness_mean_norm,
         ], dtype=np.float32)
 
     def _apply_action(self, action: int):
@@ -137,7 +128,10 @@ class GAHyperHeuristicEnv(gym.Env):
         self.instance = self.instance_pool[
             int(random.randint(0, len(self.instance_pool) - 1))
         ]
-        self.toolbox = build_toolbox(self.instance, self.alpha)
+        self._n_norm = self.instance["n"] / 100.0
+        self._m_norm = self.instance["m"] / 10.0
+        self._f1_scale, self._f2_scale = estimate_scales(self.instance)
+        self.toolbox = build_toolbox(self.instance, self.alpha, self._f1_scale, self._f2_scale)
         self.pop = self.toolbox.population(n=self.pop_size)
         self.hof = tools.HallOfFame(1)
 
@@ -200,4 +194,5 @@ class GAHyperHeuristicEnv(gym.Env):
     def get_best_result(self) -> dict:
         """Call after episode ends. Returns same format as evaluator.evaluate()."""
         sigma = decode_chromosome(list(self.hof[0]), self.instance["m"])
-        return evaluate(sigma, self.instance, self.alpha)
+        return evaluate(sigma, self.instance, self.alpha,
+                        f1_scale=self._f1_scale, f2_scale=self._f2_scale)

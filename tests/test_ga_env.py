@@ -98,13 +98,4 @@ def test_population_diversity_edge_cases():
     assert div <= 1.0
 
 
-if __name__ == "__main__":
-    test_env_creation()
-    test_reset_returns_valid_obs()
-    test_step_action_0()
-    test_step_action_1()
-    test_step_action_2()
-    test_episode_truncated_on_step_limit()
-    test_get_best_result_returns_result_dict()
-    test_population_diversity_edge_cases()
-    print("All ga_env tests passed.")
+

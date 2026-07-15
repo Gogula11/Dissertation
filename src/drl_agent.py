@@ -13,16 +13,10 @@ from src.ga_env import GAHyperHeuristicEnv
 
 def make_env_fn(instance_pool, total_gens=200, step_gens=10, pop_size=100, alpha=0.5):
     def _init():
-        if isinstance(instance_pool, dict):
-            inst = instance_pool
-            pool = [instance_pool]
-        else:
-            inst = instance_pool[0]
-            pool = instance_pool
         return GAHyperHeuristicEnv(
-            inst, total_gens=total_gens,
+            instance_pool[0], total_gens=total_gens,
             step_gens=step_gens, pop_size=pop_size, alpha=alpha,
-            instance_pool=pool,
+            instance_pool=instance_pool,
         )
     return _init
 

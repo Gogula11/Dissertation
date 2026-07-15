@@ -12,6 +12,7 @@ Example for n=6, m=2:
 
 import numpy as np
 from typing import List
+from src.heuristics import nearest_neighbour_greedy
 
 
 def validate_sigma(sigma: List[List[int]], n: int) -> None:
@@ -98,33 +99,17 @@ def estimate_scales(instance: dict, rng=None) -> tuple:
     if rng is None:
         rng = np.random.default_rng()
     n = instance["n"]
-    m = instance["m"]
     proc = instance["proc_times"]
-    setup_cost = instance["setup_cost"]
 
     # SPT
     f1_spt, f2_spt = _estimate_scales_schedule(instance, list(np.argsort(proc)))
 
-    # NN-Greedy (avoids circular import from heuristics.py)
-    scheduled = set()
-    nn_order = []
-    last_on_machine = {}
-    for _ in range(n):
-        best = None
-        best_cost = float("inf")
-        for job in range(n):
-            if job in scheduled:
-                continue
-            machine = len(nn_order) % m
-            last = last_on_machine.get(machine)
-            cost = setup_cost[last][job] if last is not None else 0.0
-            if cost < best_cost:
-                best_cost = cost
-                best = job
-        scheduled.add(best)
-        last_on_machine[len(nn_order) % m] = best
-        nn_order.append(best)
-    f1_nn, f2_nn = _estimate_scales_schedule(instance, nn_order)
+    # NN-Greedy
+    nn_sigma = nearest_neighbour_greedy(instance)
+    C_nn = compute_completion_times(nn_sigma, instance)
+    T_nn = compute_tardiness(C_nn, instance)
+    f1_nn = compute_weighted_tardiness(T_nn, instance)
+    f2_nn = compute_setup_cost(nn_sigma, instance)
 
     # Random permutation (guarantees non-zero tardiness on most instances)
     rand_order = list(range(n))
@@ -136,8 +121,8 @@ def estimate_scales(instance: dict, rng=None) -> tuple:
     return f1_scale, f2_scale
 
 
-def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5,
-             f1_scale: float = None, f2_scale: float = None) -> dict:
+def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5, *,
+             f1_scale: float, f2_scale: float) -> dict:
     """
     Full evaluation of a solution.
 
@@ -145,8 +130,8 @@ def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5,
         sigma:    list of m machine sequences (job index lists)
         instance: problem instance dict
         alpha:    objective weighting (0=setup cost only, 1=tardiness only)
-        f1_scale: normalisation scale for weighted tardiness (auto if None)
-        f2_scale: normalisation scale for setup cost (auto if None)
+        f1_scale: normalisation scale for weighted tardiness (use estimate_scales())
+        f2_scale: normalisation scale for setup cost (use estimate_scales())
 
     Returns:
         dict with: weighted_tardiness, setup_cost, composite, makespan,
@@ -158,8 +143,6 @@ def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5,
     T = compute_tardiness(C, instance)
     f1 = compute_weighted_tardiness(T, instance)
     f2 = compute_setup_cost(sigma, instance)
-    if f1_scale is None or f2_scale is None:
-        f1_scale, f2_scale = estimate_scales(instance)
     f1_norm = f1 / f1_scale
     f2_norm = f2 / f2_scale
     F = alpha * f1_norm + (1 - alpha) * f2_norm

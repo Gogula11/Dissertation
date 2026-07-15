@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from src.instance_generator import generate_instance, INSTANCE_CONFIGS
 from src.heuristics import spt, nearest_neighbour_greedy
-from src.evaluator import evaluate
+from src.evaluator import evaluate, estimate_scales
 
 ALPHA = 0.5
 N_SEEDS = 50
@@ -22,9 +22,10 @@ def run(profile="baseline"):
         print(f"Running baselines [{profile}]: {cfg['label']}")
         for seed in range(N_SEEDS):
             inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed, profile=profile)
+            f1s, f2s = estimate_scales(inst)
             for name, fn in [("spt", spt), ("nn_greedy", nearest_neighbour_greedy)]:
                 sigma = fn(inst)
-                ev = evaluate(sigma, inst, alpha=ALPHA)
+                ev = evaluate(sigma, inst, alpha=ALPHA, f1_scale=f1s, f2_scale=f2s)
                 results[cfg["label"]][name].append({
                     "seed": seed,
                     "composite":          ev["composite"],

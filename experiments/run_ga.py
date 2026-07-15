@@ -30,32 +30,20 @@ def run_one(args):
 
 
 def run(profile="baseline"):
-    if _SMOKE:
-        _run_sequential(profile)
-        return
-    tasks = [(cfg, seed, profile) for cfg in INSTANCE_CONFIGS for seed in range(N_SEEDS)]
-    results = {cfg["label"]: [] for cfg in INSTANCE_CONFIGS}
+    tasks = [(cfg, seed, profile) for cfg in _CFG_LIST for seed in range(N_SEEDS)]
+    results = {cfg["label"]: [] for cfg in _CFG_LIST}
 
-    with get_context("spawn").Pool() as pool:
-        for label, data in pool.imap_unordered(run_one, tasks):
+    if _SMOKE:
+        for label, data in map(run_one, tasks):
             results[label].append(data)
             print(f"  Done [{profile}]: {label} seed={data['seed']}")
+    else:
+        with get_context("spawn").Pool() as pool:
+            for label, data in pool.imap_unordered(run_one, tasks):
+                results[label].append(data)
+                print(f"  Done [{profile}]: {label} seed={data['seed']}")
 
     os.makedirs("results/raw", exist_ok=True)
-    path = f"results/raw/ga_{profile}.json"
-    with open(path, "w") as f:
-        json.dump(results, f, indent=2)
-    print(f"Saved: {path}")
-
-
-def _run_sequential(profile):
-    os.makedirs("results/raw", exist_ok=True)
-    results = {}
-    for cfg in _CFG_LIST:
-        for seed in range(N_SEEDS):
-            label, data = run_one((cfg, seed, profile))
-            results.setdefault(label, []).append(data)
-            print(f"  Done [{profile}]: {label} seed={data['seed']}")
     path = f"results/raw/ga_{profile}.json"
     with open(path, "w") as f:
         json.dump(results, f, indent=2)

@@ -46,51 +46,26 @@ def _init_worker(model_path):
 
 
 def run(profile="baseline"):
-    if _SMOKE:
-        _run_sequential(profile)
-        return
     model_path = f"models/ppo_hyperheuristic_{profile}"
-
     tasks = [(cfg, seed, alpha, profile) for cfg in CONFIGS for seed in range(N_SEEDS) for alpha in ALPHAS]
     results = {}
 
-    with get_context("spawn").Pool(initializer=_init_worker, initargs=(model_path,)) as pool:
-        for entry in pool.imap_unordered(run_one, tasks):
+    if _SMOKE:
+        _init_worker(model_path)
+        for entry in map(run_one, tasks):
             label = entry.pop("cfg_label")
             results.setdefault(label, []).append(entry)
             print(f"  [{profile}] {label} seed={entry['seed']} α={entry['alpha']}  "
                   f"GA={entry['ga_composite']:.3f}  Hybrid={entry['hybrid_composite']:.3f}")
-
-    os.makedirs("results/raw", exist_ok=True)
-    path = f"results/raw/sensitivity_{profile}.json"
-    with open(path, "w") as f:
-        json.dump(results, f, indent=2)
-    print(f"\nSaved: {path}")
-
-
-def _run_sequential(profile):
-    _init_worker(f"models/ppo_hyperheuristic_{profile}")
-    os.makedirs("results/raw", exist_ok=True)
-    results = {}
-    for cfg in CONFIGS:
-        for seed in range(N_SEEDS):
-            for alpha in ALPHAS:
-                inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed, profile=profile)
-                ga_result = run_ga(inst, alpha=alpha, seed=seed, n_gen=TOTAL_GENS)
-                hybrid_result = run_hybrid(inst, _worker_model, seed=seed, total_gens=TOTAL_GENS, alpha=alpha)
-                entry = {
-                    "seed": seed,
-                    "alpha": alpha,
-                    "ga_composite": ga_result["best_fitness"],
-                    "ga_weighted_tardiness": ga_result["weighted_tardiness"],
-                    "ga_setup_cost": ga_result["setup_cost"],
-                    "hybrid_composite": hybrid_result["composite"],
-                    "hybrid_weighted_tardiness": hybrid_result["weighted_tardiness"],
-                    "hybrid_setup_cost": hybrid_result["setup_cost"],
-                }
-                results.setdefault(cfg["label"], []).append(entry)
-                print(f"  [{profile}] {cfg['label']} seed={seed} α={alpha}  "
+    else:
+        with get_context("spawn").Pool(initializer=_init_worker, initargs=(model_path,)) as pool:
+            for entry in pool.imap_unordered(run_one, tasks):
+                label = entry.pop("cfg_label")
+                results.setdefault(label, []).append(entry)
+                print(f"  [{profile}] {label} seed={entry['seed']} α={entry['alpha']}  "
                       f"GA={entry['ga_composite']:.3f}  Hybrid={entry['hybrid_composite']:.3f}")
+
+    os.makedirs("results/raw", exist_ok=True)
     path = f"results/raw/sensitivity_{profile}.json"
     with open(path, "w") as f:
         json.dump(results, f, indent=2)
