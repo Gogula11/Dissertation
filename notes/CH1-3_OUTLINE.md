@@ -2,18 +2,18 @@
 
 Your project: Hybrid GA-DRL for PMSP-SDSC (parallel machine scheduling with sequence-dependent setup costs)
 
-Key results from `results_summary.tex` (composite scores, lower=better):
+Key results from `results_summary_baseline.tex` (composite scores, lower=better):
 
 | Config | SPT | NN-Greedy | GA | Hybrid |
 |---|---|---|---|---|
-| large_2m | 0.099 | 0.026 | 0.030 | **0.014** |
-| large_3m | 0.098 | 0.033 | 0.024 | **0.011** |
-| medium_2m | 0.097 | 0.053 | 0.010 | **0.007** |
-| medium_3m | 0.094 | 0.068 | 0.005 | **0.005** |
-| small_2m | 0.099 | 0.089 | 0.006 | **0.006** |
-| small_3m | 0.080 | 0.097 | **0.003** | 0.004 |
+| large_2m | 0.321 | 0.222 | 0.184 | **0.138** |
+| large_3m | 0.317 | 0.199 | 0.211 | **0.144** |
+| medium_2m | 0.305 | 0.195 | 0.105 | 0.103 |
+| medium_3m | 0.297 | 0.192 | 0.097 | 0.100 |
+| small_2m | 0.303 | 0.240 | **0.095** | 0.094 |
+| small_3m | 0.287 | 0.222 | **0.081** | 0.085 |
 
-Narrative: Hybrid beats GA on large instances (47-54% improvement). On small instances, GA and Hybrid are equivalent (search space too small for hyper-heuristic to matter). This is your story.
+Narrative: Hybrid beats GA on large instances (25-32% improvement, p < 0.001). On small/medium instances, GA and Hybrid are equivalent (search space too small for hyper-heuristic to matter). This is your story. Also validated on a realistic profile (14-24% improvement on large).
 
 ---
 
@@ -34,10 +34,10 @@ Narrative: Hybrid beats GA on large instances (47-54% improvement). On small ins
 1. Formalise the PMSP-SDSC problem with asymmetric sequence-dependent cost structure
 2. Implement a synthetic instance generator with calibrated due-date tightness
 3. Implement Shortest Processing Time (SPT) and Nearest-Neighbour Greedy baselines
-4. Implement a Genetic Algorithm with permutation encoding and three mutation operators
-5. Design a Gymnasium environment wrapping the GA with 4D state space and 3-action space
+4. Implement a Genetic Algorithm with permutation encoding and three mutation operators (swap, inversion, insertion)
+5. Design a Gymnasium environment wrapping the GA with 8D state space and 3-action space (swap, inversion, insertion)
 6. Train a PPO agent to select mutation operators dynamically during GA execution
-7. Evaluate all 4 algorithms across 6 instance configurations × 30 seeds (720 runs)
+7. Evaluate all 4 algorithms across 6 instance configurations × 50 seeds (1200 runs per profile) across two evaluation profiles (baseline and realistic)
 8. Perform Wilcoxon signed-rank tests and α sensitivity analysis
 
 ### 1.3 Deliverables (bullet list)
@@ -156,7 +156,7 @@ Brief, balanced survey of available methods:
 | FR2 | Evaluate any sigma solution → composite score (tardiness + setup cost, normalised) | `evaluator.py` |
 | FR3 | Implement SPT and NN-Greedy baselines | `heuristics.py` |
 | FR4 | Run GA with configurable parameters and mutation operators | `ga.py` |
-| FR5 | Wrap GA in Gymnasium environment with 4D state / Discrete(3) action / reward | `ga_env.py` |
+| FR5 | Wrap GA in Gymnasium environment with 8D state / Discrete(3) action / reward | `ga_env.py` |
 | FR6 | Train PPO agent using the environment | `drl_agent.py` |
 | FR7 | Run hybrid GA+PPO inference for any instance | `drl_agent.py` |
 | FR8 | Run 720 experiments, collect results, compute statistical comparisons | `experiments/` |
@@ -194,24 +194,11 @@ Instance Generator (seeded)
 
 #### 3.2.2 Instance Generation
 
-**Colour classes and darkness ranking:**
-| Colour ID | Colour | Darkness |
-|---|---|---|
-| 0 | White | 1 |
-| 1 | Yellow | 2 |
-| 2 | Light Blue | 3 |
-| 3 | Green | 4 |
-| 4 | Red | 5 |
-| 5 | Navy | 6 |
-| 6 | Black | 7 |
+**Colour model:** Two evaluation profiles control colour complexity. The baseline profile uses 7 discrete colour classes (white=1 through black=7) with uniform distribution. The realistic profile uses 12 continuous colour families (white through black, with intermediate families like pink, orange, brown, purple, grey) each with a base darkness, shade variance, dye chemistry (direct/reactive/vat), and 30% colour clustering probability.
 
-**Cost matrix asymmetry rule:**
-```
-S[i][j] = max(0, darkness[i] - darkness[j]) × 10 + noise
-```
-Dark→light: positive cost. Light→dark: ~zero. Yes: S[i][j] ≠ S[j][i].
+**Profile presets:** All parameters (colour model, distribution, clustering, chemistry penalty, proc-colour correlation, customer segments) are bundled into named profiles — "baseline" and "realistic" — selectable via a single `profile` argument to `generate_instance()`.
 
-**Instance configs (6 total):**
+**Primary instance configs (6):**
 | Label | n | m |
 |---|---|---|
 | small_2m | 10 | 2 |
@@ -220,6 +207,8 @@ Dark→light: positive cost. Light→dark: ~zero. Yes: S[i][j] ≠ S[j][i].
 | medium_3m | 20 | 3 |
 | large_2m | 50 | 2 |
 | large_3m | 50 | 3 |
+
+Plus 5 exploratory configs: tiny_2m (5×2), medium_30_3m (30×3), large_5m (50×5), xlarge_5m (100×5), xlarge_10m (100×10).
 
 #### 3.2.3 Solution Representation
 
@@ -235,19 +224,19 @@ Machine 1: jobs 1 → 2 → 4
 
 Pseudocode:
 ```
-function evaluate(sigma, instance, alpha):
+function evaluate(sigma, instance, alpha, f1_scale, f2_scale):
     validate_sigma(sigma, instance.n)
     C = compute_completion_times(sigma, instance)
     T = compute_tardiness(C, instance.due_dates)
     f1 = weighted_tardiness(T, instance.weights)
     f2 = compute_setup_cost(sigma, instance.setup_cost)
-    f1_norm = f1 / mean_f1_across_runs   # normalise to prevent scale dominance
-    f2_norm = f2 / mean_f2_across_runs
+    f1_norm = f1 / f1_scale   # normalise to prevent scale dominance
+    f2_norm = f2 / f2_scale
     composite = alpha × f1_norm + (1-alpha) × f2_norm
     return {composite, f1, f2, makespan, ...}
 ```
 
-**Critical design decision:** Without normalisation, tardiness dominates setup cost by ~10x on large instances. Normalisation makes both objectives equally visible.
+f1_scale, f2_scale are computed externally by estimate_scales() — evaluates SPT, NN-Greedy, and a random schedule, takes max × 1.5 margin.
 
 #### 3.2.5 Baseline Heuristics
 
@@ -279,28 +268,32 @@ m=2 → sigma = [[2,0,4], [1,3]]
 - **Crossover**: Order Crossover (OX) — preserves relative ordering of jobs
 - **Mutation (3 types)**:
   - Swap (indpb=0.05): swap two random positions
-  - Inversion (indpb=0.05): reverse a sub-sequence
-  - Aggressive swap (indpb=0.20): swap many pairs
+  - Inversion: reverse a sub-sequence
+  - Insertion (indpb=0.15): remove-and-reinsert elements
 - **Selection**: tournament (size=3)
 
-**Parameters:** pop_size=100, n_gen=200, cx_prob=0.8, mut_prob=0.2 (tuned on n=10, m=2)
+**Parameters:** pop_size=100, n_gen=300 (experiments), cx_prob=0.8, mut_prob=0.2 (tuned on n=20, m=2)
 
 #### 3.2.7 GA Environment Design (for DRL)
 
-**Observation space (4D Box [0,1]):**
+**Observation space (8D Box [0,1]):**
 | Feature | Definition | Range |
 |---|---|---|
 | best_norm | current best / initial best | [0, 1] |
 | mean_norm | population mean / initial best | [0, ~1] |
 | diversity | mean Hamming distance / n | [0, 1] |
 | stagnation | gens since improvement / total | [0, 1] |
+| n_norm | jobs / 100 | [0, 1] |
+| m_norm | machines / 10 | [0, 1] |
+| cost_mean_norm | mean off-diag setup / max off-diag | [0, 1] |
+| darkness_mean_norm | mean colour darkness / 10 | [0, 1] |
 
 **Action space (Discrete 3):**
 | Action | Operator | Effect |
 |---|---|---|
 | 0 | Swap (indpb=0.05) | Conservative fine-tuning |
-| 1 | Inversion (indpb=0.05) | Moderate disruption |
-| 2 | Aggressive swap (indpb=0.20) | High exploration |
+| 1 | Inversion | Moderate disruption |
+| 2 | Insertion (indpb=0.15) | High exploration |
 
 **Reward:** (best_before - best_after) / best_before — relative improvement each step.
 
@@ -309,27 +302,28 @@ m=2 → sigma = [[2,0,4], [1,3]]
 - **Architecture:** MlpPolicy (2-layer MLP)
 - **Hyperparameters:**
   - learning_rate = 3e-4
-  - n_steps = 512
+  - n_steps = 2048
   - batch_size = 64
   - n_epochs = 10
   - gamma = 0.99
-  - ent_coef = 0.01
-- **Training:** 50,000 timesteps on an instance pool (5 instances, n=20, m=2)
-- **Inference:** deterministic action selection
+  - ent_coef = 0.05
+- **Training:** 100,000 timesteps on an instance pool (110 instances, 11 configs × 10 seeds) with reduced pop_size=25 and total_gens=100
+- **Inference:** deterministic action selection, full pop_size=100 and total_gens=300
 
 #### 3.2.9 Experimental Design
 
 | Algorithm | Seeds | Instance Configs | Runs |
-|---|---|---|---|
-| SPT | 0-29 | 6 | 180 |
-| NN-Greedy | 0-29 | 6 | 180 |
-| GA | 0-29 | 6 | 180 |
-| Hybrid | 0-29 | 6 | 180 |
-| **Total** | | | **720** |
+|---|---|---|---|---|
+| SPT | 0-49 | 6 | 300 |
+| NN-Greedy | 0-49 | 6 | 300 |
+| GA | 0-49 | 6 | 300 |
+| Hybrid | 0-49 | 6 | 300 |
+| **Per profile** | | | **1200** |
 
 Same seed → same instance across all algorithms (paired design).
+Two profiles (baseline + realistic) = 2400 runs total.
 
-**Sensitivity analysis:** re-run GA and Hybrid on medium instances with α = 0.3 and 0.7 (10 seeds each).
+**Sensitivity analysis:** re-run GA and Hybrid on all configurations with α = 0.3, 0.5, 0.7 (30 seeds each).
 
 **Statistical testing:** Wilcoxon signed-rank test (alternative="less": test if hybrid < baseline).
 - p < 0.001: "highly significant"
@@ -371,9 +365,9 @@ Same seed → same instance across all algorithms (paired design).
 | Pseudocode: NN | 3.2.5 | sequential assignment |
 | Chromosome diagram | 3.2.6 | permutation → sigma |
 | Parameter table (GA) | 3.2.6 | pop=100, gen=200, cx=0.8, mut=0.2 |
-| Observation space table | 3.2.7 | 4 features with ranges |
+| Observation space table | 3.2.7 | 8 features with ranges |
 | Action space table | 3.2.7 | 3 actions with effects |
 | Reward definition | 3.2.7 | relative improvement |
-| PPO parameters | 3.2.8 | lr=3e-4, n_steps=512, etc. |
-| Experiment design table | 3.2.9 | 720 runs, 6 configs × 4 algs × 30 seeds |
+| PPO parameters | 3.2.8 | lr=3e-4, n_steps=2048, ent_coef=0.05 |
+| Experiment design table | 3.2.9 | 1200 runs per profile, 6 configs × 4 algs × 50 seeds |
 | Wilcoxon explanation | 3.2.9 | paired, non-parametric |
