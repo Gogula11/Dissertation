@@ -194,5 +194,7 @@ class GAHyperHeuristicEnv(gym.Env):
     def get_best_result(self) -> dict:
         """Call after episode ends. Returns same format as evaluator.evaluate()."""
         sigma = decode_chromosome(list(self.hof[0]), self.instance["m"])
-        return evaluate(sigma, self.instance, self.alpha,
-                        f1_scale=self._f1_scale, f2_scale=self._f2_scale)
+        result = evaluate(sigma, self.instance, self.alpha,
+                          f1_scale=self._f1_scale, f2_scale=self._f2_scale)
+        result["best_sigma"] = sigma
+        return result

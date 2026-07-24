@@ -74,6 +74,59 @@ def compute_makespan(C: np.ndarray) -> float:
     return float(C.max())
 
 
+def extract_schedule(sigma: List[List[int]], instance: dict) -> List[dict]:
+    """
+    Extract full schedule details from a solution sigma.
+
+    Returns list of dicts, one per job, with keys:
+        job, machine, start, end, setup_time, proc_time, colour_id, tardiness
+    """
+    n = instance["n"]
+    proc = instance["proc_times"]
+    setup_t = instance["setup_time"]
+    colours = instance["colour_ids"]
+    due = instance["due_dates"]
+    release = instance["release"]
+
+    rows = []
+    for k, seq in enumerate(sigma):
+        t = 0.0
+        for idx, job in enumerate(seq):
+            t = max(t, release[job])
+            setup = float(setup_t[seq[idx - 1]][job]) if idx > 0 else 0.0
+            t += setup
+            start = t
+            t += float(proc[job])
+            end = t
+            rows.append({
+                "job": int(job),
+                "machine": k,
+                "start": start,
+                "end": end,
+                "setup_time": setup,
+                "proc_time": float(proc[job]),
+                "colour_id": int(colours[job]),
+                "tardiness": max(0.0, end - due[job]),
+            })
+    rows.sort(key=lambda r: r["start"])
+    return rows
+
+
+def print_schedule(rows: List[dict], title: str = "Schedule") -> None:
+    """Print schedule as a formatted table."""
+    print(f"\n{title}")
+    print(f"{'Job':>4} {'Mach':>5} {'Start':>8} {'End':>8} {'Setup':>7} {'Proc':>7} {'Colour':>7} {'Tard':>8}")
+    print("-" * 65)
+    for r in rows:
+        print(f"{r['job']:>4} {r['machine']:>5} {r['start']:>8.1f} {r['end']:>8.1f} "
+              f"{r['setup_time']:>7.1f} {r['proc_time']:>7.1f} {r['colour_id']:>7} {r['tardiness']:>8.1f}")
+    total_tard = sum(r["tardiness"] for r in rows)
+    total_setup = sum(r["setup_time"] for r in rows)
+    makespan = max(r["end"] for r in rows)
+    print("-" * 65)
+    print(f"Total tardiness: {total_tard:.1f}  |  Total setup: {total_setup:.1f}  |  Makespan: {makespan:.1f}")
+
+
 def _estimate_scales_schedule(instance: dict, order: list) -> tuple:
     """Evaluate a job-ordering-based schedule (round-robin to machines)."""
     m = instance["m"]
