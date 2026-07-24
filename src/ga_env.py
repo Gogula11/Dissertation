@@ -4,7 +4,7 @@ Gymnasium environment wrapping the GA for PPO control.
 Each episode = one full GA run.
 Each step    = step_gens generations of the GA with the chosen mutation operator.
 Action       = which mutation operator to use for the next step_gens generations.
-Observation  = 4D vector summarising current GA population state.
+Observation  = 8D vector summarising GA population state and instance context.
 Reward       = relative improvement in best fitness over the step.
 
 Reward rationale:
@@ -42,7 +42,8 @@ class GAHyperHeuristicEnv(gym.Env):
     """
     Gymnasium env where PPO controls the GA's mutation operator selection.
 
-    observation_space: Box(4,) — [best_norm, mean_norm, diversity, stagnation_norm]
+    observation_space: Box(8,) — [best_norm, mean_norm, diversity, stagnation_norm,
+                                  n_norm, m_norm, cost_mean_norm, darkness_mean_norm]
     action_space:      Discrete(3)
       0 = swap mutation (conservative, indpb=0.05)
       1 = inversion mutation (segment reversal)
@@ -73,7 +74,7 @@ class GAHyperHeuristicEnv(gym.Env):
         self.alpha = alpha
         self.max_steps = total_gens // step_gens
 
-        self.observation_space = spaces.Box(low=0.0, high=1.0, shape=(4,), dtype=np.float32)
+        self.observation_space = spaces.Box(low=0.0, high=1.0, shape=(8,), dtype=np.float32)
         self.action_space = spaces.Discrete(3)
 
         # Initialised in reset()
@@ -84,8 +85,11 @@ class GAHyperHeuristicEnv(gym.Env):
         self.best_at_start = None
         self.stagnation_count = 0
         self.last_best = None
+        self._n_norm = 0.0
+        self._m_norm = 0.0
 
     def _obs(self) -> np.ndarray:
+        inst = self.instance
         fitnesses = [ind.fitness.values[0] for ind in self.pop]
         best = float(min(fitnesses))
         mean = float(np.mean(fitnesses))
@@ -95,8 +99,15 @@ class GAHyperHeuristicEnv(gym.Env):
         best_norm = np.clip(best / denom, 0.0, 1.0)
         mean_norm = np.clip(mean / denom, 0.0, 1.0)
 
+        n_jobs = inst["n"]
+        diag_mask = np.eye(n_jobs, dtype=bool)
+        off_diag = inst["setup_cost"][~diag_mask]
+        cost_mean_norm = off_diag.mean() / max(off_diag.max(), 1e-6)
+        darkness_mean_norm = inst["colour_darkness"].mean() / 10.0
+
         return np.array([
             best_norm, mean_norm, div, stag,
+            self._n_norm, self._m_norm, cost_mean_norm, darkness_mean_norm,
         ], dtype=np.float32)
 
     def _apply_action(self, action: int):
@@ -117,6 +128,8 @@ class GAHyperHeuristicEnv(gym.Env):
         self.instance = self.instance_pool[
             int(random.randint(0, len(self.instance_pool) - 1))
         ]
+        self._n_norm = self.instance["n"] / 100.0
+        self._m_norm = self.instance["m"] / 10.0
         self._f1_scale, self._f2_scale = estimate_scales(self.instance)
         self.toolbox = build_toolbox(self.instance, self.alpha, self._f1_scale, self._f2_scale)
         self.pop = self.toolbox.population(n=self.pop_size)

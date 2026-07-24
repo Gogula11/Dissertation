@@ -9,7 +9,7 @@ from src.ga_env import GAHyperHeuristicEnv, _population_diversity
 def test_env_creation():
     inst = generate_instance(n=10, m=2, seed=0)
     env = GAHyperHeuristicEnv(inst, total_gens=10, step_gens=5, pop_size=5)
-    assert env.observation_space.shape == (4,)
+    assert env.observation_space.shape == (8,)
     assert env.observation_space.dtype == np.float32
     assert env.action_space.n == 3
     env.close()
@@ -19,7 +19,7 @@ def test_reset_returns_valid_obs():
     inst = generate_instance(n=10, m=2, seed=0)
     env = GAHyperHeuristicEnv(inst, total_gens=10, step_gens=5, pop_size=5)
     obs, info = env.reset(seed=42)
-    assert obs.shape == (4,)
+    assert obs.shape == (8,)
     assert obs.dtype == np.float32
     assert np.all((obs >= 0.0) & (obs <= 1.0 + 1e-6))
     assert isinstance(info, dict)
@@ -31,7 +31,7 @@ def test_step_action_0():
     env = GAHyperHeuristicEnv(inst, total_gens=10, step_gens=5, pop_size=5)
     env.reset(seed=42)
     obs, reward, terminated, truncated, info = env.step(0)
-    assert obs.shape == (4,)
+    assert obs.shape == (8,)
     assert isinstance(reward, float)
     assert not terminated
     assert not truncated
@@ -43,7 +43,7 @@ def test_step_action_1():
     env = GAHyperHeuristicEnv(inst, total_gens=10, step_gens=5, pop_size=5)
     env.reset(seed=42)
     obs, reward, terminated, truncated, info = env.step(1)
-    assert obs.shape == (4,)
+    assert obs.shape == (8,)
     assert isinstance(reward, float)
     assert not terminated
     assert not truncated
@@ -55,7 +55,7 @@ def test_step_action_2():
     env = GAHyperHeuristicEnv(inst, total_gens=10, step_gens=5, pop_size=5)
     env.reset(seed=42)
     obs, reward, terminated, truncated, info = env.step(2)
-    assert obs.shape == (4,)
+    assert obs.shape == (8,)
     assert isinstance(reward, float)
     assert not terminated
     assert not truncated
