@@ -1,7 +1,7 @@
 """
 Sensitivity analysis: rerun GA + Hybrid on medium configs with α∈{0.3, 0.5, 0.7}, parallelised.
-Run from project root: python experiments/run_sensitivity.py [--profile baseline|realistic]
-Requires trained PPO model at models/ppo_hyperheuristic_{profile}.zip
+Run from project root: python experiments/run_sensitivity.py [--smoke] [--small]
+Requires trained PPO model at models/ppo_hyperheuristic.zip
 """
 
 import json, sys, os, argparse
@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from multiprocessing import get_context
 from stable_baselines3 import PPO
-from src.instance_generator import generate_instance, INSTANCE_CONFIGS
+from src.instance_generator import generate_instance, INSTANCE_CONFIGS, INSTANCE_CONFIGS_SMALL
 from src.ga import run_ga
 from src.drl_agent import run_hybrid
 
@@ -20,8 +20,8 @@ TOTAL_GENS = 100
 
 
 def run_one(args):
-    cfg, seed, alpha, profile = args
-    inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed, profile=profile)
+    cfg, seed, alpha = args
+    inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed)
     ga_result = run_ga(inst, alpha=alpha, seed=seed, n_gen=TOTAL_GENS)
     hybrid_result = run_hybrid(inst, _worker_model, seed=seed, total_gens=TOTAL_GENS, alpha=alpha)
     return {
@@ -45,9 +45,9 @@ def _init_worker(model_path):
     _worker_model = PPO.load(model_path, device="cpu")
 
 
-def run(profile="baseline"):
-    model_path = f"models/ppo_hyperheuristic_{profile}"
-    tasks = [(cfg, seed, alpha, profile) for cfg in CONFIGS for seed in range(N_SEEDS) for alpha in ALPHAS]
+def run():
+    model_path = "models/ppo_hyperheuristic"
+    tasks = [(cfg, seed, alpha) for cfg in CONFIGS for seed in range(N_SEEDS) for alpha in ALPHAS]
     results = {}
 
     if _SMOKE:
@@ -55,32 +55,32 @@ def run(profile="baseline"):
         for entry in map(run_one, tasks):
             label = entry.pop("cfg_label")
             results.setdefault(label, []).append(entry)
-            print(f"  [{profile}] {label} seed={entry['seed']} α={entry['alpha']}  "
+            print(f"  {label} seed={entry['seed']} α={entry['alpha']}  "
                   f"GA={entry['ga_composite']:.3f}  Hybrid={entry['hybrid_composite']:.3f}")
     else:
         with get_context("spawn").Pool(initializer=_init_worker, initargs=(model_path,)) as pool:
             for entry in pool.imap_unordered(run_one, tasks):
                 label = entry.pop("cfg_label")
                 results.setdefault(label, []).append(entry)
-                print(f"  [{profile}] {label} seed={entry['seed']} α={entry['alpha']}  "
+                print(f"  {label} seed={entry['seed']} α={entry['alpha']}  "
                       f"GA={entry['ga_composite']:.3f}  Hybrid={entry['hybrid_composite']:.3f}")
 
     os.makedirs("results/raw", exist_ok=True)
-    path = f"results/raw/sensitivity_{profile}.json"
-    with open(path, "w") as f:
+    with open("results/raw/sensitivity.json", "w") as f:
         json.dump(results, f, indent=2)
-    print(f"\nSaved: {path}")
+    print(f"\nSaved: results/raw/sensitivity.json")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="baseline", choices=["baseline", "realistic"])
     parser.add_argument("--smoke", action="store_true", help="Quick smoke test (tiny config, 3 seeds, n_gen=5)")
+    parser.add_argument("--small", action="store_true", help="Only configs with n <= 50")
     args = parser.parse_args()
     _SMOKE = args.smoke
-    CONFIGS = [c for c in INSTANCE_CONFIGS if c["label"] == "tiny_2m"] if _SMOKE else INSTANCE_CONFIGS
+    CONFIGS = INSTANCE_CONFIGS_SMALL if args.small else INSTANCE_CONFIGS
     if _SMOKE:
         N_SEEDS = 3
+        CONFIGS = [c for c in CONFIGS if c["label"] == "tiny_1m"]
         TOTAL_GENS = 5
         print("[SMOKE] Overriding sensitivity params")
-    run(profile=args.profile)
+    run()

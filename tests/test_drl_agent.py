@@ -10,7 +10,7 @@ def test_make_env_fn():
     inst = generate_instance(n=10, m=2, seed=0)
     fn = make_env_fn([inst], total_gens=10, step_gens=5, pop_size=5)
     env = fn()
-    assert env.observation_space.shape == (8,)
+    assert env.observation_space.shape == (4,)
     assert env.action_space.n == 3
     env.close()
 
