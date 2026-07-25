@@ -1,6 +1,7 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
+import pytest
 from src.instance_generator import generate_instance
 from src.ga import run_ga, decode_chromosome, mutInsertion
 
@@ -24,21 +25,10 @@ def test_ga_sigma_valid():
     assert all_jobs == list(range(10))
 
 
-def test_ga_swap_mutation():
+@pytest.mark.parametrize("strategy", ["swap", "inversion", "insertion"])
+def test_ga_mutation_strategies(strategy):
     inst = generate_instance(n=10, m=2, seed=0)
-    result = run_ga(inst, n_gen=5, pop_size=10, seed=42, mutation_strategy="swap")
-    assert result["best_fitness"] > 0
-
-
-def test_ga_inversion_mutation():
-    inst = generate_instance(n=10, m=2, seed=0)
-    result = run_ga(inst, n_gen=5, pop_size=10, seed=42, mutation_strategy="inversion")
-    assert result["best_fitness"] > 0
-
-
-def test_ga_insertion_mutation():
-    inst = generate_instance(n=10, m=2, seed=0)
-    result = run_ga(inst, n_gen=5, pop_size=10, seed=42, mutation_strategy="insertion")
+    result = run_ga(inst, n_gen=5, pop_size=10, seed=42, mutation_strategy=strategy)
     assert result["best_fitness"] > 0
 
 

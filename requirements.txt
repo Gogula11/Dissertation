@@ -10,4 +10,4 @@ ipykernel==7.2.0
 jupyterlab==4.5.8
 pytest==9.1.1
 pytest-timeout==2.4.0
-pytest-cov==6.1.1
+

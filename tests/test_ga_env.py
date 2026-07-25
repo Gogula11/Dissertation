@@ -1,6 +1,7 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
+import pytest
 import numpy as np
 from src.instance_generator import generate_instance
 from src.ga_env import GAHyperHeuristicEnv, _population_diversity
@@ -26,35 +27,12 @@ def test_reset_returns_valid_obs():
     env.close()
 
 
-def test_step_action_0():
+@pytest.mark.parametrize("action", [0, 1, 2])
+def test_step_action(action):
     inst = generate_instance(n=10, m=2, seed=0)
     env = GAHyperHeuristicEnv(inst, total_gens=10, step_gens=5, pop_size=5)
     env.reset(seed=42)
-    obs, reward, terminated, truncated, info = env.step(0)
-    assert obs.shape == (8,)
-    assert isinstance(reward, float)
-    assert not terminated
-    assert not truncated
-    env.close()
-
-
-def test_step_action_1():
-    inst = generate_instance(n=10, m=2, seed=0)
-    env = GAHyperHeuristicEnv(inst, total_gens=10, step_gens=5, pop_size=5)
-    env.reset(seed=42)
-    obs, reward, terminated, truncated, info = env.step(1)
-    assert obs.shape == (8,)
-    assert isinstance(reward, float)
-    assert not terminated
-    assert not truncated
-    env.close()
-
-
-def test_step_action_2():
-    inst = generate_instance(n=10, m=2, seed=0)
-    env = GAHyperHeuristicEnv(inst, total_gens=10, step_gens=5, pop_size=5)
-    env.reset(seed=42)
-    obs, reward, terminated, truncated, info = env.step(2)
+    obs, reward, terminated, truncated, info = env.step(action)
     assert obs.shape == (8,)
     assert isinstance(reward, float)
     assert not terminated

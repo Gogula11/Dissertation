@@ -112,19 +112,7 @@ def extract_schedule(sigma: List[List[int]], instance: dict) -> List[dict]:
     return rows
 
 
-def print_schedule(rows: List[dict], title: str = "Schedule") -> None:
-    """Print schedule as a formatted table."""
-    print(f"\n{title}")
-    print(f"{'Job':>4} {'Mach':>5} {'Start':>8} {'End':>8} {'Setup':>7} {'Proc':>7} {'Colour':>7} {'Tard':>8}")
-    print("-" * 65)
-    for r in rows:
-        print(f"{r['job']:>4} {r['machine']:>5} {r['start']:>8.1f} {r['end']:>8.1f} "
-              f"{r['setup_time']:>7.1f} {r['proc_time']:>7.1f} {r['colour_id']:>7} {r['tardiness']:>8.1f}")
-    total_tard = sum(r["tardiness"] for r in rows)
-    total_setup = sum(r["setup_time"] for r in rows)
-    makespan = max(r["end"] for r in rows)
-    print("-" * 65)
-    print(f"Total tardiness: {total_tard:.1f}  |  Total setup: {total_setup:.1f}  |  Makespan: {makespan:.1f}")
+
 
 
 def _estimate_scales_schedule(instance: dict, order: list) -> tuple:
@@ -140,7 +128,7 @@ def _estimate_scales_schedule(instance: dict, order: list) -> tuple:
     return f1, f2
 
 
-def estimate_scales(instance: dict, rng=None) -> tuple:
+def estimate_scales(instance: dict) -> tuple:
     """Estimate normalisation scales from heuristic and random schedules.
 
     Runs SPT, NN-Greedy, and a random schedule; takes max of all three
@@ -149,8 +137,7 @@ def estimate_scales(instance: dict, rng=None) -> tuple:
 
     Returns (f1_scale, f2_scale).
     """
-    if rng is None:
-        rng = np.random.default_rng()
+    rng = np.random.default_rng(0)
     n = instance["n"]
     proc = instance["proc_times"]
 
