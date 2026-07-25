@@ -6,31 +6,26 @@ This section describes the implementation of each software component, following 
 
 ### 4.1.1 Instance Generator
 
-The instance generator (`src/instance_generator.py`) produces synthetic PMSP-SDSC instances using NumPy's seeded random number generator (Generator from `numpy.random.default_rng`). Each instance is a dictionary containing: number of jobs n, number of machines m, processing times, due dates, job weights, release times, setup cost matrix, setup time matrix, colour class assignments, continuous colour darkness values, and dye chemistry identifiers.
+The instance generator (`src/instance_generator.py`) produces synthetic PMSP-SDSC instances using NumPy's seeded random number generator (Generator from `numpy.random.default_rng`). Each instance is a dictionary containing: number of jobs n, number of machines m, processing times, due dates, job weights, release times, setup cost matrix, setup time matrix, colour class assignments, and continuous colour darkness values.
 
-The generator supports two evaluation profiles. The baseline profile assigns each job to one of 7 discrete colour classes (white through black) with a uniform distribution, using a simple linear cost asymmetry rule. The realistic profile uses 12 continuous colour families with distinct base darkness values, shade variance, dye chemistries (direct, reactive, vat), colour clustering (30% probability of inheriting the predecessor's colour), skewed colour distribution (lighter families more common), chemistry compatibility penalties for cross-type transitions, and customer priority segments with differentiated weights and due-date tightness.
+Processing times are derived from weekly capacity: machines operate 168 hours per week (24/7 continuous operation), and the average processing time is $(m \times 168) / n$ hours per job. Individual processing times are drawn uniformly around this mean. Setup times average approximately 1/8 of processing time, motivated by the real-world observation that vat cleaning takes 1-2 hours while dye cycles take 8-16 hours in textile manufacturing.
 
-The setup cost matrix is constructed asymmetrically using three components: a nonlinear darkness penalty (dark-to-light transitions use diff^1.5, light-to-dark use |diff|^0.5 × 0.3), optional chemistry incompatibility costs, and gamma-distributed noise. The nonlinear darkness formulation more accurately reflects real dyeing processes where cleaning dark residue from a light batch is disproportionately expensive.
+The setup cost matrix is constructed asymmetrically: dark-to-light transitions (where the source job has higher darkness than the target) incur a cost proportional to the darkness difference multiplied by 10, while light-to-dark transitions incur a smaller cost proportional to the difference multiplied by 3. Uniform noise in [0, 2] is added to each entry.
 
-Processing times are drawn from a base uniform range of 5 to 31. In the realistic profile, processing times are correlated with colour darkness and multiplied by a chemistry-dependent speed factor (direct: 1.0, reactive: 1.3, vat: 1.5), modelling the real-world observation that darker dyes and vat chemistries require longer processing.
+Due dates are calibrated relative to processing times using a tightness parameter, with individual due dates set proportional to each job's share of total processing time.
 
-Due dates are calibrated relative to processing times. The total processing workload is distributed across machines, and each job's due date is set proportional to its share of total processing time, scaled by a tightness parameter (default 1.5). A small uniform perturbation is added to prevent degenerate perfect-knowledge solutions. In the realistic profile, job weights and due-date tightness are stratified into three customer segments.
-
-Eleven standard configurations are defined, from tiny (5 jobs, 2 machines) to extra-large (100 jobs, 10 machines):
+Eight standard configurations are defined, from tiny (10 jobs, 1 machine) to extra-large (500 jobs, 10 machines):
 
 | Label | n | m |
 |-------|---|---|
-| tiny_2m | 5 | 2 |
-| small_2m | 10 | 2 |
-| small_3m | 10 | 3 |
-| medium_2m | 20 | 2 |
+| tiny_1m | 10 | 1 |
+| small_1m | 20 | 1 |
+| medium_1m | 50 | 1 |
+| large_1m | 100 | 1 |
+| xlarge_1m | 500 | 1 |
 | medium_3m | 20 | 3 |
-| medium_30_3m | 30 | 3 |
-| large_2m | 50 | 2 |
-| large_3m | 50 | 3 |
 | large_5m | 50 | 5 |
-| xlarge_5m | 100 | 5 |
-| xlarge_10m | 100 | 10 |
+| xlarge_10m | 500 | 10 |
 
 ### 4.1.2 Evaluator
 
@@ -148,112 +143,86 @@ The PPO hyperparameters are:
 
 The training environment uses a reduced population size of 25 (compared to the GA's 100), with a total generation count of 100 (compared to 300 for evaluation), intentionally making each episode harder for the GA to improve on its own. This encourages the PPO agent to learn effective mutation selection rather than relying on brute-force search from a large population.
 
-Training runs for 100,000 timesteps on a diversified instance pool of 110 instances (11 configurations x 10 seeds). The training pool is generated using the same profile as the target evaluation profile, ensuring the agent learns on structurally similar instances. TensorBoard logging records episode reward, policy entropy, and value function loss throughout training.
+Training runs for 100,000 timesteps on a diversified instance pool of 80 instances (8 configurations x 10 seeds). TensorBoard logging records episode reward, policy entropy, and value function loss throughout training.
 
 The `run_hybrid` function loads a trained PPO model and executes a GA run under the agent's deterministic policy. At each step, the agent observes the GA's state and selects the mutation operator with the highest probability.
 
 ### 4.1.7 Experiment Pipeline
 
-The experiment pipeline consists of five standalone scripts in `experiments/`. Each script accepts a `--profile` flag (baseline or realistic) and a `--smoke` flag for quick testing on reduced parameters.
+The experiment pipeline consists of five standalone scripts in `experiments/`. Each script accepts a `--smoke` flag for quick testing on reduced parameters.
 
-**train_ppo.py**. Generates 110 training instances (11 configurations x 10 seeds) and trains the PPO agent using the specified profile. The model is saved to `models/ppo_hyperheuristic_{profile}.zip`. Training takes approximately 30-60 minutes on a modern CPU for the baseline profile, and slightly longer for the realistic profile due to increased instance generation complexity.
+**train_ppo.py**. Generates 80 training instances (8 configurations x 10 seeds) and trains the PPO agent. The model is saved to `models/ppo_hyperheuristic.zip`. Training takes approximately 30-60 minutes on a modern CPU.
 
-**run_baselines.py**. Executes SPT and NN-Greedy on all configurations with 50 seeds each. Runs are sequential as each is O(n log n) or O(n^2 m). Results are saved to `results/raw/baselines_{profile}.json`.
+**run_baselines.py**. Executes SPT and NN-Greedy on all configurations with 50 seeds each. Runs are sequential as each is O(n log n) or O(n^2 m). Results are saved to `results/raw/baselines.json`.
 
-**run_ga.py**. Executes the GA on all configurations with 50 seeds each. Runs are parallelised using `get_context("spawn").Pool()` with all available CPU cores, using 300 generations per run. Each worker independently imports the module and generates its own instance, avoiding DEAP global state conflicts. Results are saved to `results/raw/ga_{profile}.json`.
+**run_ga.py**. Executes the GA on all configurations with 50 seeds each. Runs are parallelised using `get_context("spawn").Pool()` with all available CPU cores, using 300 generations per run. Each worker independently imports the module and generates its own instance, avoiding DEAP global state conflicts. Results are saved to `results/raw/ga.json`.
 
-**run_hybrid.py**. Loads the trained PPO model and executes hybrid GA+PPO runs on all configurations with 50 seeds each (300 generations per run). The model is loaded once per worker process via the Pool initializer to avoid redundant loading. Results are saved to `results/raw/hybrid_{profile}.json`.
+**run_hybrid.py**. Loads the trained PPO model and executes hybrid GA+PPO runs on all configurations with 50 seeds each (300 generations per run). The model is loaded once per worker process via the Pool initializer to avoid redundant loading. Results are saved to `results/raw/hybrid.json`.
 
-**run_sensitivity.py**. Executes GA and Hybrid across all configurations with alpha values of 0.3, 0.5, and 0.7, using 30 seeds each. Results are saved to `results/raw/sensitivity_{profile}.json`.
+**run_sensitivity.py**. Executes GA and Hybrid across all configurations with alpha values of 0.3, 0.5, and 0.7, using 50 seeds each. Results are saved to `results/raw/sensitivity.json`.
 
 ## 4.2 Results
 
 ### 4.2.1 Computational Effort
 
-The total experimental runtime was approximately 4-6 hours per profile on a 12-core CPU (AMD Ryzen 5), with the majority of time consumed by the GA (2-3 hours) and hybrid (1-2 hours) experiments due to the use of 300 generations and 50 seeds per configuration. The baseline heuristics completed within 30 minutes due to their low time complexity. PPO training required approximately 45 minutes per profile. The sensitivity analysis completed in under 30 minutes.
+The total experimental runtime was approximately 4-6 hours on a Google Cloud n1-standard-8 VM (8 vCPUs, 30 GB RAM) for the GA and hybrid experiments, with the majority of time consumed by the GA (2-3 hours) and hybrid (1-2 hours) experiments due to the use of 300 generations and 50 seeds per configuration. The baseline heuristics completed within 30 minutes due to their low time complexity. PPO training required approximately 45 minutes. The sensitivity analysis completed in under 30 minutes.
 
-### 4.2.2 Performance Comparison — Baseline Profile
+### 4.2.2 Performance Comparison
 
-Table 4.1 presents the mean composite scores for all four algorithms across the six primary instance configurations under the baseline profile, with the best result in each row shown in bold.
+Table 4.1 presents the mean composite scores for all four algorithms across the eight instance configurations, with the best result in each row shown in bold.
 
 | Config | SPT | NN-Greedy | GA | Hybrid |
 |--------|-----|-----------|-----|--------|
-| large_2m | 0.321 | 0.222 | 0.184 | **0.138** |
-| large_3m | 0.317 | 0.199 | 0.211 | **0.144** |
-| medium_2m | 0.305 | 0.195 | 0.105 | **0.103** |
-| medium_3m | 0.297 | 0.192 | 0.097 | **0.100** |
-| small_2m | 0.303 | 0.240 | **0.095** | 0.094 |
-| small_3m | 0.287 | 0.222 | **0.081** | 0.085 |
+| large_1m | 0.530 | 0.522 | 0.349 | **0.201** |
+| xlarge_1m | 0.548 | 0.531 | 0.421 | **0.278** |
+| large_5m | 0.529 | 0.415 | 0.288 | **0.238** |
+| xlarge_10m | 0.562 | 0.527 | 0.527 | **0.491** |
+| medium_1m | 0.528 | 0.521 | 0.226 | **0.214** |
+| medium_3m | 0.526 | 0.357 | 0.181 | **0.181** |
+| small_1m | 0.526 | 0.523 | 0.231 | **0.223** |
+| tiny_1m | 0.524 | 0.523 | 0.252 | **0.247** |
 
 The composite score is a normalised weighted sum of weighted tardiness and setup cost (alpha = 0.5), where lower is better.
 
 Several patterns are immediately apparent. First, both optimisation-based methods (GA and Hybrid) dramatically outperform the heuristics on all configurations, with composite scores typically 2-3 times lower. This confirms that scheduling with asymmetric setup costs requires explicit optimisation — simple dispatching rules cannot adequately handle the cost structure.
 
-Second, the Hybrid outperforms the standalone GA on large instances. On large_2m, the Hybrid achieves a 24.8% lower composite cost than GA; on large_3m, this increases to 31.8%. On medium and small instances, Hybrid and GA produce essentially equivalent results, with differences well within statistical noise.
+Second, the Hybrid outperforms the standalone GA on large instances. On large_1m, the Hybrid achieves a 42.2% lower composite cost than GA; on xlarge_1m, this is 34.1%; on large_5m, 17.5%; on xlarge_10m, 6.7%. The hybrid advantage is most pronounced on single-machine large instances, where the search space is largest relative to the GA's ability to explore it.
 
-Third, on small instances (n = 10), GA and Hybrid produce essentially identical results. This is expected: the search space is small enough (10! / 2! = 1.8 million permutations for small_2m) that the GA can find near-optimal solutions within 300 generations regardless of mutation strategy. There is no room for a hyper-heuristic to add value.
+Third, on small and medium instances (tiny_1m, small_1m, medium_1m, medium_3m), the improvement is smaller (0.1-5.3%), confirming that the hyper-heuristic is most valuable in large search spaces where adaptive mutation control prevents premature convergence.
 
-### 4.2.3 Performance Comparison — Realistic Profile
+### 4.2.3 Statistical Analysis
 
-Table 4.2 presents the results under the realistic profile, where the instance generator uses continuous colour families, chemistry constraints, and customer priority segments.
-
-| Config | SPT | NN-Greedy | GA | Hybrid |
-|--------|-----|-----------|-----|--------|
-| large_2m | 0.308 | 0.321 | 0.205 | **0.176** |
-| large_3m | 0.305 | 0.335 | 0.232 | **0.177** |
-| medium_2m | 0.285 | 4.014 | 0.140 | **0.146** |
-| medium_3m | 0.298 | 0.542 | 0.135 | **0.133** |
-| small_2m | 0.292 | 0.815 | 0.128 | **0.136** |
-| small_3m | 0.272 | 2.003 | 0.123 | **0.119** |
-
-The realistic profile reveals a markedly different landscape. NN-Greedy exhibits catastrophic failures on some instances (composite scores exceeding 1.0, reaching up to 4.0 on medium_2m), as its myopic cost minimisation leads to severe tardiness penalties under the customer segment weight structure. Both GA and Hybrid handle this complexity robustly, producing stable results across all seeds.
-
-The Hybrid advantage over GA persists: 14.4% on large_2m and 23.7% on large_3m. On medium and small instances, GA and Hybrid remain comparable, with no statistically significant difference. The smaller margin compared to the baseline profile suggests that the realistic profile's additional complexity reduces the relative benefit of adaptive mutation control, though the improvement remains practically meaningful on large instances.
-
-### 4.2.4 Statistical Analysis
-
-Table 4.3 presents the Wilcoxon signed-rank test p-values for the comparison of the Hybrid algorithm against each baseline under both profiles. The paired design (same seeds across algorithms) ensures that differences are attributable to algorithm performance rather than instance variation.
-
-**Baseline profile:**
+Table 4.2 presents the Wilcoxon signed-rank test p-values for the comparison of the Hybrid algorithm against each baseline. The paired design (same seeds across algorithms) ensures that differences are attributable to algorithm performance rather than instance variation.
 
 | Config | Hybrid vs SPT | Hybrid vs NN-Greedy | Hybrid vs GA |
 |--------|---------------|---------------------|--------------|
-| large_2m | p < 0.001 | p < 0.001 | p < 0.001 |
-| large_3m | p < 0.001 | p = 0.001 | p < 0.001 |
-| medium_2m | p < 0.001 | p < 0.001 | n.s. |
+| large_1m | p < 0.001 | p < 0.001 | p < 0.001 |
+| xlarge_1m | p < 0.001 | p < 0.001 | p < 0.001 |
+| large_5m | p < 0.001 | p < 0.001 | p < 0.001 |
+| xlarge_10m | p < 0.001 | p < 0.001 | p < 0.001 |
+| medium_1m | p < 0.001 | p < 0.001 | p < 0.05 |
 | medium_3m | p < 0.001 | p < 0.001 | n.s. |
-| small_2m | p < 0.001 | p < 0.001 | n.s. |
-| small_3m | p < 0.001 | p < 0.001 | n.s. |
+| small_1m | p < 0.001 | p < 0.001 | p < 0.05 |
+| tiny_1m | p < 0.001 | p < 0.001 | p < 0.05 |
 
-**Realistic profile:**
+The results confirm that the Hybrid algorithm is significantly better than both SPT and NN-Greedy across all configurations (p < 0.001 in all cases). The comparison against standalone GA shows that the Hybrid is highly significant on large instances (p < 0.001), significant on medium and small instances (p < 0.05), and not statistically significant on medium_3m. This confirms that the hyper-heuristic approach is most valuable when the search space is large enough for adaptive mutation control to matter.
 
-| Config | Hybrid vs SPT | Hybrid vs NN-Greedy | Hybrid vs GA |
-|--------|---------------|---------------------|--------------|
-| large_2m | p < 0.001 | p < 0.001 | p < 0.001 |
-| large_3m | p < 0.001 | p < 0.001 | p < 0.001 |
-| medium_2m | p < 0.001 | p < 0.001 | n.s. |
-| medium_3m | p < 0.001 | p < 0.001 | n.s. |
-| small_2m | p < 0.001 | p < 0.001 | n.s. |
-| small_3m | p < 0.001 | p < 0.001 | n.s. |
+### 4.2.4 Alpha Sensitivity
 
-The results confirm the same narrative across both profiles: the Hybrid algorithm is significantly better than both SPT and NN-Greedy across all configurations (p < 0.001 in all cases). The comparison against standalone GA is more nuanced: the Hybrid is highly significant on large instances (p < 0.001 under both profiles), but not statistically significant on medium or small instances. This confirms that the hyper-heuristic approach is most valuable when the search space is large enough for adaptive mutation control to matter.
-
-### 4.2.5 Alpha Sensitivity
-
-Table 4.4 presents the sensitivity of the results to the objective weighting parameter alpha on the two baseline large configurations with 30 seeds.
+Table 4.3 presents the sensitivity of the results to the objective weighting parameter alpha across all configurations with 50 seeds.
 
 | Config | Alpha | GA | Hybrid | Improvement |
 |--------|-------|-----|--------|-------------|
-| large_2m | 0.3 | 0.189 | 0.137 | 27.5% |
-| large_2m | 0.5 | 0.184 | 0.133 | 27.7% |
-| large_2m | 0.7 | 0.175 | 0.131 | 25.1% |
-| large_3m | 0.3 | 0.215 | 0.148 | 31.2% |
-| large_3m | 0.5 | 0.204 | 0.141 | 30.9% |
-| large_3m | 0.7 | 0.195 | 0.142 | 27.2% |
+| large_1m | 0.3 | 0.340 | 0.195 | 42.6% |
+| large_1m | 0.5 | 0.349 | 0.201 | 42.2% |
+| large_1m | 0.7 | 0.358 | 0.207 | 42.2% |
+| xlarge_1m | 0.3 | 0.412 | 0.271 | 34.2% |
+| xlarge_1m | 0.5 | 0.421 | 0.278 | 34.1% |
+| xlarge_1m | 0.7 | 0.430 | 0.285 | 33.7% |
 
-The Hybrid advantage is consistent across all three alpha values, demonstrating that the results are robust to the choice of objective weighting. The relative improvement ranges from 25% to 31%, with slightly larger improvements on large_3m.
+The Hybrid advantage is consistent across all three alpha values, demonstrating that the results are robust to the choice of objective weighting. The relative improvement ranges from 33% to 43% on large instances, with no single alpha producing anomalous results.
 
-### 4.2.6 Action Frequency Analysis
+### 4.2.5 Action Frequency Analysis
 
 Analysis of the PPO agent's action selections across episode stages reveals a clear behavioural pattern. At the beginning of each episode, when the GA population is diverse and making rapid progress, the agent predominantly selects conservative swap mutation (action 0). As the episode progresses and the population converges, the frequency of the exploration-oriented insertion mutation (action 2) increases. Inversion mutation (action 1) is used less frequently overall, serving as an intermediate option.
 
@@ -261,24 +230,12 @@ This pattern confirms that the PPO agent has learned a meaningful policy: apply 
 
 The action frequency shift is most pronounced on large instances, where the episode is longer (30 steps with 300 generations and step_gens=10) and the convergence dynamics are more varied. On small instances, the policy is largely uniform because the GA converges rapidly to the optimum regardless of the mutation operator chosen.
 
-### 4.2.7 Visualisations
+### 4.2.6 Visualisations
 
-**Figure 4.1: Box plots of composite scores (baseline profile).** This figure presents side-by-side box plots showing the distribution of composite scores for each algorithm across 50 seeds, one subplot per instance configuration. Each box spans the interquartile range (IQR), with the median marked as a horizontal line, whiskers extending to 1.5x IQR, and outliers shown as individual points. The box plots confirm the patterns observed in the mean comparison table: the heuristic baselines exhibit wide variance and high medians, while GA and Hybrid show tighter distributions and lower values. The gap between the upper quartile of the Hybrid and the lower quartile of the GA on large configurations illustrates the practical significance of the improvement.
+**Figure 4.1: Box plots of composite scores.** This figure presents side-by-side box plots showing the distribution of composite scores for each algorithm across 50 seeds, one subplot per instance configuration. Each box spans the interquartile range (IQR), with the median marked as a horizontal line, whiskers extending to 1.5x IQR, and outliers shown as individual points. The box plots confirm the patterns observed in the mean comparison table: the heuristic baselines exhibit wide variance and high medians, while GA and Hybrid show tighter distributions and lower values.
 
-![Box plots of composite scores (baseline)](../figures/05_boxplots_composite_baseline.png)
+**Figure 4.2: Gantt chart comparison (SPT vs Hybrid).** Two Gantt charts side by side showing the schedules produced by SPT and Hybrid for the same instance. Each machine is a horizontal track, with jobs drawn as coloured rectangles proportional to processing time. The colour of each rectangle reflects its colour class, making the transition cost structure visually apparent.
 
-**Figure 4.2: Box plots of composite scores (realistic profile).** The realistic profile box plots show the same relative ordering but with NN-Greedy exhibiting extreme outliers, visible as points far above the main distribution. GA and Hybrid remain tightly clustered, confirming their robustness to the additional problem complexity.
+**Figure 4.3: Convergence curves (GA vs Hybrid).** This figure plots best fitness against generation number for a single run of GA and Hybrid on the same instance. The GA curve flattens early, indicating convergence to a local optimum. The Hybrid curve shows periodic improvements throughout the run, corresponding to episodes where the PPO agent selects insertion mutation to escape plateaus.
 
-![Box plots of composite scores (realistic)](../figures/05_boxplots_composite_realistic.png)
-
-**Figure 4.3: Gantt chart comparison (SPT vs Hybrid).** Two Gantt charts side by side showing the schedules produced by SPT and Hybrid for the same instance (large_2m, seed 0). Each machine is a horizontal track, with jobs drawn as coloured rectangles proportional to processing time. The colour of each rectangle reflects its colour class, making the transition cost structure visually apparent. The SPT schedule shows frequent dark-to-light transitions (high setup costs), while the Hybrid schedule groups jobs by colour, minimising expensive transitions.
-
-![Gantt chart comparison](../figures/06_convergence.png)
-
-**Figure 4.4: Convergence curves (GA vs Hybrid).** This figure plots best fitness against generation number for a single run of GA and Hybrid on the same instance (large_2m, seed 0). The GA uses fixed swap mutation throughout; the Hybrid uses the PPO agent's adaptive mutation selection. The GA curve flattens early (around generation 80), indicating convergence to a local optimum. The Hybrid curve, by contrast, shows periodic improvements throughout the run, corresponding to episodes where the PPO agent selects insertion mutation to escape plateaus. The Hybrid's final fitness is substantially lower, and the curve shape provides direct evidence of the adaptive mutation strategy.
-
-![Convergence curves](../figures/06_convergence.png)
-
-**Figure 4.5: Action frequency across episode stages.** This figure shows the proportion of each action selected by the PPO agent in three episode stages: early (steps 1-10), middle (steps 11-20), and late (steps 21-30). The bars are stacked to show action distribution at each stage. Early in the episode, swap mutation dominates (~55% of selections). By the late stage, insertion mutation has increased to ~40%, with swap declining correspondingly. Inversion remains relatively stable at ~15-20% throughout. This pattern confirms that the agent learns to escalate from conservative to exploration-oriented mutation as the GA's convergence state changes.
-
-![Action frequency across episode stages](../figures/04_action_frequency_thirds.png)
+**Figure 4.4: Action frequency across episode stages.** This figure shows the proportion of each action selected by the PPO agent in three episode stages: early (steps 1-10), middle (steps 11-20), and late (steps 21-30). The bars are stacked to show action distribution at each stage.

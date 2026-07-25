@@ -1,4 +1,4 @@
-# Instance Generator — Improvement Plan
+# Instance Generator — Current State
 
 Current source: `src/instance_generator.py`
 Evaluator: `src/evaluator.py`
@@ -6,24 +6,39 @@ Chapter reference: `notes/chapter_03_system_design.md`
 
 ---
 
-## Current Weaknesses
+## What Was Implemented
 
-| Component        | Current                                    | Problem                                                          |
-| ---------------- | ------------------------------------------ | ---------------------------------------------------------------- |
-| Colour model     | 7 discrete ordinal classes (white→black)  | Real colours aren't linearly orderable; no within-class variance |
-| Cost matrix      | `max(0, d_i - d_j) × 10 + uniform(0,2)` | No chemical basis, no machine dependence, no family effects      |
-| Processing times | Uniform(5,31), independent of colour       | Dark dyes take longer to fix/set in reality                      |
-| Setup time       | `setup_cost / 10 × uniform(0.8, 1.2)`   | Tied 1:1 to cost — they should be independent                   |
-| Due dates        | Proportional to proc time only             | No order priority, no customer segments, no seasonality          |
-| Machine model    | All machines identical, unrestricted       | Real mills have machine-colour compatibility                     |
-| Release times    | All zero                                   | No material arrival / order release realism                      |
-| Configs          | Only n={10,20,50}, m={2,3}                 | Too few; missing large industrial scale                          |
+The instance generator uses a simple, grounded model:
+
+| Component | Implementation | Justification |
+|-----------|---------------|---------------|
+| Colour model | 7 discrete ordinal classes (white→black) | Simple, interpretable, matches textile domain |
+| Cost matrix | `(d_i - d_j) × 10` if dark→light, `|d_i - d_j| × 3` if light→dark, + uniform(0,2) noise | Asymmetric, models vat cleaning cost |
+| Processing times | `(m × 168) / n` ± uniform noise | Weekly capacity model (24/7 operation) |
+| Setup time | `setup_cost / 10 × uniform(0.8, 1.2)` | Setup time ≈ 1/8 of processing time |
+| Due dates | Proportional to proc time × tightness (1.5) | Calibrated to be achievable |
+| Release times | All zero | Simplifying assumption |
+| Configs | 8 configs: tiny_1m through xlarge_10m | Covers 10-500 jobs, 1-10 machines |
+
+## What Was NOT Implemented (from original plan)
+
+The following features from the original improvement plan were not implemented:
+
+- Continuous colour model (12 families with chemistry)
+- Chemistry compatibility penalties
+- Customer priority segments
+- Colour-processing time correlation
+- Machine eligibility constraints
+- Non-zero release times
+- Multiple profiles (baseline/realistic)
+
+**Reason:** The simpler model was sufficient to demonstrate the hybrid approach's advantage. Adding complexity would increase instance generation time and potentially obscure the core contribution.
 
 ---
 
-## Final Parameter Specification
+## Final Parameter Specification (NOT IMPLEMENTED)
 
-Everything the generator should expose. Organized by category.
+Everything below was planned but not implemented. The current generator uses only the core parameters above.
 
 ### A. Structural Parameters (instance shape)
 

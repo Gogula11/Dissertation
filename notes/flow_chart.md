@@ -11,10 +11,10 @@ flowchart TD
     %% ══════════════════════════════════════════════════════════════
     subgraph INPUT ["INPUT"]
         direction TB
-        I1["Instance: n jobs · m machines\nn = {5,10,20,50}   m = {5}"]
-        I2["Per job:  p_j · d_j · w_j\no_j = Lab+RGB+CM (8D)\nκ_j ∈ {direct, reactive, vat, acid}"]
-        I3["Config: α ∈ [0,1]\nprofile ∈ {baseline, realistic}"]
-        I4["GA:  pop=100  gens=300\n     OX p=0.9  tourn k=3"]
+        I1["Instance: n jobs · m machines\nn = {10,20,50,100,500}   m = {1,3,5,10}"]
+        I2["Per job:  p_j · d_j · w_j\ncolour_id ∈ {0..6}\ndarkness ∈ [1, 7]"]
+        I3["Config: α ∈ [0,1]"]
+        I4["GA:  pop=100  gens=300\n     OX p=0.8  tourn k=3"]
         I5["PPO: obs=8D  actions=3\n     lr=3e-4  ent_coef=0.05"]
     end
 
@@ -23,13 +23,10 @@ flowchart TD
     %% ══════════════════════════════════════════════════════════════
     subgraph COST ["COST MATRIX  c_ij"]
         direction TB
-        C1["c_ij = max(0, ΔL)          ← lightness penalty"]
-        C2["     + |Δcolor| / 8        ← avg channel diff"]
-        C3["     + δ(κ_i, κ_j)        ← chemistry mismatch"]
-        C4["     + ε_ij                ← noise"]
-        C5["δ(κ_i,κ_j) = 0 same | 0.5 compat | 1.0 clash"]
-        C6["ε_ij ~ Beta(1,10) × 0.3"]
-        C7["Shape: n×n matrix"]
+        C1["c_ij = (d_i - d_j) × 10     ← dark→light penalty"]
+        C2["     + |d_i - d_j| × 3       ← light→dark base"]
+        C3["     + uniform(0, 2)          ← noise"]
+        C4["Shape: n×n matrix"]
     end
 
     %% ══════════════════════════════════════════════════════════════
@@ -60,7 +57,7 @@ flowchart TD
             G1["init: N random permutations"]
             G2["eval: F = α·f₁/f̂₁ + (1-α)·f₂/f̂₂"]
             G3["tournament select (k=3)"]
-            G4["OX crossover (p=0.9)"]
+            G4["OX crossover (p=0.8)"]
             G5["mutate: swap|inv|insert"]
             G6["elitism: keep top 1"]
             G7["repeat 300 gens"]
@@ -88,7 +85,7 @@ flowchart TD
         O3["f₁ = weighted tardiness Σ w_j T_j"]
         O4["f₂ = total setup cost Σ c_ij"]
         O5["Wilcoxon signed-rank vs each baseline\np-value at α=0.05"]
-        O6["box plots · Gantt charts\nsensitivity: α×config×30 seeds"]
+        O6["box plots · Gantt charts\nsensitivity: α×config×50 seeds"]
     end
 
     %% ══════════════════════════════════════════════════════════════

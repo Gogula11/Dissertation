@@ -2,18 +2,20 @@
 
 Your project: Hybrid GA-DRL for PMSP-SDSC (parallel machine scheduling with sequence-dependent setup costs)
 
-Key results from `results_summary_baseline.tex` (composite scores, lower=better):
+Key results from server run (composite scores, lower=better):
 
 | Config | SPT | NN-Greedy | GA | Hybrid |
 |---|---|---|---|---|
-| large_2m | 0.321 | 0.222 | 0.184 | **0.138** |
-| large_3m | 0.317 | 0.199 | 0.211 | **0.144** |
-| medium_2m | 0.305 | 0.195 | 0.105 | 0.103 |
-| medium_3m | 0.297 | 0.192 | 0.097 | 0.100 |
-| small_2m | 0.303 | 0.240 | **0.095** | 0.094 |
-| small_3m | 0.287 | 0.222 | **0.081** | 0.085 |
+| large_1m | 0.530 | 0.522 | 0.349 | **0.201** |
+| xlarge_1m | 0.548 | 0.531 | 0.421 | **0.278** |
+| large_5m | 0.529 | 0.415 | 0.288 | **0.238** |
+| xlarge_10m | 0.562 | 0.527 | 0.527 | **0.491** |
+| medium_1m | 0.528 | 0.521 | 0.226 | **0.214** |
+| medium_3m | 0.526 | 0.357 | 0.181 | **0.181** |
+| small_1m | 0.526 | 0.523 | 0.231 | **0.223** |
+| tiny_1m | 0.524 | 0.523 | 0.252 | **0.247** |
 
-Narrative: Hybrid beats GA on large instances (25-32% improvement, p < 0.001). On small/medium instances, GA and Hybrid are equivalent (search space too small for hyper-heuristic to matter). This is your story. Also validated on a realistic profile (14-24% improvement on large).
+Narrative: Hybrid beats GA on large instances (34-42% improvement on single-machine, 7-18% on multi-machine, p < 0.001). On small/medium instances, GA and Hybrid are equivalent (search space too small for hyper-heuristic to matter). This is your story.
 
 ---
 
@@ -27,17 +29,17 @@ Narrative: Hybrid beats GA on large instances (25-32% improvement, p < 0.001). O
 - Real-world motivation: textile dyeing — colour transitions create asymmetric costs
 - Problem class: PMSP-SDSC is NP-hard, combinatorial explosion
 - Why hybrid: GAs explore but stagnate; RL can learn when to explore vs exploit
-- Key result summary: "The hybrid achieves 53% lower composite cost than SPT (p<0.001) and 46% lower than plain GA (p<0.01) on large instances"
+- Key result summary: "The hybrid achieves 42% lower composite cost than GA (p<0.001) and 63% lower than SPT (p<0.001) on large single-machine instances"
 
 ### 1.2 Objectives (bullet list)
 
 1. Formalise the PMSP-SDSC problem with asymmetric sequence-dependent cost structure
-2. Implement a synthetic instance generator with calibrated due-date tightness
+2. Implement a synthetic instance generator with weekly capacity calibration and 1/8 setup-time ratio
 3. Implement Shortest Processing Time (SPT) and Nearest-Neighbour Greedy baselines
 4. Implement a Genetic Algorithm with permutation encoding and three mutation operators (swap, inversion, insertion)
 5. Design a Gymnasium environment wrapping the GA with 8D state space and 3-action space (swap, inversion, insertion)
 6. Train a PPO agent to select mutation operators dynamically during GA execution
-7. Evaluate all 4 algorithms across 6 instance configurations × 50 seeds (1200 runs per profile) across two evaluation profiles (baseline and realistic)
+7. Evaluate all 4 algorithms across 8 instance configurations × 50 seeds (1600 runs)
 8. Perform Wilcoxon signed-rank tests and α sensitivity analysis
 
 ### 1.3 Deliverables (bullet list)
@@ -45,7 +47,7 @@ Narrative: Hybrid beats GA on large instances (25-32% improvement, p < 0.001). O
 1. Python package `src/` with 6 modules: instance_generator, evaluator, heuristics, ga, ga_env, drl_agent
 2. Experiment scripts `experiments/run_baselines.py`, `run_ga.py`, `run_hybrid.py`
 3. Trained PPO model at `models/ppo_hyperheuristic.zip`
-4. Full results: 720 JSON files in `results/raw/`
+4. Full results: JSON files in `results/raw/`
 5. Comparison tables, box plots, Gantt charts, convergence curves, action frequency analysis
 6. This dissertation
 
@@ -116,13 +118,13 @@ Told as a narrative arc: here is the problem → here is what people tried → h
 
 Brief, balanced survey of available methods:
 
-- **Instance generation**: seeded numpy RNG, colour classes, calibrated due dates
+- **Instance generation**: seeded numpy RNG, 7 colour classes, weekly capacity calibration, setup time = 1/8 processing time
 - **Solution representation**: sigma = list of m machine sequences
 - **GA frameworks**: DEAP vs PyGAD vs custom — DEAP chosen for toolbox architecture
 - **RL frameworks**: SB3 PPO vs custom — SB3 chosen for reliability and vectorised environments
 - **Environment API**: Gymnasium vs custom loop — Gymnasium chosen for SB3 compatibility
 - **Objective weighting**: α = 0.5 balanced, also test 0.3 and 0.7 for sensitivity
-- **Statistical testing**: Wilcoxon signed-rank (non-parametric, paired) — appropriate for 30-run comparisons
+- **Statistical testing**: Wilcoxon signed-rank (non-parametric, paired) — appropriate for 50-run comparisons
 
 ### 2.3 Choice of Methods (~1-2 pages)
 
@@ -134,9 +136,9 @@ Brief, balanced survey of available methods:
 
 **Why composite objective (α=0.5)?** Balances tardiness (customer satisfaction) and setup cost (manufacturing efficiency). Normalisation prevents one objective dominating.
 
-**Why instance pool training?** Training on a single instance causes overfitting. Training on 5 diverse instances (n=20, m=2, seeds 0-4) forces the agent to learn a generalisable policy.
+**Why instance pool training?** Training on a single instance causes overfitting. Training on 80 diverse instances (8 configs × 10 seeds) forces the agent to learn a generalisable policy.
 
-**Why 30 seeds?** Standard in GA literature for statistically meaningful comparisons. 30 runs × 6 configs × 4 algorithms = 720 total experiments.
+**Why 50 seeds?** Standard in GA literature for statistically meaningful comparisons. 50 runs × 8 configs × 4 algorithms = 1600 total experiments.
 
 **Why Wilcoxon over t-test?** Paired design (same seeds across algorithms), non-parametric (no normality assumption), appropriate for 30 samples.
 
@@ -159,7 +161,7 @@ Brief, balanced survey of available methods:
 | FR5 | Wrap GA in Gymnasium environment with 8D state / Discrete(3) action / reward | `ga_env.py` |
 | FR6 | Train PPO agent using the environment | `drl_agent.py` |
 | FR7 | Run hybrid GA+PPO inference for any instance | `drl_agent.py` |
-| FR8 | Run 720 experiments, collect results, compute statistical comparisons | `experiments/` |
+| FR8 | Run 1600 experiments, collect results, compute statistical comparisons | `experiments/` |
 
 #### 3.1.2 Non-Functional Requirements
 
@@ -196,19 +198,19 @@ Instance Generator (seeded)
 
 **Colour model:** Two evaluation profiles control colour complexity. The baseline profile uses 7 discrete colour classes (white=1 through black=7) with uniform distribution. The realistic profile uses 12 continuous colour families (white through black, with intermediate families like pink, orange, brown, purple, grey) each with a base darkness, shade variance, dye chemistry (direct/reactive/vat), and 30% colour clustering probability.
 
-**Profile presets:** All parameters (colour model, distribution, clustering, chemistry penalty, proc-colour correlation, customer segments) are bundled into named profiles — "baseline" and "realistic" — selectable via a single `profile` argument to `generate_instance()`.
+**Profile presets:** Weekly capacity model: machines run 168 hrs/week, avg proc time = (m × 168) / n.
 
-**Primary instance configs (6):**
+**Instance configs (8):**
 | Label | n | m |
 |---|---|---|
-| small_2m | 10 | 2 |
-| small_3m | 10 | 3 |
-| medium_2m | 20 | 2 |
+| tiny_1m | 10 | 1 |
+| small_1m | 20 | 1 |
+| medium_1m | 50 | 1 |
+| large_1m | 100 | 1 |
+| xlarge_1m | 500 | 1 |
 | medium_3m | 20 | 3 |
-| large_2m | 50 | 2 |
-| large_3m | 50 | 3 |
-
-Plus 5 exploratory configs: tiny_2m (5×2), medium_30_3m (30×3), large_5m (50×5), xlarge_5m (100×5), xlarge_10m (100×10).
+| large_5m | 50 | 5 |
+| xlarge_10m | 500 | 10 |
 
 #### 3.2.3 Solution Representation
 
@@ -314,16 +316,15 @@ m=2 → sigma = [[2,0,4], [1,3]]
 
 | Algorithm | Seeds | Instance Configs | Runs |
 |---|---|---|---|---|
-| SPT | 0-49 | 6 | 300 |
-| NN-Greedy | 0-49 | 6 | 300 |
-| GA | 0-49 | 6 | 300 |
-| Hybrid | 0-49 | 6 | 300 |
-| **Per profile** | | | **1200** |
+| SPT | 0-49 | 8 | 400 |
+| NN-Greedy | 0-49 | 8 | 400 |
+| GA | 0-49 | 8 | 400 |
+| Hybrid | 0-49 | 8 | 400 |
+| **Total** | | | **1600** |
 
 Same seed → same instance across all algorithms (paired design).
-Two profiles (baseline + realistic) = 2400 runs total.
 
-**Sensitivity analysis:** re-run GA and Hybrid on all configurations with α = 0.3, 0.5, 0.7 (30 seeds each).
+**Sensitivity analysis:** re-run GA and Hybrid on all configurations with α = 0.3, 0.5, 0.7 (50 seeds each).
 
 **Statistical testing:** Wilcoxon signed-rank test (alternative="less": test if hybrid < baseline).
 - p < 0.001: "highly significant"
@@ -369,5 +370,5 @@ Two profiles (baseline + realistic) = 2400 runs total.
 | Action space table | 3.2.7 | 3 actions with effects |
 | Reward definition | 3.2.7 | relative improvement |
 | PPO parameters | 3.2.8 | lr=3e-4, n_steps=2048, ent_coef=0.05 |
-| Experiment design table | 3.2.9 | 1200 runs per profile, 6 configs × 4 algs × 50 seeds |
+| Experiment design table | 3.2.9 | 1600 runs, 8 configs × 4 algs × 50 seeds |
 | Wilcoxon explanation | 3.2.9 | paired, non-parametric |

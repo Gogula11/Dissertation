@@ -27,22 +27,20 @@ instance_generator.py  (standalone — generates problem instances)
 
 ## Module-by-Module
 
-### `src/instance_generator.py` (274 lines)
-**What it does:** Creates synthetic scheduling problem instances.
+### `src/instance_generator.py` (131 lines)
+**What it does:** Creates synthetic scheduling problem instances grounded in weekly capacity.
 
 **Key function:**
 ```python
-generate_instance(n, m, seed, profile="baseline") → dict
+generate_instance(n, m, seed) → dict
 ```
-Returns dict with: `proc_times`, `due_dates`, `setup_cost`, `setup_time`, `colour_class`, `darkness`, `chemistry`, etc.
+Returns dict with: `proc_times`, `due_dates`, `setup_cost`, `setup_time`, `colour_ids`, `colour_darkness`, etc.
 
-Two profiles controlled by `profile` param:
-- **baseline** — 7 colour classes, simple cost asymmetry
-- **realistic** — 12 continuous colour families, chemistry penalties, customer segments, colour-processing time correlation
+Colour model: 7 discrete colour classes (white=1 through black=7). Setup cost is asymmetric: dark-to-light transitions are expensive (diff × 10), light-to-dark is cheap (diff × 3). Uniform noise in [0, 2].
 
-Also exports `INSTANCE_CONFIGS` — 11 standard configs from `tiny_2m` (5 jobs, 2 machines) to `xlarge_10m` (100 jobs, 10 machines).
+Also exports `INSTANCE_CONFIGS` — 8 standard configs from `tiny_1m` (10 jobs, 1 machine) to `xlarge_10m` (500 jobs, 10 machines).
 
-**Design note:** Asymmetric setup cost matrix is built from three components: max(0,) lightness penalty (dark→light expensive), colour channel diff, chemistry mismatch penalty. Plus noise. This models real textile dyeing.
+**Design note:** Processing times derived from weekly capacity (168 hrs/week). Setup time averages 1/8 of processing time (vat cleaning vs dye cycle).
 
 ---
 
@@ -136,11 +134,11 @@ run_ga(n, m, instance, pop_size=100, n_gen=300, ...) → {
 
 **Functions:**
 ```python
-train_ppo(profile, total_timesteps=100000, ...) → model
+train_ppo(total_timesteps=100000, ...) → model
 ```
-- Creates vectorised env with instance pool (110 instances: 11 configs × 10 seeds)
+- Creates vectorised env with instance pool (80 instances: 8 configs × 10 seeds)
 - Trains PPO with MlpPolicy
-- Saves model to `models/ppo_hyperheuristic_{profile}.zip`
+- Saves model to `models/ppo_hyperheuristic.zip`
 - Training env uses reduced GA params (pop=25, gens=100) — makes each episode harder for GA alone, giving the agent room to improve
 
 **PPO hyperparameters:** lr=3e-4, n_steps=2048, batch=64, n_epochs=10, gamma=0.99, ent_coef=0.05
@@ -166,16 +164,16 @@ plot_gantt(sigma, instance, title, ax, alpha_eval) → ax
 ## Experiment Pipeline (Run Order)
 
 ```
-1. train_ppo.py --profile X     → trains PPO model
-2. run_baselines.py --profile X → SPT + NN-Greedy results (~2 min)
-3. run_ga.py --profile X        → standalone GA results (~1-2 hrs)
-4. run_hybrid.py --profile X    → GA+PPO results (~1-2 hrs)
-5. run_sensitivity.py --profile X → alpha={0.3,0.5,0.7} comparison (~5 min)
+1. train_ppo.py              → trains PPO model
+2. run_baselines.py          → SPT + NN-Greedy results (~2 min)
+3. run_ga.py                 → standalone GA results (~1-2 hrs)
+4. run_hybrid.py             → GA+PPO results (~1-2 hrs)
+5. run_sensitivity.py        → alpha={0.3,0.5,0.7} comparison (~5 min)
 ```
 
 Steps 2-3 can run in parallel with step 1. Step 4 needs step 1 done.
 
-Each script runs 12 configs × 50 seeds = 600 runs per profile. Results saved to `results/raw/{algorithm}_{profile}.json`.
+Each script runs 8 configs × 50 seeds = 400 runs. Results saved to `results/raw/{algorithm}.json`.
 
 **Notebooks (development + analysis):**
 | Notebook | Purpose |
@@ -198,8 +196,7 @@ Each script runs 12 configs × 50 seeds = 600 runs per profile. Results saved to
 | 8D observation space | Captures GA state (convergence, diversity) + problem context (scale, cost structure) |
 | 3 mutation actions | swap (fine-tune), inversion (medium), insertion (explore) — covers the exploration-exploitation spectrum |
 | Normalized composite objective | Prevents tardiness from dominating setup cost; both objectives contribute |
-| Two profiles (baseline/realistic) | Isolates the effect of problem complexity; baseline validates the method, realistic tests real-world applicability |
+| Two profiles (baseline/realistic) | Removed — single model trained on all configs |
 | Giant-tour encoding | Simple, any permutation maps to a valid schedule via equal-ish split across machines |
 | Instance pool training | Prevents overfitting to a single instance; forces generalisable policy |
 | Wilcoxon signed-rank | Non-parametric, paired by seed — correct for comparing algorithms on same instances |
-| Profile-specific models | Realistic profile has different dynamics; a single model wouldn't handle both well |

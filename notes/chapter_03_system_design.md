@@ -7,14 +7,14 @@ The following functional requirements specify the capabilities that the software
 
 | **ID**  | **Requirement**                                                                                                                                                                                             | **Module**      |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| **FR1** | Generate synthetic PMSP-SDSC instances with a configurable number of jobs$n$, number of machines $m$, evaluation profile (baseline or realistic), and a reproducible random seed.         | instance_generator.py |
+| **FR1** | Generate synthetic PMSP-SDSC instances with a configurable number of jobs$n$, number of machines $m$, and a reproducible random seed.         | instance_generator.py |
 | **FR2** | Evaluate any candidate solution$\sigma$ against a problem instance, computing weighted tardiness, setup costs, a normalised composite score (using externally provided scaling constants), makespan, and per-job completion times.                            | evaluator.py          |
 | **FR3** | Implement Shortest Processing Time (SPT) and Nearest-Neighbour Greedy baseline heuristics that return a complete solution for any valid problem instance.                                                         | heuristics.py         |
 | **FR4** | Run a Genetic Algorithm with a configurable population size, number of generations, crossover probability, mutation probability, and mutation operator selection (swap, inversion, or insertion), returning the best solution found.              | ga.py                 |
 | **FR5** | Wrap the GA execution loop in a Gymnasium environment exposing an eight-dimensional continuous observation space (fitness, convergence, diversity, stagnation, instance size features, and cost structure features), a three-action discrete space, and a reward signal based on relative improvement in best fitness. | ga_env.py             |
 | **FR6** | Train a Proximal Policy Optimisation agent using the Gymnasium environment, supporting configurable training timesteps, an instance pool, reduced population size for training, and policy hyperparameters.                                             | drl_agent.py          |
-| **FR7** | Run hybrid GA+PPO inference for any given problem instance across either evaluation profile, returning the best solution found under the agent's trained mutation operator selection policy.                                                       | drl_agent.py          |
-| **FR8** | Execute experimental runs across four algorithms and multiple instance configurations under both baseline and realistic profiles, collecting all metrics systematically for downstream statistical analysis.                                                  | experiments/          |
+| **FR7** | Run hybrid GA+PPO inference for any given problem instance, returning the best solution found under the agent's trained mutation operator selection policy.                                                       | drl_agent.py          |
+| **FR8** | Execute experimental runs across four algorithms and multiple instance configurations, collecting all metrics systematically for downstream statistical analysis.                                                  | experiments/          |
 
 ### **3.1.2 Non-Functional Requirements**
 
@@ -74,35 +74,31 @@ The instance generator produces a structured Python dictionary containing all pr
 
 ### **3.2.2 Instance Generation**
 
-All problem instances are generated using NumPy's seeded pseudo-random number generator (numpy.random.default_rng), guaranteeing exact reproducibility across distinct execution runs. The generator supports two evaluation profiles — a categorical baseline and a continuous realistic model — that differ in their complexity while sharing the same core structure.
+All problem instances are generated using NumPy's seeded pseudo-random number generator (numpy.random.default_rng), guaranteeing exact reproducibility across distinct execution runs.
 
-**Evaluation profiles.** The baseline profile uses 7 discrete colour classes (white through black) with a uniform colour distribution and a linear cost asymmetry rule. The realistic profile uses 12 continuous colour families (white, pink, yellow, orange, green, blue, brown, red, purple, navy, grey, black), each with a base darkness value, a shade standard deviation, and an associated dye chemistry class (direct, reactive, or vat). The realistic profile additionally enables colour clustering (jobs are more likely to share their predecessor's colour), skewed colour distribution (lighter colours are more common), chemistry compatibility penalties (cross-type transitions incur extra cost), and customer segments (jobs have weight and due-date tightness tiers). This two-profile design tests whether the hybrid approach's performance is robust to variations in problem structure.
+**Colour model.** The instance generator uses 7 discrete colour classes (white through black) with integer darkness values from 1 to 7. Each job is assigned a colour class uniformly at random. The setup cost matrix is asymmetric: dark-to-light transitions (where the source job has higher darkness than the target) incur a cost proportional to the darkness difference multiplied by 10, while light-to-dark transitions incur a smaller cost proportional to the difference multiplied by 3. Uniform noise in [0, 2] is added to each entry.
 
-**Cost matrix model.** The asymmetric setup cost matrix $S$ is constructed using a three-component cost model:
+**Cost matrix model.** The asymmetric setup cost matrix $S$ is constructed as follows:
 
-1. **Darkness penalty.** The cost of transitioning from job $i$ to job $j$ depends on the difference in their darkness values. Dark-to-light transitions (positive difference) incur a nonlinear penalty of $\text{diff}^{1.5}$, while light-to-dark transitions incur a small cleaning cost of $\text{diff}^{0.5} \times 0.3$. This nonlinear formulation more accurately reflects real dyeing processes, where cleaning a dark residue from a light batch is disproportionately expensive.
-2. **Chemistry incompatibility.** When enabled in the realistic profile, transitions between different dye chemistries incur additional cost (e.g., reactive-to-vat: 0.6, direct-to-reactive: 0.3, same-class: minimal).
-3. **Noise.** A gamma-distributed noise term (shape=2, scale=1.0) is added to each entry, modelling rare expensive cleaning events that cannot be predicted solely from colour information.
+1. **Darkness penalty.** The cost of transitioning from job $i$ to job $j$ depends on the difference in their darkness values. Dark-to-light transitions (positive difference) incur a cost of $\text{diff} \times 10$, while light-to-dark transitions incur a smaller cost of $|\text{diff}| \times 3$.
+2. **Noise.** A uniform noise term in $[0, 2]$ is added to each entry, modelling variability in cleaning costs that cannot be predicted solely from colour information.
 
 The diagonal $S[i][i] = 0$ represents zero transition cost when a job of an identical colour follows itself.
 
-**Instance configurations.** Eleven standard problem configurations are defined, spanning tiny, small, medium, large, and extra-large dimensional spaces:
+**Instance configurations.** Eight standard problem configurations are defined, spanning tiny, small, medium, large, and extra-large dimensional spaces:
 
 | **Label** | **n (Jobs)** | **m (Machines)** |
 | --------------- | ------------------ | ---------------------- |
-| tiny_2m         | 5                  | 2                      |
-| small_2m        | 10                 | 2                      |
-| small_3m        | 10                 | 3                      |
-| medium_2m       | 20                 | 2                      |
+| tiny_1m         | 10                 | 1                      |
+| small_1m        | 20                 | 1                      |
+| medium_1m       | 50                 | 1                      |
+| large_1m        | 100                | 1                      |
+| xlarge_1m       | 500                | 1                      |
 | medium_3m       | 20                 | 3                      |
-| medium_30_3m    | 30                 | 3                      |
-| large_2m        | 50                 | 2                      |
-| large_3m        | 50                 | 3                      |
 | large_5m        | 50                 | 5                      |
-| xlarge_5m       | 100                | 5                      |
-| xlarge_10m      | 100                | 10                     |
+| xlarge_10m      | 500                | 10                     |
 
-**Due date calibration and customer segments.** Job due dates are calibrated relative to job processing times using an explicit tightness parameter. The total processing workload is first aggregated and distributed across the machine array, and individual due dates are established proportionally to each job's relative share of the total processing time, scaled directly by the tightness factor. A small, uniform random perturbation is subsequently injected to introduce realistic variance. In the realistic profile, job weights and due-date tightness are further stratified into three customer segments: high-priority (weight 3.0, tight deadlines), standard (weight 1.0), and low-priority (weight 0.33, loose deadlines). Additionally, processing times may be correlated with colour darkness and dye chemistry, modelling the real-world phenomenon where darker dyes and vat chemistries require longer processing.
+**Processing times and due dates.** Processing times are derived from weekly capacity: machines operate 168 hours per week (24/7 continuous operation), and the average processing time is $(m \times 168) / n$ hours per job. Individual processing times are drawn uniformly around this mean. Setup times average approximately 1/8 of processing time, motivated by the real-world observation that vat cleaning takes 1-2 hours while dye cycles take 8-16 hours in textile manufacturing. Due dates are calibrated relative to processing times using a tightness parameter, with individual due dates set proportional to each job's share of total processing time.
 
 ### **3.2.3 Solution Representation**
 
@@ -124,7 +120,7 @@ The evaluator is engineered as a side-effect-free pure function that calculates 
 
 **Algorithm (pseudocode):**
 
-function evaluate(sigma, instance, alpha):
+function evaluate(sigma, instance, alpha, f1_scale, f2_scale):
 
     validate_sigma(sigma, instance.n)
 
@@ -270,7 +266,7 @@ This boundary condition is signaled explicitly as a time-limit truncation rather
 
 The PPO agent is built utilizing Stable-Baselines3 frameworks around a classic multi-layer perceptron (MLP) policy architecture.
 
-**Policy architecture.** The actor-critic policy network consists of an MLP containing two distinct hidden layers. This network processes the incoming four-dimensional observation vector to concurrently output action probability distributions and estimated state values.
+**Policy architecture.** The actor-critic policy network consists of an MLP containing two distinct hidden layers. This network processes the incoming eight-dimensional observation vector to concurrently output action probability distributions and estimated state values.
 
 **Hyperparameters.** The training configuration parameters are established as follows:
 
@@ -283,29 +279,27 @@ The PPO agent is built utilizing Stable-Baselines3 frameworks around a classic m
 | Discount factor ($\gamma$)             | 0.99                 |
 | Entropy coefficient                      | 0.05                 |
 
-**Training.** The learning agent undergoes training for exactly 100,000 distinct timesteps across a diversified instance pool comprising 110 training instances (derived from 11 structural configurations evaluated across 10 unique random seeds each). Instances are sampled uniformly at the start of each episode, and TensorBoard logging tracks reward convergence trajectories, policy entropy, and value function loss values. The training environment uses a reduced population size of 25 (compared to the GA's 100 for evaluation) and a reduced total generation count of 100 (compared to 300 for evaluation), intentionally making each episode harder for the GA to improve on its own and encouraging the PPO agent to learn effective mutation selection rather than relying on brute-force search from a large population.
+**Training.** The learning agent undergoes training for exactly 100,000 distinct timesteps across a diversified instance pool comprising 80 training instances (derived from 8 structural configurations evaluated across 10 unique random seeds each). Instances are sampled uniformly at the start of each episode, and TensorBoard logging tracks reward convergence trajectories, policy entropy, and value function loss values. The training environment uses a reduced population size of 25 (compared to the GA's 100 for evaluation) and a reduced total generation count of 100 (compared to 300 for evaluation), intentionally making each episode harder for the GA to improve on its own and encouraging the PPO agent to learn effective mutation selection rather than relying on brute-force search from a large population.
 
 **Inference.** For evaluation and testing phases, the trained agent is locked into a deterministic inference mode. At each step decision point, it selects the specific action that yields the highest output probability. This ensures completely reproducible evaluation schedules and extracts the policy's best absolute estimate of the optimal mutation operator at any given step.
 
 ### **3.2.9 Experimental Design**
 
-The primary experimental validation design encompasses four distinct algorithms executed across six instance configurations using 50 matching random seeds each, culminating in 1200 individual experimental runs per evaluation profile.
+The primary experimental validation design encompasses four distinct algorithms executed across eight instance configurations using 50 matching random seeds each, culminating in 1600 individual experimental runs.
 
-| **Algorithm**      | **Seeds** | **Instance Configurations** | **Total Runs Per Profile** |
+| **Algorithm**      | **Seeds** | **Instance Configurations** | **Total Runs** |
 | ------------------------ | --------------- | --------------------------------- | -------------------- |
-| SPT Baseline             | 0–49           | 6                                 | 300                  |
-| NN-Greedy Baseline       | 0–49           | 6                                 | 300                  |
-| Standalone GA            | 0–49           | 6                                 | 300                  |
-| Hybrid Approach (GA+PPO) | 0–49           | 6                                 | 300                  |
-| **Per Profile Total**   |                 |                                   | **1200**        |
+| SPT Baseline             | 0–49           | 8                                 | 400                  |
+| NN-Greedy Baseline       | 0–49           | 8                                 | 400                  |
+| Standalone GA            | 0–49           | 8                                 | 400                  |
+| Hybrid Approach (GA+PPO) | 0–49           | 8                                 | 400                  |
+| **Total**   |                 |                                   | **1600**        |
 
-Where the six primary evaluation configurations are small_2m, small_3m, medium_2m, medium_3m, large_2m, and large_3m. The additional configurations (tiny_2m, medium_30_3m, large_5m, xlarge_5m, xlarge_10m) are included for exploratory analysis but excluded from the primary statistical comparison to maintain parallelism with the existing literature.
+Where the eight evaluation configurations are tiny_1m (10×1), small_1m (20×1), medium_1m (50×1), large_1m (100×1), xlarge_1m (500×1), medium_3m (20×3), large_5m (50×5), and xlarge_10m (500×10).
 
 **Paired design.** An identical block of 50 random seeds is hardcoded across all evaluated algorithms for each configuration size. Consequently, for any designated seed and problem setup, all four competing algorithms evaluate the exact same underlying problem instance. This paired approach is required for the subsequent application of the Wilcoxon signed-rank test, which evaluates the statistical relevance of paired coordinate differences.
 
-**Two-profile evaluation.** Each of the two profiles (baseline and realistic) constitutes a complete independent experimental campaign. The baseline profile uses the simpler 7-colour categorical model with uniform colour distribution and no chemistry or customer constraints, while the realistic profile uses the 12-colour continuous model with skewed distribution, chemistry penalties, colour clustering, and customer segments. This dual-profile design tests whether the hybrid approach's performance generalises across problem difficulty levels.
-
-**Sensitivity analysis.** Beyond the primary baseline evaluations fixed at an objective weight of $\alpha = 0.5$, an independent sensitivity analysis is executed across all instance configurations using 30 seeds each. This secondary evaluation uses alternate weights of $\alpha = 0.3$, $\alpha = 0.5$, and $\alpha = 0.7$, verifying whether the relative performance hierarchies of the algorithms remain stable under varied objective function focus.
+**Sensitivity analysis.** Beyond the primary evaluations fixed at an objective weight of $\alpha = 0.5$, an independent sensitivity analysis is executed across all instance configurations using 50 seeds each. This secondary evaluation uses alternate weights of $\alpha = 0.3$, $\alpha = 0.5$, and $\alpha = 0.7$, verifying whether the relative performance hierarchies of the algorithms remain stable under varied objective function focus.
 
 **Statistical testing.** Performance variances are statistically validated using the non-parametric Wilcoxon signed-rank test. The one-tailed setup evaluates the alternative hypothesis that the proposed hybrid GA+PPO technique yields a lower composite cost score than the baseline comparator algorithm. Calculated $p$-values are interpreted according to the following intervals:
 

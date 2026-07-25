@@ -11,21 +11,20 @@ The combinatorial explosion inherent in PMSP-SDSC renders exact optimisation met
 
 Deep Reinforcement Learning offers a complementary capability, as an agent can learn a policy that adapts its behaviour based on the current state of the search process. By framing mutation operator selection as a sequential decision problem, a DRL agent can dynamically choose whether to apply conservative fine-tuning or aggressive exploration depending on the convergence status of the population. This separation of concerns, where the GA explores the solution space while the DRL agent controls the search strategy, forms the central design insight of this project.
 
-The hybrid approach developed in this project achieves 25-32% lower composite cost than the standalone GA (p < 0.001) and 55-57% lower than the Shortest Processing Time heuristic (p < 0.001) on large problem instances under the baseline evaluation profile. These results are robust across a second, more challenging realistic profile with continuous colour families, chemistry constraints, and customer priority segments, where the hybrid maintains a 14-24% advantage over standalone GA (p < 0.001). These findings demonstrate that DRL-guided mutation selection is an effective strategy for improving GA performance on challenging scheduling problems.
+The hybrid approach developed in this project achieves 34-42% lower composite cost than the standalone GA (p < 0.001) on large single-machine instances, and 7-18% lower on multi-machine instances. These results are consistent across instance sizes ranging from 10 to 100 jobs, demonstrating that DRL-guided mutation selection is an effective strategy for improving GA performance on challenging scheduling problems.
 
 **1.2 Objectives**
 
 The following objectives were defined to achieve the overall aim of the project:
 
 1. Formalise the PMSP-SDSC problem with asymmetric sequence-dependent cost structure, including mathematical definitions of weighted tardiness, setup cost, and the composite objective function with normalisation.
-2. Implement a synthetic instance generator that produces reproducible PMSP-SDSC instances with colour-based cost matrices, calibrated due-date tightness, and six configurable sizes (small, medium, large, each with two- and three-machine variants).
+2. Implement a synthetic instance generator that produces reproducible PMSP-SDSC instances with colour-based cost matrices, calibrated due-date tightness, and eight configurable sizes spanning 10 to 100 jobs with 1 to 10 machines.
 3. Implement Shortest Processing Time (SPT) and Nearest-Neighbour Greedy heuristic baselines to serve as lower-bound comparators for the GA and hybrid approaches.
 4. Implement a Genetic Algorithm using the DEAP framework with permutation chromosome encoding, order crossover, three mutation operators (swap, inversion, aggressive swap), and configurable population size, generation count, and crossover and mutation probabilities.
 5. Design a Gymnasium environment that wraps the GA execution loop and exposes an 8-dimensional continuous observation space (normalised best fitness, normalised mean fitness, population diversity, stagnation count, job count, machine count, mean setup cost, and mean colour darkness) and a 3-action discrete space (swap, inversion, insertion mutation), with a reward signal based on relative improvement in best fitness.
-6. Train a Proximal Policy Optimisation (PPO) agent within the Gymnasium environment to learn a mutation selection policy, using an instance pool of 110 diverse training instances across 11 configurations to promote generalisation.
-7. Define two evaluation profiles — a categorical baseline model (7 discrete colour classes) and a continuous realistic model (12 colour families, chemistry constraints, customer priority segments) — to assess robustness across problem difficulty levels.
-8. Evaluate all four algorithms — SPT, NN-Greedy, GA, and Hybrid (GA+PPO) — across six instance configurations with 50 random seeds each, totalling 1200 individual experimental runs per profile.
-9. Perform statistical analysis using Wilcoxon signed-rank tests to assess the significance of performance differences, and conduct a sensitivity analysis across three values of the objective weighting parameter alpha.
+6. Train a Proximal Policy Optimisation (PPO) agent within the Gymnasium environment to learn a mutation selection policy, using an instance pool of 80 diverse training instances across 8 configurations to promote generalisation.
+7. Evaluate all four algorithms — SPT, NN-Greedy, GA, and Hybrid (GA+PPO) — across eight instance configurations with 50 random seeds each, totalling 1600 individual experimental runs.
+8. Perform statistical analysis using Wilcoxon signed-rank tests to assess the significance of performance differences, and conduct a sensitivity analysis across three values of the objective weighting parameter alpha.
 
 ### **1.3 Deliverables**
 
@@ -33,7 +32,7 @@ The following deliverables were produced as part of this project:
 
 1. **A hybrid optimisation and machine learning software framework.** Built using contemporary Python libraries and frameworks including DEAP, Gymnasium, and Stable-Baselines3, designed to solve parallel machine scheduling problems with asymmetric, sequence-dependent setup costs.
 2. **A structured software repository.** Contains the full source code of the system, organised into modules for synthetic instance generation, schedule evaluation, classical baselines, and reinforcement learning agent training.
-3. **Experimental documentation and results.** Provides a comprehensive archive of raw evaluation data stored in JSON format across 720 distinct experimental runs, alongside a suite of visualisations including Gantt charts, box plots, and convergence curves that document system performance.
+3. **Experimental documentation and results.** Provides a comprehensive archive of raw evaluation data stored in JSON format across 1600 distinct experimental runs, alongside a suite of visualisations including Gantt charts, box plots, and convergence curves that document system performance.
 4. **This MSc project report.** A comprehensive dissertation detailing the theoretical background, software design, implementation methodology, and statistical evaluation of the hybrid architecture.
 
 **1.4 Ethical, Legal, and Social Issues**
