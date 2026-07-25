@@ -33,5 +33,6 @@ def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None):
     ax.set_xlabel("Time units")
     ax.set_title(title)
     patches = [mpatches.Patch(color=c, label=f"Colour {i}") for i, c in COLOUR_HEX.items()]
+    patches.append(mpatches.Patch(facecolor="lightgrey", edgecolor="black", hatch="//", label="Setup time"))
     ax.legend(handles=patches, loc="upper right", fontsize=7, ncol=4)
     return ax
