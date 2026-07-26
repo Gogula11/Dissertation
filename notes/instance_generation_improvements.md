@@ -18,7 +18,7 @@ The instance generator uses a simple, grounded model:
 | Setup time | `setup_cost / 10 × uniform(0.8, 1.2)` | Setup time ≈ 1/8 of processing time |
 | Due dates | Proportional to proc time × tightness (1.5) | Calibrated to be achievable |
 | Release times | All zero | Simplifying assumption |
-| Configs | 8 configs: tiny_1m through xlarge_10m | Covers 10-500 jobs, 1-10 machines |
+| Configs | 8 configs: n5_m1 through n500_m10 | Covers 10-500 jobs, 1-10 machines |
 
 ## What Was NOT Implemented (from original plan)
 
@@ -304,14 +304,14 @@ INSTANCE_CONFIGS = [
     {"n": 10, "m": 2, "label": "small_2m"},
     {"n": 10, "m": 3, "label": "small_3m"},
     {"n": 20, "m": 2, "label": "medium_2m"},
-    {"n": 20, "m": 3, "label": "medium_3m"},
+    {"n": 20, "m": 3, "label": "n20_m3"},
     {"n": 30, "m": 3, "label": "medium_30_3m"},
     {"n": 50, "m": 2, "label": "large_2m"},
     {"n": 50, "m": 3, "label": "large_3m"},
-    {"n": 50, "m": 5, "label": "large_5m"},
-    {"n": 100, "m": 5,  "label": "xlarge_5m"},
-    {"n": 100, "m": 10, "label": "xlarge_10m"},
-    {"n": 200, "m": 10, "label": "xxlarge_10m"},
+    {"n": 50, "m": 5, "label": "n50_m5"},
+    {"n": 100, "m": 5,  "label": "xn50_m5"},
+    {"n": 100, "m": 10, "label": "n500_m10"},
+    {"n": 200, "m": 10, "label": "xn500_m10"},
 ]
 ```
 

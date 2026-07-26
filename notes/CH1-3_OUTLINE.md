@@ -6,14 +6,14 @@ Key results from server run (composite scores, lower=better):
 
 | Config | SPT | NN-Greedy | GA | Hybrid |
 |---|---|---|---|---|
-| large_1m | 0.530 | 0.522 | 0.349 | **0.201** |
-| xlarge_1m | 0.548 | 0.531 | 0.421 | **0.278** |
-| large_5m | 0.529 | 0.415 | 0.288 | **0.238** |
-| xlarge_10m | 0.562 | 0.527 | 0.527 | **0.491** |
-| medium_1m | 0.528 | 0.521 | 0.226 | **0.214** |
-| medium_3m | 0.526 | 0.357 | 0.181 | **0.181** |
-| small_1m | 0.526 | 0.523 | 0.231 | **0.223** |
-| tiny_1m | 0.524 | 0.523 | 0.252 | **0.247** |
+| n50_m1 | 0.530 | 0.522 | 0.349 | **0.201** |
+| xn50_m1 | 0.548 | 0.531 | 0.421 | **0.278** |
+| n50_m5 | 0.529 | 0.415 | 0.288 | **0.238** |
+| n500_m10 | 0.562 | 0.527 | 0.527 | **0.491** |
+| n20_m1 | 0.528 | 0.521 | 0.226 | **0.214** |
+| n20_m3 | 0.526 | 0.357 | 0.181 | **0.181** |
+| n10_m1 | 0.526 | 0.523 | 0.231 | **0.223** |
+| n5_m1 | 0.524 | 0.523 | 0.252 | **0.247** |
 
 Narrative: Hybrid beats GA on large instances (34-42% improvement on single-machine, 7-18% on multi-machine, p < 0.001). On small/medium instances, GA and Hybrid are equivalent (search space too small for hyper-heuristic to matter). This is your story.
 
@@ -203,14 +203,14 @@ Instance Generator (seeded)
 **Instance configs (8):**
 | Label | n | m |
 |---|---|---|
-| tiny_1m | 10 | 1 |
-| small_1m | 20 | 1 |
-| medium_1m | 50 | 1 |
-| large_1m | 100 | 1 |
-| xlarge_1m | 500 | 1 |
-| medium_3m | 20 | 3 |
-| large_5m | 50 | 5 |
-| xlarge_10m | 500 | 10 |
+| n5_m1 | 10 | 1 |
+| n10_m1 | 20 | 1 |
+| n20_m1 | 50 | 1 |
+| n50_m1 | 100 | 1 |
+| xn50_m1 | 500 | 1 |
+| n20_m3 | 20 | 3 |
+| n50_m5 | 50 | 5 |
+| n500_m10 | 500 | 10 |
 
 #### 3.2.3 Solution Representation
 

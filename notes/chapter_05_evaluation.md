@@ -18,14 +18,14 @@ These results confirm the central hypothesis of this project: that a PPO hyper-h
 
 | Config | SPT | NN-Greedy | GA | Hybrid |
 |--------|-----|-----------|-----|--------|
-| large_1m | 0.530 | 0.522 | 0.349 | **0.201** |
-| xlarge_1m | 0.548 | 0.531 | 0.421 | **0.278** |
-| large_5m | 0.529 | 0.415 | 0.288 | **0.238** |
-| xlarge_10m | 0.562 | 0.527 | 0.527 | **0.491** |
-| medium_1m | 0.528 | 0.521 | 0.226 | **0.214** |
-| medium_3m | 0.526 | 0.357 | 0.181 | **0.181** |
-| small_1m | 0.526 | 0.523 | 0.231 | **0.223** |
-| tiny_1m | 0.524 | 0.523 | 0.252 | **0.247** |
+| n50_m1 | 0.530 | 0.522 | 0.349 | **0.201** |
+| xn50_m1 | 0.548 | 0.531 | 0.421 | **0.278** |
+| n50_m5 | 0.529 | 0.415 | 0.288 | **0.238** |
+| n500_m10 | 0.562 | 0.527 | 0.527 | **0.491** |
+| n20_m1 | 0.528 | 0.521 | 0.226 | **0.214** |
+| n20_m3 | 0.526 | 0.357 | 0.181 | **0.181** |
+| n10_m1 | 0.526 | 0.523 | 0.231 | **0.223** |
+| n5_m1 | 0.524 | 0.523 | 0.252 | **0.247** |
 
 ## 5.2 Interpretation of Results
 
@@ -33,9 +33,9 @@ The performance advantage of the hybrid approach can be explained through the in
 
 **Large instances.** On large problems (n ≥ 50), the search space is immense. The GA with fixed mutation parameters explores this space effectively in early generations but inevitably converges as the population loses diversity. The PPO agent detects this convergence through the observation features: the best fitness stagnates, the mean fitness approaches the best, and diversity declines. In response, the agent selects insertion mutation, which disrupts the converged population by removing and reinserting jobs at random positions. This allows the GA to escape local optima that would trap a fixed-mutation GA. The cycle of convergence and disruption is managed automatically by the agent, with the frequency of exploration-oriented actions increasing as the episode progresses.
 
-The hybrid advantage is most pronounced on single-machine large instances (large_1m: 42.2%, xlarge_1m: 34.1%), where the search space is largest relative to the GA's ability to explore it. On multi-machine instances (large_5m: 17.5%, xlarge_10m: 6.7%), the advantage is smaller but still significant, suggesting that the multi-machine structure provides additional exploration through the population-based search.
+The hybrid advantage is most pronounced on single-machine large instances (n50_m1: 42.2%, xn50_m1: 34.1%), where the search space is largest relative to the GA's ability to explore it. On multi-machine instances (n50_m5: 17.5%, n500_m10: 6.7%), the advantage is smaller but still significant, suggesting that the multi-machine structure provides additional exploration through the population-based search.
 
-**Medium and small instances.** On medium problems (n = 20) and small problems (n = 10), the same dynamics apply but the margin of improvement is smaller because the GA can cover more of the search space with its fixed operators. On medium_3m, the difference is not statistically significant. This suggests a threshold effect: below approximately n = 30, the GA's fixed mutation operators are sufficient to explore the search space adequately within 300 generations.
+**Medium and small instances.** On medium problems (n = 20) and small problems (n = 10), the same dynamics apply but the margin of improvement is smaller because the GA can cover more of the search space with its fixed operators. On n20_m3, the difference is not statistically significant. This suggests a threshold effect: below approximately n = 30, the GA's fixed mutation operators are sufficient to explore the search space adequately within 300 generations.
 
 **Alpha sensitivity.** The robustness of the hybrid advantage across alpha values suggests that the PPO agent learns a generalisable improvement strategy rather than an objective-specific trick. Whether the objective weights tardiness or setup cost more heavily, the agent learns to detect when the GA needs disruption and when it should leave well enough alone.
 

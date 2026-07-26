@@ -89,14 +89,14 @@ The diagonal $S[i][i] = 0$ represents zero transition cost when a job of an iden
 
 | **Label** | **n (Jobs)** | **m (Machines)** |
 | --------------- | ------------------ | ---------------------- |
-| tiny_1m         | 10                 | 1                      |
-| small_1m        | 20                 | 1                      |
-| medium_1m       | 50                 | 1                      |
-| large_1m        | 100                | 1                      |
-| xlarge_1m       | 500                | 1                      |
-| medium_3m       | 20                 | 3                      |
-| large_5m        | 50                 | 5                      |
-| xlarge_10m      | 500                | 10                     |
+| n5_m1         | 10                 | 1                      |
+| n10_m1        | 20                 | 1                      |
+| n20_m1       | 50                 | 1                      |
+| n50_m1        | 100                | 1                      |
+| xn50_m1       | 500                | 1                      |
+| n20_m3       | 20                 | 3                      |
+| n50_m5        | 50                 | 5                      |
+| n500_m10      | 500                | 10                     |
 
 **Processing times and due dates.** Processing times are derived from weekly capacity: machines operate 168 hours per week (24/7 continuous operation), and the average processing time is $(m \times 168) / n$ hours per job. Individual processing times are drawn uniformly around this mean. Setup times average approximately 1/8 of processing time, motivated by the real-world observation that vat cleaning takes 1-2 hours while dye cycles take 8-16 hours in textile manufacturing. Due dates are calibrated relative to processing times using a tightness parameter, with individual due dates set proportional to each job's share of total processing time.
 
@@ -295,7 +295,7 @@ The primary experimental validation design encompasses four distinct algorithms 
 | Hybrid Approach (GA+PPO) | 0–49           | 8                                 | 400                  |
 | **Total**   |                 |                                   | **1600**        |
 
-Where the eight evaluation configurations are tiny_1m (10×1), small_1m (20×1), medium_1m (50×1), large_1m (100×1), xlarge_1m (500×1), medium_3m (20×3), large_5m (50×5), and xlarge_10m (500×10).
+Where the eight evaluation configurations are n5_m1 (10×1), n10_m1 (20×1), n20_m1 (50×1), n50_m1 (100×1), xn50_m1 (500×1), n20_m3 (20×3), n50_m5 (50×5), and n500_m10 (500×10).
 
 **Paired design.** An identical block of 50 random seeds is hardcoded across all evaluated algorithms for each configuration size. Consequently, for any designated seed and problem setup, all four competing algorithms evaluate the exact same underlying problem instance. This paired approach is required for the subsequent application of the Wilcoxon signed-rank test, which evaluates the statistical relevance of paired coordinate differences.
 

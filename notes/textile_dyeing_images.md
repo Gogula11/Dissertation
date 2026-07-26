@@ -20,6 +20,8 @@ Real-world photos of textile dyeing (fabric + yarn/thread) for Chapter 1 or Chap
 | Resolution | 4909 × 3456 (6.6 MB) |
 | Description | Workers at dye pits in Kano combining dye colours on fabric. Shows real-world batch dyeing context. |
 
+![Traditional dye pits, Kano, Nigeria](https://upload.wikimedia.org/wikipedia/commons/5/54/Dyeing_fabrics.jpg)
+
 **Attribution:**
 > Andy Musa Chantu, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
 
@@ -37,6 +39,8 @@ Real-world photos of textile dyeing (fabric + yarn/thread) for Chapter 1 or Chap
 | Resolution | 640 × 480 (181 KB) |
 | Description | Remains of Hodge print works (c. 1800). Stone vats for cloth dyeing. Shows historical industrial vat infrastructure. |
 
+![Historic dye vats, UK](https://upload.wikimedia.org/wikipedia/commons/a/ad/Dye_vat%27s_-_geograph.org.uk_-_96506.jpg)
+
 **Attribution:**
 > Stephen Burton, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons / Geograph
 
@@ -49,6 +53,8 @@ Real-world photos of textile dyeing (fabric + yarn/thread) for Chapter 1 or Chap
 | URL | https://www.pexels.com/photo/traditional-textile-dyeing-in-industrial-setting-32098556/ |
 | License | Pexels Free (free for commercial use, no attribution required) |
 | Description | Worker dyes fabric in a steaming vat in an industrial setting. Modern factory context. |
+
+![Modern industrial dye vats](https://www.pexels.com/photo/traditional-textile-dyeing-in-industrial-setting-32098556/)
 
 ---
 
@@ -65,6 +71,8 @@ Real-world photos of textile dyeing (fabric + yarn/thread) for Chapter 1 or Chap
 | Author | Weavetex |
 | Resolution | 3264 × 2448 (3.6 MB) |
 | Description | Industrial yarn dyeing machine with lowest liquor ratio. Large metal dyeing vessel in a factory setting. |
+
+![Industrial yarn dyeing machine](https://upload.wikimedia.org/wikipedia/commons/2/2a/YARN_DYEING_MACHING_WITH_LOWEST_LIQUOR_RATIO-_2013-09-27_05-47.jpg)
 
 **Attribution:**
 > Weavetex, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons
@@ -83,6 +91,8 @@ Real-world photos of textile dyeing (fabric + yarn/thread) for Chapter 1 or Chap
 | Resolution | 1728 × 2592 (2.1 MB) |
 | Description | Dyeing machine at the Sjöllingstad Wool Textile Factory museum. Industrial-scale equipment. |
 
+![Wool textile factory dyeing machine](https://upload.wikimedia.org/wikipedia/commons/2/27/Sj%C3%B6llingstad_IMG_3188_dyeing_machine.JPG)
+
 **Attribution:**
 > Bjoertvedt, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons
 
@@ -99,6 +109,8 @@ Real-world photos of textile dyeing (fabric + yarn/thread) for Chapter 1 or Chap
 | Author | Bjoertvedt |
 | Resolution | 1386 × 2294 (1.5 MB) |
 | Description | Dyeing department at the Sjöllingstad Wool Textile Factory. Multiple vats and equipment in a factory hall. |
+
+![Dyeing department, factory hall](https://upload.wikimedia.org/wikipedia/commons/8/83/Sj%C3%B6llingstad_IMG_3190_dyeing_department.JPG)
 
 **Attribution:**
 > Bjoertvedt, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons
@@ -117,6 +129,8 @@ Real-world photos of textile dyeing (fabric + yarn/thread) for Chapter 1 or Chap
 | Resolution | 1979 × 2654 (3.2 MB) |
 | Description | Industrial dye mixing for banana yarn production. Shows precisely defined dye mixing process for each colour. |
 
+![Industrial dye mixing for yarn](https://upload.wikimedia.org/wikipedia/commons/2/2c/36-1-QWSTION-BANANATEX-YARN-DYEING-2.jpg)
+
 **Attribution:**
 > BANANATEX, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
 
@@ -133,6 +147,12 @@ Multiple options from the same author in Punjab, India:
 | `Dyeing.jpg` | Dyed hanks in industrial setting |
 | `Dyeing_(Yarn).jpg` | Space dyeing process |
 | `Multicoloured_yarn.jpg` | Multicoloured space dyed yarns |
+
+![Space dyed yarn hanks](https://upload.wikimedia.org/wikipedia/commons/5/5e/Space_dyeing.jpg)
+![Dyed hanks of yarn](https://upload.wikimedia.org/wikipedia/commons/8/88/Yarn_dyeing.jpg)
+![Dyed hanks in industrial setting](https://upload.wikimedia.org/wikipedia/commons/b/b5/Dyeing.jpg)
+![Space dyeing process](https://upload.wikimedia.org/wikipedia/commons/0/08/Dyeing_%28Yarn%29.jpg)
+![Multicoloured space dyed yarns](https://upload.wikimedia.org/wikipedia/commons/a/a5/Multicoloured_yarn.jpg)
 
 **License:** CC BY-SA 4.0 — Author: RAJIVVASUDEV
 
@@ -152,6 +172,8 @@ Multiple options from the same author in Punjab, India:
 | Author | Indy beetle |
 | Resolution | 3215 × 1445 (1.4 MB) |
 | Description | Exterior of Unifi REPREVE Bottle Recycling Center and package dyeing facility, Reidsville, NC. |
+
+![Package dyeing facility exterior](https://upload.wikimedia.org/wikipedia/commons/c/cd/Unifi_textile_plant_in_Reidsville.jpg)
 
 **Attribution:**
 > Indy beetle, CC0, via Wikimedia Commons
@@ -174,6 +196,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 1647 × 1647 px |
 | Description | Haspelkufe — a hank (skein) dyeing machine with a reel mechanism. Industrial dyeing vat with reel for suspending hanks of yarn. Museum exhibit. |
 
+![Hank dyeing machine with reel mechanism](https://upload.wikimedia.org/wikipedia/commons/1/17/Haspelkufen.jpg)
+
 ---
 
 ### Option E2 — Piece dyeing machine (reel vat)
@@ -188,6 +212,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 800 × 1200 px |
 | Description | Stückfärbemaschine (Haspelkufe) — piece dyeing machine at the Mueller cloth factory, Euskirchen-Kuchenheim, Germany. |
 
+![Piece dyeing machine (reel vat)](https://upload.wikimedia.org/wikipedia/commons/d/d3/MG_0901_stueckfaerbemaschine.jpg)
+
 ---
 
 ### Option E3 — Hank dyeing vat diagram
@@ -201,6 +227,8 @@ Multiple options from the same author in Punjab, India:
 | Author | Ryj |
 | Resolution | 1166 × 1042 px |
 | Description | Schematic diagram of a Haspelkufe — hank/reel dyeing vat showing the mechanical principle. |
+
+![Hank dyeing vat diagram](https://upload.wikimedia.org/wikipedia/commons/4/43/Haspel_2.jpg)
 
 **Attribution:**
 > Ryj, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons
@@ -221,6 +249,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 2765 × 2085 px |
 | Description | Historic photograph (1915) of the dyeing room at Vonwiller & Co., Zamberk/Senftenberg. Multiple industrial dyeing vessels and equipment. |
 
+![Dyeing room, Vonwiller & Co. (1915)](https://upload.wikimedia.org/wikipedia/commons/b/b4/Vonwiller_006.jpg)
+
 ---
 
 ### Option F2 — Italian dye works, Prato (1927)
@@ -235,6 +265,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 1958 × 1304 px |
 | Description | Historic photograph of a dye works in the Prato textile district, Italy, early 1900s. Interior of dye house with multiple vats and workers. |
 
+![Italian dye works, Prato (1927)](https://upload.wikimedia.org/wikipedia/commons/7/71/Tintoria.png)
+
 ---
 
 ### Option F3 — Historic dye works interior, Aarhus
@@ -248,6 +280,8 @@ Multiple options from the same author in Punjab, India:
 | Author | Leif Jorgensen (Dannebrog Spy) |
 | Resolution | 2592 × 1944 px |
 | Description | Interior of a historic dye works (Farveriet) at the Den Gamle By museum in Aarhus, Denmark. Traditional dye workshop with equipment. |
+
+![Historic dye works interior, Aarhus](https://upload.wikimedia.org/wikipedia/commons/c/c1/Den_Gamle_By_-_Farveriet_03.jpg)
 
 **Attribution:**
 > Leif Jorgensen, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
@@ -266,6 +300,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 2796 × 2883 px |
 | Description | Historic photograph (1946) showing bobbins of yarn in a textile company, Netherlands. |
 
+![Yarn bobbins in textile factory (1946)](https://upload.wikimedia.org/wikipedia/commons/d/dc/Klossen_garen_in_textielbedrijf%2C_Bestanddeelnr_901-4043.jpg)
+
 ---
 
 ## Section E — Modern Dyeing Facility
@@ -282,6 +318,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 3328 × 4992 px |
 | Description | Modern industrial dyeing facility interior. Large dyeing machines, control systems, and equipment. |
 
+![Modern dyeing facility interior](https://upload.wikimedia.org/wikipedia/commons/4/47/F%C3%A4rberei.jpg)
+
 ---
 
 ### Option G2 — Dye recipe on machine door
@@ -296,6 +334,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 800 × 1200 px |
 | Description | Door with handwritten dye recipe at the Mueller cloth factory. Shows practical side of industrial dyeing operations. |
 
+![Dye recipe on machine door](https://upload.wikimedia.org/wikipedia/commons/d/d7/MG_0904_tuer_mit_farbrezeptur.jpg)
+
 ---
 
 ### Option G3 — Skein washing machine
@@ -309,6 +349,8 @@ Multiple options from the same author in Punjab, India:
 | Author | Sozi |
 | Resolution | 1200 × 800 px |
 | Description | Strangwaschmaschine — skein washing machine at the Mueller cloth factory. Post-dye washing of yarn in hank form. |
+
+![Skein washing machine](https://upload.wikimedia.org/wikipedia/commons/c/c0/MG_0905_strangwaschmaschinen.jpg)
 
 ---
 
@@ -325,6 +367,8 @@ Multiple options from the same author in Punjab, India:
 | Author | Imus Eus |
 | Resolution | 2048 × 1536 px |
 | Description | Yarn spools from the Mueller cloth factory, pre-1961. Industrial yarn spools in various colours. |
+
+![Coloured yarn spools, Mueller factory](https://upload.wikimedia.org/wikipedia/commons/3/3b/Garnrollen_Tuchfabrik_M%C3%BCller.jpg)
 
 **Attribution:**
 > Imus Eus, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons
@@ -343,6 +387,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 1600 × 1200 px |
 | Description | Colourful yarns on cones at the Textile Museum in Tilburg, Netherlands. Shows dyed yarn cones. |
 
+![Dyed yarn cones, Textile Museum Tilburg](https://upload.wikimedia.org/wikipedia/commons/5/58/Colorful_Yarn_at_Textile_Museum_Tilburg.jpg)
+
 **Attribution:**
 > TripleMagenta, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
 
@@ -359,6 +405,8 @@ Multiple options from the same author in Punjab, India:
 | Author | Emilymaayy |
 | Resolution | 4032 × 3024 px |
 | Description | Worsted rug yarn on cones. Dyed yarn cones ready for tufting or weaving. |
+
+![Worsted rug yarn on cones](https://upload.wikimedia.org/wikipedia/commons/1/18/Worsted_rug_yarn_on_cones.jpg)
 
 **Attribution:**
 > Emilymaayy, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
@@ -377,6 +425,8 @@ Multiple options from the same author in Punjab, India:
 | Resolution | 3872 × 2592 px |
 | Description | Coloured threads/yarns on spools. Multi-colour range showing the output of the dyeing process. |
 
+![Coloured threads on spools](https://upload.wikimedia.org/wikipedia/commons/e/e5/Fios_coloridos_%2813205645904%29.jpg)
+
 **Attribution:**
 > Cicero R. C. Omena, CC BY 2.0 <https://creativecommons.org/licenses/by/2.0>, via Wikimedia Commons
 
@@ -393,6 +443,8 @@ Multiple options from the same author in Punjab, India:
 | Author | Adam Jones |
 | Resolution | 3648 × 2736 px |
 | Description | Dye being squeezed from silk yarn after dyeing. Shows wet dyed silk yarn being mangled/squeezed post-dye. |
+
+![Wet dyed silk yarn after dyeing](https://upload.wikimedia.org/wikipedia/commons/2/24/Dye_Being_Squeezed_from_Silk_-_Prey_Chung_Kran_-_Near_Kampong_Cham_-_Cambodia_%2848362666821%29.jpg)
 
 **Attribution:**
 > Adam Jones, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons

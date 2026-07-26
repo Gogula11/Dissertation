@@ -83,7 +83,7 @@ Outputs by profile:
 | `train_ppo` | ~10 min | 100k timesteps |
 | `run_ga` | ~1–2 hrs | 200 gen × 100 pop (parallelised) |
 | `run_hybrid` | ~1–2 hrs | Reuses GA population + PPO inference |
-| `run_sensitivity` | ~5 min | medium_2m + medium_3m only, 10 seeds |
+| `run_sensitivity` | ~5 min | n20_m1 + n20_m3 only, 10 seeds |
 
 **Total: ~3–6 hrs per profile, ~6–12 hrs both.** Can parallelise across profiles on separate machines.
 

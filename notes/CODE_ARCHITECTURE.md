@@ -38,7 +38,7 @@ Returns dict with: `proc_times`, `due_dates`, `setup_cost`, `setup_time`, `colou
 
 Colour model: 7 discrete colour classes (white=1 through black=7). Setup cost is asymmetric: dark-to-light transitions are expensive (diff × 10), light-to-dark is cheap (diff × 3). Uniform noise in [0, 2].
 
-Also exports `INSTANCE_CONFIGS` — 8 standard configs from `tiny_1m` (10 jobs, 1 machine) to `xlarge_10m` (500 jobs, 10 machines).
+Also exports `INSTANCE_CONFIGS` — 8 standard configs from `n5_m1` (10 jobs, 1 machine) to `n500_m10` (500 jobs, 10 machines).
 
 **Design note:** Processing times derived from weekly capacity (168 hrs/week). Setup time averages 1/8 of processing time (vat cleaning vs dye cycle).
 

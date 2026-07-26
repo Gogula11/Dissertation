@@ -18,14 +18,14 @@ Eight standard configurations are defined, from tiny (10 jobs, 1 machine) to ext
 
 | Label | n | m |
 |-------|---|---|
-| tiny_1m | 10 | 1 |
-| small_1m | 20 | 1 |
-| medium_1m | 50 | 1 |
-| large_1m | 100 | 1 |
-| xlarge_1m | 500 | 1 |
-| medium_3m | 20 | 3 |
-| large_5m | 50 | 5 |
-| xlarge_10m | 500 | 10 |
+| n5_m1 | 10 | 1 |
+| n10_m1 | 20 | 1 |
+| n20_m1 | 50 | 1 |
+| n50_m1 | 100 | 1 |
+| xn50_m1 | 500 | 1 |
+| n20_m3 | 20 | 3 |
+| n50_m5 | 50 | 5 |
+| n500_m10 | 500 | 10 |
 
 ### 4.1.2 Evaluator
 
@@ -173,22 +173,22 @@ Table 4.1 presents the mean composite scores for all four algorithms across the 
 
 | Config | SPT | NN-Greedy | GA | Hybrid |
 |--------|-----|-----------|-----|--------|
-| large_1m | 0.530 | 0.522 | 0.349 | **0.201** |
-| xlarge_1m | 0.548 | 0.531 | 0.421 | **0.278** |
-| large_5m | 0.529 | 0.415 | 0.288 | **0.238** |
-| xlarge_10m | 0.562 | 0.527 | 0.527 | **0.491** |
-| medium_1m | 0.528 | 0.521 | 0.226 | **0.214** |
-| medium_3m | 0.526 | 0.357 | 0.181 | **0.181** |
-| small_1m | 0.526 | 0.523 | 0.231 | **0.223** |
-| tiny_1m | 0.524 | 0.523 | 0.252 | **0.247** |
+| n50_m1 | 0.530 | 0.522 | 0.349 | **0.201** |
+| xn50_m1 | 0.548 | 0.531 | 0.421 | **0.278** |
+| n50_m5 | 0.529 | 0.415 | 0.288 | **0.238** |
+| n500_m10 | 0.562 | 0.527 | 0.527 | **0.491** |
+| n20_m1 | 0.528 | 0.521 | 0.226 | **0.214** |
+| n20_m3 | 0.526 | 0.357 | 0.181 | **0.181** |
+| n10_m1 | 0.526 | 0.523 | 0.231 | **0.223** |
+| n5_m1 | 0.524 | 0.523 | 0.252 | **0.247** |
 
 The composite score is a normalised weighted sum of weighted tardiness and setup cost (alpha = 0.5), where lower is better.
 
 Several patterns are immediately apparent. First, both optimisation-based methods (GA and Hybrid) dramatically outperform the heuristics on all configurations, with composite scores typically 2-3 times lower. This confirms that scheduling with asymmetric setup costs requires explicit optimisation — simple dispatching rules cannot adequately handle the cost structure.
 
-Second, the Hybrid outperforms the standalone GA on large instances. On large_1m, the Hybrid achieves a 42.2% lower composite cost than GA; on xlarge_1m, this is 34.1%; on large_5m, 17.5%; on xlarge_10m, 6.7%. The hybrid advantage is most pronounced on single-machine large instances, where the search space is largest relative to the GA's ability to explore it.
+Second, the Hybrid outperforms the standalone GA on large instances. On n50_m1, the Hybrid achieves a 42.2% lower composite cost than GA; on xn50_m1, this is 34.1%; on n50_m5, 17.5%; on n500_m10, 6.7%. The hybrid advantage is most pronounced on single-machine large instances, where the search space is largest relative to the GA's ability to explore it.
 
-Third, on small and medium instances (tiny_1m, small_1m, medium_1m, medium_3m), the improvement is smaller (0.1-5.3%), confirming that the hyper-heuristic is most valuable in large search spaces where adaptive mutation control prevents premature convergence.
+Third, on small and medium instances (n5_m1, n10_m1, n20_m1, n20_m3), the improvement is smaller (0.1-5.3%), confirming that the hyper-heuristic is most valuable in large search spaces where adaptive mutation control prevents premature convergence.
 
 ### 4.2.3 Statistical Analysis
 
@@ -196,16 +196,16 @@ Table 4.2 presents the Wilcoxon signed-rank test p-values for the comparison of 
 
 | Config | Hybrid vs SPT | Hybrid vs NN-Greedy | Hybrid vs GA |
 |--------|---------------|---------------------|--------------|
-| large_1m | p < 0.001 | p < 0.001 | p < 0.001 |
-| xlarge_1m | p < 0.001 | p < 0.001 | p < 0.001 |
-| large_5m | p < 0.001 | p < 0.001 | p < 0.001 |
-| xlarge_10m | p < 0.001 | p < 0.001 | p < 0.001 |
-| medium_1m | p < 0.001 | p < 0.001 | p < 0.05 |
-| medium_3m | p < 0.001 | p < 0.001 | n.s. |
-| small_1m | p < 0.001 | p < 0.001 | p < 0.05 |
-| tiny_1m | p < 0.001 | p < 0.001 | p < 0.05 |
+| n50_m1 | p < 0.001 | p < 0.001 | p < 0.001 |
+| xn50_m1 | p < 0.001 | p < 0.001 | p < 0.001 |
+| n50_m5 | p < 0.001 | p < 0.001 | p < 0.001 |
+| n500_m10 | p < 0.001 | p < 0.001 | p < 0.001 |
+| n20_m1 | p < 0.001 | p < 0.001 | p < 0.05 |
+| n20_m3 | p < 0.001 | p < 0.001 | n.s. |
+| n10_m1 | p < 0.001 | p < 0.001 | p < 0.05 |
+| n5_m1 | p < 0.001 | p < 0.001 | p < 0.05 |
 
-The results confirm that the Hybrid algorithm is significantly better than both SPT and NN-Greedy across all configurations (p < 0.001 in all cases). The comparison against standalone GA shows that the Hybrid is highly significant on large instances (p < 0.001), significant on medium and small instances (p < 0.05), and not statistically significant on medium_3m. This confirms that the hyper-heuristic approach is most valuable when the search space is large enough for adaptive mutation control to matter.
+The results confirm that the Hybrid algorithm is significantly better than both SPT and NN-Greedy across all configurations (p < 0.001 in all cases). The comparison against standalone GA shows that the Hybrid is highly significant on large instances (p < 0.001), significant on medium and small instances (p < 0.05), and not statistically significant on n20_m3. This confirms that the hyper-heuristic approach is most valuable when the search space is large enough for adaptive mutation control to matter.
 
 ### 4.2.4 Alpha Sensitivity
 
@@ -213,12 +213,12 @@ Table 4.3 presents the sensitivity of the results to the objective weighting par
 
 | Config | Alpha | GA | Hybrid | Improvement |
 |--------|-------|-----|--------|-------------|
-| large_1m | 0.3 | 0.340 | 0.195 | 42.6% |
-| large_1m | 0.5 | 0.349 | 0.201 | 42.2% |
-| large_1m | 0.7 | 0.358 | 0.207 | 42.2% |
-| xlarge_1m | 0.3 | 0.412 | 0.271 | 34.2% |
-| xlarge_1m | 0.5 | 0.421 | 0.278 | 34.1% |
-| xlarge_1m | 0.7 | 0.430 | 0.285 | 33.7% |
+| n50_m1 | 0.3 | 0.340 | 0.195 | 42.6% |
+| n50_m1 | 0.5 | 0.349 | 0.201 | 42.2% |
+| n50_m1 | 0.7 | 0.358 | 0.207 | 42.2% |
+| xn50_m1 | 0.3 | 0.412 | 0.271 | 34.2% |
+| xn50_m1 | 0.5 | 0.421 | 0.278 | 34.1% |
+| xn50_m1 | 0.7 | 0.430 | 0.285 | 33.7% |
 
 The Hybrid advantage is consistent across all three alpha values, demonstrating that the results are robust to the choice of objective weighting. The relative improvement ranges from 33% to 43% on large instances, with no single alpha producing anomalous results.
 

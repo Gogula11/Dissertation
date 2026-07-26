@@ -58,7 +58,7 @@ if __name__ == "__main__":
     _CFG_LIST = INSTANCE_CONFIGS_SMALL if args.small else INSTANCE_CONFIGS
     if _SMOKE:
         N_SEEDS = 3
-        _CFG_LIST = [c for c in _CFG_LIST if c["label"] == "tiny_1m"]
+        _CFG_LIST = [c for c in _CFG_LIST if c["label"] == "n5_m1"]
         GA_PARAMS = {**GA_PARAMS, "n_gen": 10}
         print("[SMOKE] Overriding GA params")
     run()

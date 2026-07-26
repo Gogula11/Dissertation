@@ -20,7 +20,7 @@ The primary contributions of this work are:
 
 The following key findings emerge from this study:
 
-1. **The hybrid approach significantly outperforms standalone GA on large instances.** On the large_1m configuration (n = 100, m = 1), the hybrid achieved composite scores 42% lower than GA (p < 0.001). On xlarge_1m (n = 500, m = 1), the improvement is 34%. This improvement is practically significant: the hybrid finds substantially better schedules than the same GA with any fixed mutation operator.
+1. **The hybrid approach significantly outperforms standalone GA on large instances.** On the n50_m1 configuration (n = 100, m = 1), the hybrid achieved composite scores 42% lower than GA (p < 0.001). On xn50_m1 (n = 500, m = 1), the improvement is 34%. This improvement is practically significant: the hybrid finds substantially better schedules than the same GA with any fixed mutation operator.
 
 2. **The performance gap grows with problem size.** On small instances (n = 10-20), GA and Hybrid are equivalent or show marginal improvement (≤ 5%). On large instances (n ≥ 50), the gap is substantial and significant. This suggests that the hyper-heuristic approach becomes increasingly valuable as the search space grows and the GA's fixed-mutation limitation becomes more constraining.
 

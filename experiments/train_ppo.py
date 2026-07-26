@@ -43,7 +43,7 @@ if __name__ == "__main__":
     TRAIN_CONFIGS = INSTANCE_CONFIGS_SMALL if args.small else INSTANCE_CONFIGS
     if args.smoke:
         TOTAL_TIMESTEPS = 1_000
-        TRAIN_CONFIGS = [c for c in TRAIN_CONFIGS if c["label"] == "tiny_1m"]
+        TRAIN_CONFIGS = [c for c in TRAIN_CONFIGS if c["label"] == "n5_m1"]
         TRAIN_SEEDS = list(range(2))
         print("[SMOKE] Overriding training params")
     run()

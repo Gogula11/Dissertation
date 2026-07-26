@@ -80,7 +80,7 @@ if __name__ == "__main__":
     CONFIGS = INSTANCE_CONFIGS_SMALL if args.small else INSTANCE_CONFIGS
     if _SMOKE:
         N_SEEDS = 3
-        CONFIGS = [c for c in CONFIGS if c["label"] == "tiny_1m"]
+        CONFIGS = [c for c in CONFIGS if c["label"] == "n5_m1"]
         TOTAL_GENS = 5
         print("[SMOKE] Overriding sensitivity params")
     run()
