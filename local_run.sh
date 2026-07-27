@@ -11,7 +11,12 @@ for arg in "$@"; do
     esac
 done
 
-source /home/dopedino/miniforge3/bin/activate dissertation
+# Use already-activated environment (cloud_run.sh or manual activation)
+# Fallback: try local conda env name 'dissertation'
+if [ -z "${VIRTUAL_ENV:-}" ] && [ -z "${CONDA_DEFAULT_ENV:-}" ]; then
+    source /home/dopedino/miniforge3/bin/activate dissertation 2>/dev/null || true
+fi
+
 cd /home/dopedino/Documents/Dissertation
 
 if [ -n "$SMALL" ]; then
