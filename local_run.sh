@@ -17,8 +17,6 @@ if [ -z "${VIRTUAL_ENV:-}" ] && [ -z "${CONDA_DEFAULT_ENV:-}" ]; then
     source /home/dopedino/miniforge3/bin/activate dissertation 2>/dev/null || true
 fi
 
-cd /home/dopedino/Documents/Dissertation
-
 if [ -n "$SMALL" ]; then
     echo "=== Running local experiment pipeline (small configs) ==="
 else
