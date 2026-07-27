@@ -70,7 +70,7 @@ def run_hybrid(
     total_gens: int = 200,
     step_gens: int = 10,
     pop_size: int = 100,
-    alpha: float = 0.5,
+    alpha: float = 0.7,
 ) -> dict:
     """
     Run the GA with the trained PPO hyper-heuristic.

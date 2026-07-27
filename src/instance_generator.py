@@ -115,7 +115,7 @@ def generate_instance(
     
     # Set due dates = SPT completion time + noise, capped at weekly_hours
     # Tight enough that poor scheduling causes tardiness, loose enough that SPT mostly meets them
-    noise = rng.uniform(0, C_spt.max() * 0.1, size=n).astype(np.float32)
+    noise = rng.uniform(0, C_spt.max() * 0.05, size=n).astype(np.float32)
     due_dates = np.minimum(C_spt + noise, weekly_hours)
 
     return {

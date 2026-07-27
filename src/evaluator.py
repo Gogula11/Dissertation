@@ -50,8 +50,12 @@ def compute_completion_times(sigma: List[List[int]], instance: dict) -> np.ndarr
 
 
 def compute_tardiness(C: np.ndarray, instance: dict) -> np.ndarray:
-    """T_i = max(0, C_i - d_i) for each job."""
-    return np.maximum(0.0, C - instance["due_dates"])
+    """T_i = max(0, C_i - d_i) + urgency penalty for jobs within 10% of deadline."""
+    due = instance["due_dates"]
+    tardy = np.maximum(0.0, C - due)
+    deadline_zone = np.maximum(0.0, 1.0 - (due - C) / (due * 0.1 + 1e-6))
+    urgency = np.where((C > due * 0.9) & (C <= due), deadline_zone * 0.5, 0.0)
+    return tardy + urgency
 
 
 def compute_weighted_tardiness(T: np.ndarray, instance: dict) -> float:
@@ -172,7 +176,7 @@ def estimate_scales(instance: dict) -> tuple:
     return f1_scale, f2_scale
 
 
-def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5, *,
+def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.7, *,
              f1_scale: float, f2_scale: float) -> dict:
     """
     Full evaluation of a solution.

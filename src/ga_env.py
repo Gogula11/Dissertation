@@ -60,7 +60,7 @@ class GAHyperHeuristicEnv(gym.Env):
         pop_size: int = 100,
         cx_prob: float = 0.8,
         mut_prob: float = 0.2,
-        alpha: float = 0.5,
+        alpha: float = 0.7,
         instance_pool: list = None,
     ):
         super().__init__()
