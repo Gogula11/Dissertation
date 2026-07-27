@@ -141,7 +141,7 @@ INSTANCE_CONFIGS = [
     {"n": 20,  "m": 3,  "label": "n20_m3"},
     {"n": 50,  "m": 5,  "label": "n50_m5"},
     {"n": 100, "m": 5,  "label": "n100_m5"},
-    {"n": 500, "m": 10, "label": "n500_m10"},
+    {"n": 100, "m": 10, "label": "n100_m10"},
 ]
 
 INSTANCE_CONFIGS_SMALL = [c for c in INSTANCE_CONFIGS if c["n"] <= 50]

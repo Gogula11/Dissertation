@@ -3,6 +3,7 @@ __pycache__/
 *$py.class
 .ipynb_checkpoints/
 results/raw/
+*.tar.gz
 *.zip
 !*.zip.final
 .DS_Store
