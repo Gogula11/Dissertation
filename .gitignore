@@ -16,4 +16,6 @@ htmlcov/
 .venv
 env/
 venv/
+logs/
+*.log
 .directory
