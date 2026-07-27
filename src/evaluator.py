@@ -112,6 +112,17 @@ def extract_schedule(sigma: List[List[int]], instance: dict) -> List[dict]:
     return rows
 
 
+def print_schedule(rows: List[dict], title: str = "") -> None:
+    """Pretty-print a schedule extracted by extract_schedule()."""
+    if title:
+        print(f"\n{'='*80}\n  {title}\n{'='*80}")
+    header = f"{'Job':>4} {'Mach':>5} {'Start':>8} {'End':>8} {'Proc':>7} {'Setup':>7} {'Colour':>7} {'Tardy':>7}"
+    print(header)
+    print("-" * len(header))
+    for r in rows:
+        print(f"{r['job']:>4} {r['machine']:>5} {r['start']:>8.1f} {r['end']:>8.1f} "
+              f"{r['proc_time']:>7.1f} {r['setup_time']:>7.1f} {r['colour_id']:>7} {r['tardiness']:>7.1f}")
+    print(f"{'Total jobs:':>22} {len(rows)}")
 
 
 

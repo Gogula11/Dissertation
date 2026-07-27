@@ -4,9 +4,9 @@ import numpy as np
 
 from src.instance_generator import COLOUR_HEX
 
-def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None):
+def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None, add_legend=True):
     if ax is None:
-        _, ax = plt.subplots(figsize=(14, 4))
+        _, ax = plt.subplots(figsize=(14, 7))
 
     proc     = instance["proc_times"]
     setup_t  = instance["setup_time"]
@@ -32,7 +32,15 @@ def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None):
     ax.set_yticklabels([f"Machine {k}" for k in range(m)])
     ax.set_xlabel("Time (hours)")
     ax.set_title(title)
-    patches = [mpatches.Patch(color=c, label=f"Colour {i}") for i, c in COLOUR_HEX.items()]
-    patches.append(mpatches.Patch(facecolor="lightgrey", edgecolor="black", hatch="//", label="Setup time"))
-    ax.legend(handles=patches, loc="upper right", fontsize=7, ncol=4)
+    
+    # Highlight 168-hour (1 week) mark
+    ax.axvline(x=168, color='red', linestyle='--', linewidth=1.5, alpha=0.7, label='1 week (168h)')
+    
+    if add_legend:
+        patches = [mpatches.Patch(color=c, label=f"Colour {i}") for i, c in COLOUR_HEX.items()]
+        patches.append(mpatches.Patch(facecolor="lightgrey", edgecolor="black", hatch="//", label="Setup time"))
+        patches.append(plt.Line2D([0], [0], color='red', linestyle='--', linewidth=1.5, label='1 week (168h)'))
+        fig = ax.get_figure()
+        fig.legend(handles=patches, loc="lower center", bbox_to_anchor=(0.5, -0.06), fontsize=11, ncol=4,
+                   frameon=True, fancybox=True, shadow=True)
     return ax

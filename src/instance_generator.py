@@ -16,7 +16,7 @@ A 'problem instance' is a dict with:
 Justification:
   - Machines run 168 hrs/week (24/7 continuous textile operation).
   - Avg processing time = (m * 168) / n, so total work fills exactly one week.
-  - Due dates are spread proportionally within the week following SPT order.
+  - Due dates based on SPT heuristic completion times (parallel processing across m machines).
   - Setup time averages 1/8 of processing time (vat cleaning ~1-2 hrs vs dye cycle ~8-16 hrs).
   - Setup cost is asymmetric: dark-to-light transitions are expensive (deep vat cleaning).
 """
@@ -96,12 +96,27 @@ def generate_instance(
     setup_time = norm_setup * proc_times.mean() / 8.0
     np.fill_diagonal(setup_time, 0.0)
 
-    # Due dates — proportional within the week, following SPT order
-    order = np.argsort(proc_times)
-    cum = np.cumsum(proc_times[order])
-    due_dates = np.empty(n, dtype=np.float32)
-    due_dates[order] = (cum / cum[-1]) * weekly_hours
-    due_dates += rng.uniform(0, weekly_hours / n, size=n).astype(np.float32)
+    # Due dates — based on SPT heuristic completion times (parallel processing)
+    # This ensures due dates are realistic and achievable with good scheduling
+    from src.heuristics import spt
+    sigma_spt = spt({"n": n, "m": m, "proc_times": proc_times,
+                      "setup_time": setup_time, "colour_ids": colour_ids,
+                      "colour_darkness": colour_darkness, "setup_cost": setup_cost})
+    
+    # Compute actual completion times using SPT schedule
+    C_spt = np.zeros(n, dtype=np.float32)
+    for machine_seq in sigma_spt:
+        t = 0.0
+        for idx, job in enumerate(machine_seq):
+            if idx > 0:
+                t += setup_time[machine_seq[idx-1]][job]
+            t += proc_times[job]
+            C_spt[job] = t
+    
+    # Set due dates = SPT completion time + noise, capped at weekly_hours
+    # Tight enough that poor scheduling causes tardiness, loose enough that SPT mostly meets them
+    noise = rng.uniform(0, C_spt.max() * 0.1, size=n).astype(np.float32)
+    due_dates = np.minimum(C_spt + noise, weekly_hours)
 
     return {
         "n": n,
@@ -125,6 +140,7 @@ INSTANCE_CONFIGS = [
     {"n": 100, "m": 1,  "label": "n100_m1"},
     {"n": 20,  "m": 3,  "label": "n20_m3"},
     {"n": 50,  "m": 5,  "label": "n50_m5"},
+    {"n": 100, "m": 5,  "label": "n100_m5"},
     {"n": 500, "m": 10, "label": "n500_m10"},
 ]
 
