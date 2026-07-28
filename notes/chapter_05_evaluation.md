@@ -6,13 +6,15 @@ The experimental results presented in Chapter 4 demonstrate a clear performance 
 
 The key quantitative findings are:
 
-- Hybrid achieves 62-63% lower composite cost than SPT on large single-machine instances (p < 0.001).
-- Hybrid achieves 39-42% lower composite cost than NN-Greedy on large single-machine instances (p < 0.001).
+- Hybrid achieves 49-62% lower composite cost than SPT on large single-machine instances (p < 0.001).
+- Hybrid achieves 47-62% lower composite cost than NN-Greedy on large single-machine instances (p < 0.001).
 - Hybrid achieves 7-42% lower composite cost than standalone GA on large instances (p < 0.001), with the advantage increasing as the search space grows.
 - On medium and small instances (n ≤ 20), GA and Hybrid produce equivalent results (improvement ≤ 5%, mostly not significant).
 - The hybrid advantage is consistent across alpha values of 0.3, 0.5, and 0.7.
 
 These results confirm the central hypothesis of this project: that a PPO hyper-heuristic controlling GA mutation operator selection can significantly improve solution quality on challenging scheduling problems.
+
+![Figure 5.1: Box plots of composite scores showing the distribution across 50 seeds for each algorithm and instance configuration.](../figures/05_boxplots_composite.png)
 
 **Table 5.1: Mean composite scores (50 seeds)**
 
@@ -39,17 +41,23 @@ The hybrid advantage is most pronounced on single-machine large instances (n50_m
 
 **Alpha sensitivity.** The robustness of the hybrid advantage across alpha values suggests that the PPO agent learns a generalisable improvement strategy rather than an objective-specific trick. Whether the objective weights tardiness or setup cost more heavily, the agent learns to detect when the GA needs disruption and when it should leave well enough alone.
 
+![Figure 5.2: Sensitivity analysis across alpha values of 0.3, 0.5, and 0.7. The hybrid advantage is consistent across all three weightings.](../figures/05_sensitivity_alpha.png)
+
 ## 5.3 PPO Agent Behaviour
 
-The PPO agent's learned policy provides insight into why the hybrid approach outperforms the fixed-mutation GA. Analysis of action selections across episode stages reveals a clear behavioural pattern (Figure 5.5).
+The PPO agent's learned policy provides insight into why the hybrid approach outperforms the fixed-mutation GA. Analysis of action selections across episode stages reveals a clear behavioural pattern.
 
-At the beginning of each episode, when the GA population is diverse and making rapid progress, the agent predominantly selects conservative swap mutation (action 0, approximately 55% of selections in the early stage). As the episode progresses and the population converges, the frequency of the exploration-oriented insertion mutation (action 2) increases to approximately 40% in the late stage. Inversion mutation (action 1) remains relatively stable at 15-20% throughout, serving as an intermediate disruption level.
+![Figure 5.3: PPO action frequency across episode stages. The agent never selects swap mutation, using insertion exclusively in early stages before shifting toward inversion in later stages.](../figures/04_action_frequency_thirds.png)
 
-This pattern confirms that the PPO agent has learned a meaningful policy: apply fine-tuning when the GA is making progress, and escalate to exploration-oriented insertion when stagnation is detected. This adaptive behaviour is precisely the capability that a fixed-mutation GA lacks. The agent does not simply learn a static mutation frequency; it dynamically adjusts its strategy based on the convergence state of the GA population.
+The agent never selects swap mutation (action 0) at any stage. Instead, it divides its selections between insertion mutation (action 2) and inversion mutation (action 1), shifting the balance as the episode progresses. In the early stage, the agent selects insertion mutation exclusively (100%). Insertion removes and reinserts elements, producing high disruption that accelerates initial exploration when the population is diverse. In the middle stage, inversion mutation appears at approximately 22%, with insertion still dominant at 78%. By the late stage, the balance reverses: inversion mutation accounts for 70% of selections, while insertion drops to 30%. Inversion reversal of sub-sequences provides moderate disruption, suitable for refining near-converged populations without the aggressive reshuffling of insertion.
 
-The training reward curves (Figure 5.6) show that the agent's performance improves steadily during training, with episode rewards increasing from approximately 0.02 to 0.05 over 100,000 timesteps. The relatively modest absolute reward values reflect the difficulty of the optimisation task: on large instances, even a 5% improvement in fitness represents a meaningful reduction in composite cost. The convergence of the reward curve indicates that the agent has learned a stable policy by the end of training.
+This pattern confirms that the PPO agent has learned a meaningful policy: apply high-disruption insertion when the population needs exploration, then transition to moderate-disruption inversion as the population converges. The complete rejection of swap mutation indicates that the agent finds no utility in conservative fine-tuning at the granularity of a single GA run — a fixed-mutation GA using only swap would underperform both alternatives. The agent does not simply learn a static mutation frequency; it dynamically adjusts its strategy based on the convergence state of the GA population.
 
-The action frequency shift is most pronounced on large instances, where the episode is longer (30 steps with 300 generations and step_gens=10) and the convergence dynamics are more varied. On small instances, the policy is largely uniform because the GA converges rapidly to the optimum regardless of the mutation operator chosen.
+The training reward curves show that the agent's performance improves steadily during training, with episode rewards increasing from approximately 0.02 to 0.05 over 100,000 timesteps. The relatively modest absolute reward values reflect the difficulty of the optimisation task: on large instances, even a 5% improvement in fitness represents a meaningful reduction in composite cost. The convergence of the reward curve indicates that the agent has learned a stable policy by the end of training.
+
+![Figure 5.4: PPO training reward curves. The agent's performance improves steadily over 100,000 timesteps, converging to a stable policy.](../figures/04_ppo_curves.png)
+
+The action frequency shift is most pronounced on large instances, where the episode is longer (30 steps with 300 generations and step_gens=10) and the convergence dynamics are more varied. On small instances, the policy is more uniform because the GA converges rapidly to the optimum regardless of the mutation operator chosen.
 
 ## 5.4 NN-Greedy Catastrophic Failures
 

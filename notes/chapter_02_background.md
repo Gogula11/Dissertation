@@ -68,6 +68,10 @@ Additional heuristics relevant to the PMSP domain include the Earliest Due Date 
 
 These heuristics are included in this project as baselines because they are fast, deterministic, and standard in the scheduling literature. They are not expected to produce optimal solutions for PMSP-SDSC, but they provide a reference point for evaluating the more complex GA and hybrid approaches.
 
+![Figure 2.1: Heuristic performance comparison across instance configurations. SPT and NN-Greedy show consistent but higher composite scores compared to the optimisation-based methods.](../figures/02_heuristic_comparison.png)
+
+![Figure 2.2: Gantt chart of a heuristic-based schedule showing job assignments across machines. Hatched regions indicate setup time between jobs of different colour classes.](../figures/02_gantt_heuristics.png)
+
 ### 2.1.4 Genetic Algorithms for Scheduling
 
 Genetic Algorithms are a class of evolutionary optimisation methods inspired by natural selection (Holland, 1975). In the scheduling domain, GAs operate on a population of candidate solutions, iteratively applying selection, crossover, and mutation to produce improved generations.

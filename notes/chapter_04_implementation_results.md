@@ -224,18 +224,22 @@ The Hybrid advantage is consistent across all three alpha values, demonstrating 
 
 ### 4.2.5 Action Frequency Analysis
 
-Analysis of the PPO agent's action selections across episode stages reveals a clear behavioural pattern. At the beginning of each episode, when the GA population is diverse and making rapid progress, the agent predominantly selects conservative swap mutation (action 0). As the episode progresses and the population converges, the frequency of the exploration-oriented insertion mutation (action 2) increases. Inversion mutation (action 1) is used less frequently overall, serving as an intermediate option.
+Analysis of the PPO agent's action selections across episode stages reveals a clear behavioural pattern. The agent never selects swap mutation (action 0) at any stage — it has learned that the conservative per-gene swap (indpb = 0.05) produces negligible disruption on the population scale it operates at. Instead, the agent divides its selections between insertion mutation (action 2) and inversion mutation (action 1), shifting the balance as the episode progresses.
 
-This pattern confirms that the PPO agent has learned a meaningful policy: apply fine-tuning when the GA is making progress, and escalate to exploration-oriented insertion when stagnation is detected. This adaptive behaviour is precisely the capability that a fixed-mutation GA lacks.
+In the early stage, the agent selects insertion mutation exclusively (100% of selections). Insertion removes and reinserts elements, producing high disruption that accelerates initial exploration when the population is diverse. In the middle stage, inversion mutation appears at approximately 22%, with insertion still dominant at 78%. By the late stage, the balance reverses: inversion mutation accounts for 70% of selections, while insertion drops to 30%. Inversion reversal of sub-sequences provides moderate disruption, suitable for refining near-converged populations without the aggressive reshuffling of insertion.
+
+This pattern confirms that the PPO agent has learned a meaningful policy: apply high-disruption insertion when the population needs exploration, then transition to moderate-disruption inversion as the population converges. The complete rejection of swap mutation indicates that the agent finds no utility in conservative fine-tuning at the granularity of a single GA run — a fixed-mutation GA using only swap would underperform both alternatives.
 
 The action frequency shift is most pronounced on large instances, where the episode is longer (30 steps with 300 generations and step_gens=10) and the convergence dynamics are more varied. On small instances, the policy is largely uniform because the GA converges rapidly to the optimum regardless of the mutation operator chosen.
 
 ### 4.2.6 Visualisations
 
-**Figure 4.1: Box plots of composite scores.** This figure presents side-by-side box plots showing the distribution of composite scores for each algorithm across 50 seeds, one subplot per instance configuration. Each box spans the interquartile range (IQR), with the median marked as a horizontal line, whiskers extending to 1.5x IQR, and outliers shown as individual points. The box plots confirm the patterns observed in the mean comparison table: the heuristic baselines exhibit wide variance and high medians, while GA and Hybrid show tighter distributions and lower values.
+![Figure 4.1: Box plots of composite scores per instance configuration. The heuristic baselines show wide variance and high medians, while GA and Hybrid show tighter distributions and lower values.](../figures/05_boxplots_composite.png)
 
-**Figure 4.2: Gantt chart comparison (SPT vs Hybrid).** Two Gantt charts side by side showing the schedules produced by SPT and Hybrid for the same instance. Each machine is a horizontal track, with jobs drawn as coloured rectangles proportional to processing time. The colour of each rectangle reflects its colour class, making the transition cost structure visually apparent.
+![Figure 4.2: Gantt chart comparison (SPT vs Hybrid) for a representative instance. Each machine is a horizontal track, with jobs coloured by colour class. Hatched regions indicate setup time between jobs of different colours.](../figures/06_gantt_comparison.png)
 
-**Figure 4.3: Convergence curves (GA vs Hybrid).** This figure plots best fitness against generation number for a single run of GA and Hybrid on the same instance. The GA curve flattens early, indicating convergence to a local optimum. The Hybrid curve shows periodic improvements throughout the run, corresponding to episodes where the PPO agent selects insertion mutation to escape plateaus.
+![Figure 4.3: Convergence curves (GA vs Hybrid) on a large single-machine instance. The Hybrid curve shows a smoother, more consistent descent, while the GA best fitness oscillates per generation.](../figures/06_convergence.png)
 
-**Figure 4.4: Action frequency across episode stages.** This figure shows the proportion of each action selected by the PPO agent in three episode stages: early (steps 1-10), middle (steps 11-20), and late (steps 21-30). The bars are stacked to show action distribution at each stage.
+![Figure 4.4: PPO action frequency across episode stages. The agent never selects swap mutation, using insertion exclusively in early stages before shifting toward inversion in later stages.](../figures/04_action_frequency_thirds.png)
+
+![Figure 4.5: PPO training reward curves. The agent's performance improves steadily over 100,000 timesteps, converging to a stable policy.](../figures/04_ppo_curves.png)

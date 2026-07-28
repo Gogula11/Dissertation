@@ -219,6 +219,10 @@ m = 2  ->  sigma = [[2, 0, 4], [1, 3]]
 
 **Elitism.** The best individual from each successive generation is preserved natively via DEAP's Hall-of-Fame mechanism with a strict capacity size of 1. This constraints the evolutionary trajectory, ensuring monotonic non-degradation of the absolute best fitness value across generations.
 
+![Figure 3.1: GA convergence curves across instance sizes. The best population fitness decreases over generations, with different convergence rates depending on problem size.](../figures/03_convergence_curves.png)
+
+![Figure 3.2: Fitness landscape heatmap visualising the distribution of solution quality across the search space.](../figures/03_fitness_heatmap.png)
+
 ### **3.2.7 GA Environment Design**
 
 The Gymnasium environment wraps the internal GA execution loop, providing a standardized reinforcement learning interface for the PPO agent. An single episode corresponds directly to one complete GA run, and each discrete agent step corresponds to a fixed block of $\text{step\_gens}$ generations of the GA, utilizing a specific mutation operator selected dynamically by the agent.
