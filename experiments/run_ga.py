@@ -11,7 +11,7 @@ from multiprocessing import get_context
 from src.instance_generator import generate_instance, INSTANCE_CONFIGS, INSTANCE_CONFIGS_SMALL
 from src.ga import run_ga
 
-ALPHA = 0.7
+ALPHA = 0.5
 N_SEEDS = 50
 GA_PARAMS = {"n_gen": 500, "pop_size": 100, "cx_prob": 0.9, "mut_prob": 0.2}
 

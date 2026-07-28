@@ -56,7 +56,7 @@ def make_fitness_fn(instance: dict, alpha: float, f1_scale: float, f2_scale: flo
     return fitness
 
 
-def build_toolbox(instance: dict, alpha: float = 0.7,
+def build_toolbox(instance: dict, alpha: float = 0.5,
                  f1_scale: float = None, f2_scale: float = None) -> base.Toolbox:
     """
     Construct and return a DEAP Toolbox for this instance.
@@ -91,7 +91,7 @@ def run_ga(
     pop_size: int = 100,
     cx_prob: float = 0.8,
     mut_prob: float = 0.2,
-    alpha: float = 0.7,
+    alpha: float = 0.5,
     seed: Optional[int] = None,
     verbose: bool = False,
     mutation_strategy: str = "swap",

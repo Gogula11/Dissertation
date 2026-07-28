@@ -12,7 +12,7 @@ from stable_baselines3 import PPO
 from src.instance_generator import generate_instance, INSTANCE_CONFIGS, INSTANCE_CONFIGS_SMALL
 from src.drl_agent import run_hybrid
 
-ALPHA = 0.7
+ALPHA = 0.5
 N_SEEDS = 50
 TOTAL_GENS = 300
 

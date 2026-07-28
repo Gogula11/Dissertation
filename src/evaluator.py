@@ -176,7 +176,7 @@ def estimate_scales(instance: dict) -> tuple:
     return f1_scale, f2_scale
 
 
-def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.7, *,
+def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5, *,
              f1_scale: float, f2_scale: float) -> dict:
     """
     Full evaluation of a solution.
