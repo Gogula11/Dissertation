@@ -14,7 +14,7 @@ The key quantitative findings are:
 
 These results confirm the central hypothesis of this project: that a PPO hyper-heuristic controlling GA mutation operator selection can significantly improve solution quality on challenging scheduling problems.
 
-![Figure 5.1: Box plots of composite scores showing the distribution across 50 seeds for each algorithm and instance configuration.](../figures/05_boxplots_composite.png)
+![Figure 5.1: Box plots of composite scores showing the distribution across 50 seeds for each algorithm and instance configuration (lower is better).](../figures/05_boxplots_composite.png)
 
 **Table 5.1: Mean composite scores (50 seeds)**
 
@@ -41,7 +41,9 @@ The hybrid advantage is most pronounced on single-machine large instances (n50_m
 
 **Alpha sensitivity.** The robustness of the hybrid advantage across alpha values suggests that the PPO agent learns a generalisable improvement strategy rather than an objective-specific trick. Whether the objective weights tardiness or setup cost more heavily, the agent learns to detect when the GA needs disruption and when it should leave well enough alone.
 
-![Figure 5.2: Sensitivity analysis across alpha values of 0.3, 0.5, and 0.7. The hybrid advantage is consistent across all three weightings.](../figures/05_sensitivity_alpha.png)
+![Figure 5.5: Scatter plot of weighted tardiness versus setup cost for GA and Hybrid on n50_m1 (50 seeds each, lower is better — closer to origin). Hybrid solutions cluster toward the origin, indicating simultaneous improvement in both objectives rather than trading one off against the other.](../figures/05_scatter_tardiness_setup.png)
+
+![Figure 5.2: Sensitivity analysis across alpha values of 0.3, 0.5, and 0.7 (lower is better). The hybrid advantage is consistent across all three weightings.](../figures/05_sensitivity_alpha.png)
 
 ## 5.3 PPO Agent Behaviour
 
@@ -55,7 +57,7 @@ This pattern confirms that the PPO agent has learned a meaningful policy: apply 
 
 The training reward curves show that the agent's performance improves steadily during training, with episode rewards increasing from approximately 0.02 to 0.05 over 100,000 timesteps. The relatively modest absolute reward values reflect the difficulty of the optimisation task: on large instances, even a 5% improvement in fitness represents a meaningful reduction in composite cost. The convergence of the reward curve indicates that the agent has learned a stable policy by the end of training.
 
-![Figure 5.4: PPO training reward curves. The agent's performance improves steadily over 100,000 timesteps, converging to a stable policy.](../figures/04_ppo_curves.png)
+![Figure 5.4: PPO training reward curves (higher is better). The agent's performance improves steadily over 100,000 timesteps, converging to a stable policy.](../figures/04_ppo_curves.png)
 
 The action frequency shift is most pronounced on large instances, where the episode is longer (30 steps with 300 generations and step_gens=10) and the convergence dynamics are more varied. On small instances, the policy is more uniform because the GA converges rapidly to the optimum regardless of the mutation operator chosen.
 
@@ -64,6 +66,8 @@ The action frequency shift is most pronounced on large instances, where the epis
 A notable finding is the tendency of NN-Greedy to produce catastrophically poor solutions on certain instances. While NN-Greedy's mean performance is already worse than GA and Hybrid, its worst-case behaviour is dramatically worse. These failures occur because NN-Greedy makes locally optimal decisions at each step without considering the global schedule structure. The greedy approach can lock into a configuration that incurs catastrophic tardiness penalties, as the agent prioritises low setup costs at the expense of due-date performance.
 
 GA and Hybrid never produce such failures. The evolutionary search explores the solution space broadly, and the population-based evaluation naturally filters out catastrophically poor solutions. This robustness is a practical advantage: in a real manufacturing environment, a single catastrophically poor schedule can disrupt production for days, making worst-case performance as important as average-case performance.
+
+![Figure 5.6: Mean and worst-case composite scores for NN-Greedy, GA, and Hybrid across four large instance configurations (lower is better). NN-Greedy's worst-case performance is dramatically worse than its mean, while GA and Hybrid maintain consistent quality even in their worst runs.](../figures/05_nn_greedy_failures.png)
 
 ## 5.5 Practical Implications
 

@@ -186,7 +186,9 @@ The composite score is a normalised weighted sum of weighted tardiness and setup
 
 Several patterns are immediately apparent. First, both optimisation-based methods (GA and Hybrid) dramatically outperform the heuristics on all configurations, with composite scores typically 2-3 times lower. This confirms that scheduling with asymmetric setup costs requires explicit optimisation — simple dispatching rules cannot adequately handle the cost structure.
 
-Second, the Hybrid outperforms the standalone GA on large instances. On n50_m1, the Hybrid achieves a 42.2% lower composite cost than GA; on xn50_m1, this is 34.1%; on n50_m5, 17.5%; on n500_m10, 6.7%. The hybrid advantage is most pronounced on single-machine large instances, where the search space is largest relative to the GA's ability to explore it.
+Second, the Hybrid outperforms the standalone GA on large instances. On n50_m1, the Hybrid achieves a 46.9% lower composite cost than GA; on n100_m1, this is 43.7%; on n50_m5, 17.8%; on n100_m10, 26.0%. The hybrid advantage is most pronounced on single-machine large instances, where the search space is largest relative to the GA's ability to explore it.
+
+![Figure 4.6: Hybrid improvement percentage over GA per instance configuration (higher is better). The improvement increases with problem size, confirming that the hyper-heuristic becomes more valuable as the search space grows.](../figures/05_improvement_bars.png)
 
 Third, on small and medium instances (n5_m1, n10_m1, n20_m1, n20_m3), the improvement is smaller (0.1-5.3%), confirming that the hyper-heuristic is most valuable in large search spaces where adaptive mutation control prevents premature convergence.
 
@@ -234,12 +236,12 @@ The action frequency shift is most pronounced on large instances, where the epis
 
 ### 4.2.6 Visualisations
 
-![Figure 4.1: Box plots of composite scores per instance configuration. The heuristic baselines show wide variance and high medians, while GA and Hybrid show tighter distributions and lower values.](../figures/05_boxplots_composite.png)
+![Figure 4.1: Box plots of composite scores per instance configuration (lower is better). The heuristic baselines show wide variance and high medians, while GA and Hybrid show tighter distributions and lower values.](../figures/05_boxplots_composite.png)
 
 ![Figure 4.2: Gantt chart comparison (SPT vs Hybrid) for a representative instance. Each machine is a horizontal track, with jobs coloured by colour class. Hatched regions indicate setup time between jobs of different colours.](../figures/06_gantt_comparison.png)
 
-![Figure 4.3: Convergence curves (GA vs Hybrid) on a large single-machine instance. The Hybrid curve shows a smoother, more consistent descent, while the GA best fitness oscillates per generation.](../figures/06_convergence.png)
+![Figure 4.3: Convergence curves (GA vs Hybrid) on a large single-machine instance (lower is better). The Hybrid curve shows a smoother, more consistent descent, while the GA best fitness oscillates per generation.](../figures/06_convergence.png)
 
 ![Figure 4.4: PPO action frequency across episode stages. The agent never selects swap mutation, using insertion exclusively in early stages before shifting toward inversion in later stages.](../figures/04_action_frequency_thirds.png)
 
-![Figure 4.5: PPO training reward curves. The agent's performance improves steadily over 100,000 timesteps, converging to a stable policy.](../figures/04_ppo_curves.png)
+![Figure 4.5: PPO training reward curves (higher is better). The agent's performance improves steadily over 100,000 timesteps, converging to a stable policy.](../figures/04_ppo_curves.png)
