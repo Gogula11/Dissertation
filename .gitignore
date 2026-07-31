@@ -20,3 +20,4 @@ venv/
 logs/
 *.log
 .directorydissertation_draft.docx
+.directory
