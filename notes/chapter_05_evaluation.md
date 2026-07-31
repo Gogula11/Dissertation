@@ -41,7 +41,7 @@ The hybrid advantage is most pronounced on single-machine large instances (n50_m
 
 **Alpha sensitivity.** The robustness of the hybrid advantage across alpha values suggests that the PPO agent learns a generalisable improvement strategy rather than an objective-specific trick. Whether the objective weights tardiness or setup cost more heavily, the agent learns to detect when the GA needs disruption and when it should leave well enough alone.
 
-![Figure 5.5: Scatter plot of weighted tardiness versus setup cost for GA and Hybrid on n50_m1 (50 seeds each, lower is better — closer to origin). Hybrid solutions cluster toward the origin, indicating simultaneous improvement in both objectives rather than trading one off against the other.](../figures/05_scatter_tardiness_setup.png)
+![Figure 5.5: Scatter plot of weighted tardiness versus setup cost for GA (blue) and Hybrid (orange) on n50_m1 (50 seeds each, lower is better — closer to origin). The Hybrid cluster is tightly grouped near the origin, while GA solutions are scattered across higher values in both objectives.](../figures/05_scatter_tardiness_setup.png)
 
 ![Figure 5.2: Sensitivity analysis across alpha values of 0.3, 0.5, and 0.7 (lower is better). The hybrid advantage is consistent across all three weightings.](../figures/05_sensitivity_alpha.png)
 
