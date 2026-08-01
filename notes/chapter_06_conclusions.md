@@ -28,7 +28,7 @@ The following key findings emerge from this study:
 
 4. **The results are robust to objective weighting.** The sensitivity analysis across alpha values of 0.3, 0.5, and 0.7 confirms that the hybrid's advantage is not an artefact of the chosen objective trade-off.
 
-![Figure 6.1: Convergence comparison on n50_m1 seed=28 (lower is better). Hybrid converges to 0.185 versus GA 0.272, a 32% improvement. The Hybrid consistently outperforms GA throughout the run.](../figures/06_convergence.png)
+![Figure 6.1: Convergence comparison on n50_m1 seed=28 (lower is better). Hybrid converges to 0.260 versus GA 0.285, a 9% improvement on this specific seed. The Hybrid consistently outperforms GA throughout the run. On average across all seeds, the Hybrid achieves a 47% improvement over GA on this instance (see Figure 4.6).](../figures/06_convergence.png)
 
 ![Figure 6.2: Convergence stability comparison (seed=23, n50_m1, lower is better). GA oscillates across a fitness range of 0.272; Hybrid range is 0.219, converging to 0.185 versus GA 0.272. The Hybrid's convergence is smoother and more predictable, with less inter-generation oscillation.](../figures/06_convergence_stability.png)
 

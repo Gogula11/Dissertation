@@ -240,7 +240,7 @@ The action frequency shift is most pronounced on large instances, where the epis
 
 ![Figure 4.2: Gantt chart comparison (SPT vs GA vs Hybrid) on n50_m1 seed=28 (lower is better). SPT achieves composite 0.356, GA 0.285, and Hybrid 0.260. Each machine is a horizontal track, with jobs coloured by colour class. Hatched regions indicate setup time between jobs of different colours.](../figures/06_gantt_comparison.png)
 
-![Figure 4.3: Convergence curves (GA vs Hybrid) on n50_m1 seed=28 (lower is better). Hybrid converges to final composite 0.185 versus GA 0.272, a 32% improvement. The Hybrid curve shows a smoother, more consistent descent, while the GA best fitness oscillates per generation.](../figures/06_convergence.png)
+![Figure 4.3: Convergence curves (GA vs Hybrid) on n50_m1 seed=28 (lower is better). Hybrid converges to final composite 0.260 versus GA 0.285, a 9% improvement. The Hybrid curve shows a smoother, more consistent descent, while the GA best fitness oscillates per generation. On average across all seeds, the Hybrid achieves a 47% improvement over GA on this instance (see Figure 4.6).](../figures/06_convergence.png)
 
 ![Figure 4.4: PPO action frequency across episode stages. Across 10 episodes: Insertion 100% early → 78% middle → 30% late; Inversion 0% → 22% → 70%; Swap 0% throughout.](../figures/04_action_frequency_thirds.png)
 

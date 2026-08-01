@@ -68,7 +68,7 @@ Additional heuristics relevant to the PMSP domain include the Earliest Due Date 
 
 These heuristics are included in this project as baselines because they are fast, deterministic, and standard in the scheduling literature. They are not expected to produce optimal solutions for PMSP-SDSC, but they provide a reference point for evaluating the more complex GA and hybrid approaches.
 
-![Figure 2.1: Heuristic performance comparison on a representative n5_m1 instance (lower is better). SPT achieves composite 0.268, weighted tardiness 27.7, and setup cost 99.9. NN-Greedy achieves composite 0.301, tardiness 348.9, and setup cost 26.2. SPT minimises tardiness at the expense of setup cost; NN-Greedy minimises setup cost at the expense of tardiness.](../figures/02_heuristic_comparison.png)
+![Figure 2.1: Heuristic performance comparison on a representative n10_m1 instance (lower is better). SPT achieves composite 0.268, weighted tardiness 27.7, and setup cost 99.9. NN-Greedy achieves composite 0.301, tardiness 348.9, and setup cost 26.2. SPT minimises tardiness at the expense of setup cost; NN-Greedy minimises setup cost at the expense of tardiness.](../figures/02_heuristic_comparison.png)
 
 ![Figure 2.2: Gantt chart of a heuristic-based schedule showing job assignments across machines. Hatched regions indicate setup time between jobs of different colour classes.](../figures/02_gantt_heuristics.png)
 
