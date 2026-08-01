@@ -13,7 +13,7 @@ The parallel machine scheduling problem deals with a set of jobs where in, a set
 
 ![Figure 1.3: Processing time distributions across instance sizes. Each box shows the spread of processing times derived from weekly capacity calibration.](../figures/01_proc_distributions.png)
 
-![Figure 1.4: Due dates vs completion times for a representative instance. Jobs above the diagonal are completed after their due date, incurring tardiness penalties.](../figures/01_duedates_vs_completion.png)
+![Figure 1.4: Due dates versus SPT completion times for all instance configurations. Points below the red diagonal indicate tardy jobs. Due dates are calibrated from the SPT schedule, so most jobs are on time — poor scheduling causes tardiness, not tight due dates.](../figures/01_duedates_vs_completion.png)
 
 The combinatorial explosion inherent in PMSP-SDSC renders exact optimisation methods intractable for instances of practical size where the search space grows factorially as (n!)^(m / m!). To navigate this vast search spaces effectively, meta-heuristic approaches such as Genetic Algorithms are widely used for such problems, as they can explore large search spaces effectively. However, GAs typically employ fixed mutation operators with static parameters, leading to a well-documented limitation: the balance between exploration and exploitation degrades as the population converges, often resulting in premature stagnation on local optima.
 
