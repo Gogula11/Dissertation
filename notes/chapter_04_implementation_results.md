@@ -238,10 +238,10 @@ The action frequency shift is most pronounced on large instances, where the epis
 
 ![Figure 4.1: Box plots of composite scores per instance configuration (lower is better). The heuristic baselines show wide variance and high medians, while GA and Hybrid show tighter distributions and lower values.](../figures/05_boxplots_composite.png)
 
-![Figure 4.2: Gantt chart comparison (SPT vs Hybrid) for a representative instance. Each machine is a horizontal track, with jobs coloured by colour class. Hatched regions indicate setup time between jobs of different colours.](../figures/06_gantt_comparison.png)
+![Figure 4.2: Gantt chart comparison (SPT vs GA vs Hybrid) on n50_m1 seed=28 (lower is better). SPT achieves composite 0.356, GA 0.285, and Hybrid 0.260. Each machine is a horizontal track, with jobs coloured by colour class. Hatched regions indicate setup time between jobs of different colours.](../figures/06_gantt_comparison.png)
 
-![Figure 4.3: Convergence curves (GA vs Hybrid) on a large single-machine instance (lower is better). The Hybrid curve shows a smoother, more consistent descent, while the GA best fitness oscillates per generation.](../figures/06_convergence.png)
+![Figure 4.3: Convergence curves (GA vs Hybrid) on n50_m1 seed=28 (lower is better). Hybrid converges to final composite 0.185 versus GA 0.272, a 32% improvement. The Hybrid curve shows a smoother, more consistent descent, while the GA best fitness oscillates per generation.](../figures/06_convergence.png)
 
-![Figure 4.4: PPO action frequency across episode stages. The agent never selects swap mutation, using insertion exclusively in early stages before shifting toward inversion in later stages.](../figures/04_action_frequency_thirds.png)
+![Figure 4.4: PPO action frequency across episode stages. Across 10 episodes: Insertion 100% early → 78% middle → 30% late; Inversion 0% → 22% → 70%; Swap 0% throughout.](../figures/04_action_frequency_thirds.png)
 
-![Figure 4.5: PPO training reward curves (higher is better). The agent's performance improves steadily over 100,000 timesteps, converging to a stable policy.](../figures/04_ppo_curves.png)
+![Figure 4.5: PPO training reward curves (higher is better). After 100k timesteps: explained variance 0.994, value loss 0.002, indicating stable convergence.](../figures/04_ppo_curves.png)

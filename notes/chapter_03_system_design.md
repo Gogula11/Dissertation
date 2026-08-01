@@ -219,7 +219,7 @@ m = 2  ->  sigma = [[2, 0, 4], [1, 3]]
 
 **Elitism.** The best individual from each successive generation is preserved natively via DEAP's Hall-of-Fame mechanism with a strict capacity size of 1. This constraints the evolutionary trajectory, ensuring monotonic non-degradation of the absolute best fitness value across generations.
 
-![Figure 3.1: GA convergence curves across instance sizes (lower is better). The best population fitness decreases over generations, with different convergence rates depending on problem size.](../figures/03_convergence_curves.png)
+![Figure 3.1: GA convergence curves across population sizes and hyperparameter settings (lower is better). Convergence rate depends on population size: larger populations converge more slowly but reach better final fitness. The optimal setting (200 generations, population 100, cx=0.7) achieves fitness 0.151.](../figures/03_convergence_curves.png)
 
 ![Figure 3.2: Fitness landscape heatmap visualising the distribution of solution quality across the search space.](../figures/03_fitness_heatmap.png)
 
