@@ -42,9 +42,13 @@ The fix: train a Reinforcement Learning agent (PPO) to watch the GA and decide w
 
 *Figure 1.5 — What to look at: single-machine instances show all jobs stacked on one bar. Multi-machine instances show how jobs spread across machines — uneven heights mean load imbalance, mixed colours mean more setup transitions.*
 
-![Figure 1.2: Asymmetric setup cost matrix heatmaps. Darker cells indicate higher transition costs. The asymmetry is visible in the non-symmetric pattern across the diagonal.](../figures/01_cost_heatmaps.png)
+![Figure 1.2: Setup-cost matrices S[i][j] for each instance configuration. The diagonal is zero (same job = free transition). The matrix is asymmetric: S[i][j] ≠ S[j][i], visible in the non-symmetric pattern across the diagonal. Bright cells indicate expensive transitions (dark→light colour changes); dark cells indicate cheap transitions (light→dark or same colour family). Job indices are assigned randomly, so colour patterns appear scattered rather than clustered.](../figures/01_cost_heatmaps.png)
 
-*Figure 1.2 — What to look at: the diagonal is zero (same colour = free). The top-right is darker than the bottom-left — that's the asymmetry. Dark→light (top-right) costs much more than light→dark (bottom-left).*
+*Figure 1.2 — What to look at: the diagonal is zero (same job = free transition). The matrix is asymmetric: S[i][j] ≠ S[j][i], visible in the non-symmetric pattern across the diagonal. Bright cells = expensive transitions (dark→light); dark cells = cheap transitions (light→dark or same colour). Job indices are assigned randomly, so patterns appear scattered rather than clustered.*
+
+![Figure 1.6: Due dates versus SPT completion times for all instance configurations. Points below the red diagonal indicate tardy jobs. Due dates are calibrated from the SPT schedule, so most jobs are on time — poor scheduling causes tardiness, not tight due dates.](../figures/01_duedates_vs_completion.png)
+
+*Figure 1.6 — What to look at: points below the red line are tardy jobs. Most points cluster near the line — due dates are realistic, not too loose or too tight. Larger instances have more tardy jobs (more scatter below the line).*
 
 ---
 

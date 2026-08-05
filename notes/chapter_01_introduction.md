@@ -11,7 +11,7 @@ The parallel machine scheduling problem deals with a set of jobs where in, a set
 
 ![Figure 1.5: Job distribution per machine under SPT assignment. Stacked bars show the colour composition of each machine's workload. Multi-machine instances reveal load balance and colour mixing across machines.](../figures/01_jobs_per_machine.png)
 
-![Figure 1.2: Asymmetric setup cost matrix heatmaps. Darker cells indicate higher transition costs. The asymmetry is visible in the non-symmetric pattern across the diagonal.](../figures/01_cost_heatmaps.png)
+![Figure 1.2: Setup-cost matrices S[i][j] for each instance configuration. The diagonal is zero (same job = free transition). The matrix is asymmetric: S[i][j] ≠ S[j][i], visible in the non-symmetric pattern across the diagonal. Bright cells indicate expensive transitions (dark→light colour changes); dark cells indicate cheap transitions (light→dark or same colour family).](../figures/01_cost_heatmaps.png)
 
 ![Figure 1.3: Processing time distributions across instance sizes. Each box shows the spread of processing times derived from weekly capacity calibration.](../figures/01_proc_distributions.png)
 
