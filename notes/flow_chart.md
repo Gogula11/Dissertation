@@ -23,10 +23,24 @@ flowchart TD
     %% ══════════════════════════════════════════════════════════════
     subgraph COST ["COST MATRIX  c_ij"]
         direction TB
-        C1["c_ij = (d_i - d_j) × 10     ← dark→light penalty"]
-        C2["     + |d_i - d_j| × 3       ← light→dark base"]
-        C3["     + uniform(0, 2)          ← noise"]
-        C4["Shape: n×n matrix"]
+        C1{"darkness[i] > darkness[j]?"}
+        C2["dark→light:\nc_ij = diff × 10 + U(0,2)"]
+        C3["light→dark:\nc_ij = |diff| × 3 + U(0,2)"]
+        C4["diagonal: c_ii = 0"]
+        C5["Shape: n×n matrix"]
+        C1 -->|Yes| C2
+        C1 -->|No| C3
+        C2 --> C5
+        C3 --> C5
+    end
+
+    subgraph COST_FORMULA [" "]
+        direction TB
+        CF1["Cost Matrix Formula:"]
+        CF2["c_ij = { 10×(ℓi−ℓj)+ε  if ℓi>ℓj"]
+        CF3["         { 3×|ℓi−ℓj|+ε   if ℓi<ℓj"]
+        CF4["         { 0              if i=j"]
+        CF5["ε ~ U(0, 2)"]
     end
 
     %% ══════════════════════════════════════════════════════════════
@@ -88,37 +102,52 @@ flowchart TD
         O6["box plots · Gantt charts\nsensitivity: α×config×50 seeds"]
     end
 
+    subgraph OBJ_FORMULA [" "]
+        direction TB
+        OF1["Composite Objective:"]
+        OF2["F = α·(f₁/f̂₁) + (1−α)·(f₂/f̂₂)"]
+        OF3["f₁ = Σ w_j · max(0, C_j − d_j)"]
+        OF4["f₂ = Σ c_ij  (consecutive pairs)"]
+        OF5["f̂₁, f̂₂ = 1.5× max(SPT, NN-Greedy, random)"]
+    end
+
     %% ══════════════════════════════════════════════════════════════
     %%  EDGES
     %% ══════════════════════════════════════════════════════════════
-    INPUT --> COST
-    COST --> SPT
-    COST --> NNG
-    COST --> GA_BLOCK
-    COST --> PPO_BLOCK
-    SPT --> EVAL
-    NNG --> EVAL
-    GA_BLOCK --> EVAL
-    PPO_BLOCK --> EVAL
+    INPUT -->|"instance dict\n{n, m, p_j, d_j, w_j, c_ij}"| COST
+    COST -->|"n, m, p_j"| SPT
+    COST -->|"n, m, c_ij"| NNG
+    COST -->|"n, m, instance"| GA_BLOCK
+    COST -->|"n, m, instance"| PPO_BLOCK
+    SPT -->|"schedule σ"| EVAL
+    NNG -->|"schedule σ"| EVAL
+    GA_BLOCK -->|"σ*, F"| EVAL
+    PPO_BLOCK -->|"σ*, F"| EVAL
+    COST -. "defines" .-> COST_FORMULA
+    EVAL -. "computes" .-> OBJ_FORMULA
 
     %% ══════════════════════════════════════════════════════════════
     %%  STYLING
     %% ══════════════════════════════════════════════════════════════
     classDef inputStyle  fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#333
     classDef costStyle   fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#333
+    classDef costFormula fill:#BBDEFB,stroke:#0D47A1,stroke-width:3px,color:#0D47A1,font-weight:bold
     classDef sptStyle    fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#333
     classDef nngStyle    fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#333
     classDef gaStyle     fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#333
     classDef ppoStyle    fill:#FFEBEE,stroke:#C62828,stroke-width:2px,color:#333
     classDef evalStyle   fill:#F9FBE7,stroke:#F57F17,stroke-width:2px,color:#333
+    classDef objFormula  fill:#FFF9C4,stroke:#F57F17,stroke-width:3px,color:#E65100,font-weight:bold
 
     class INPUT inputStyle
     class COST costStyle
+    class COST_FORMULA costFormula
     class SPT sptStyle
     class NNG nngStyle
     class GA_BLOCK gaStyle
     class PPO_BLOCK ppoStyle
     class EVAL evalStyle
+    class OBJ_FORMULA objFormula
 ```
 
 ## Data Flow Summary
@@ -126,7 +155,7 @@ flowchart TD
 | Stage                 | Input →               | Operation                           | → Output                             |
 | --------------------- | ---------------------- | ----------------------------------- | ------------------------------------- |
 | **Instance**    | n, m, jobs             | `InstanceGenerator`               | job params (p_j, d_j, w_j, o_j, κ_j) |
-| **Cost matrix** | o_j, κ_j              | `c_ij = max(0,ΔL) +                | Δcolor                               |
+| **Cost matrix** | darkness values        | conditional: dark→light or light→dark | n×n cost matrix c_ij                |
 | **SPT**         | n, m, p_j              | sort + round-robin                  | schedule                              |
 | **NN-Greedy**   | n, m, c_ij             | greedy min c_ij                     | schedule                              |
 | **GA**          | n, m, C, pop=100       | OX crossover + mutate + elitism     | best schedule + F                     |

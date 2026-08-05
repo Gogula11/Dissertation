@@ -9,6 +9,8 @@ The parallel machine scheduling problem deals with a set of jobs where in, a set
 
 ![Figure 1.1: Distribution of colour classes across jobs in synthetic instances. Each bar represents the count of jobs assigned to each of the seven colour classes (darkness 1-7).](../figures/01_colour_distribution.png)
 
+![Figure 1.5: Job distribution per machine under SPT assignment. Stacked bars show the colour composition of each machine's workload. Multi-machine instances reveal load balance and colour mixing across machines.](../figures/01_jobs_per_machine.png)
+
 ![Figure 1.2: Asymmetric setup cost matrix heatmaps. Darker cells indicate higher transition costs. The asymmetry is visible in the non-symmetric pattern across the diagonal.](../figures/01_cost_heatmaps.png)
 
 ![Figure 1.3: Processing time distributions across instance sizes. Each box shows the spread of processing times derived from weekly capacity calibration.](../figures/01_proc_distributions.png)
