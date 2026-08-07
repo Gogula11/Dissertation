@@ -7,7 +7,7 @@ from src.drl_agent import make_env_fn, run_hybrid
 
 
 def test_make_env_fn():
-    inst = generate_instance(n=10, m=2, seed=0)
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
     fn = make_env_fn([inst], total_gens=10, step_gens=5, pop_size=5)
     env = fn()
     assert env.observation_space.shape == (8,)
@@ -16,7 +16,7 @@ def test_make_env_fn():
 
 
 def test_run_hybrid_returns_result():
-    inst = generate_instance(n=10, m=2, seed=0)
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
     mock_model = MagicMock()
     mock_model.predict.return_value = (0, None)
 
@@ -33,7 +33,7 @@ def test_run_hybrid_returns_result():
 
 def test_train_ppo_smoke(tmp_path):
     from src.drl_agent import train_ppo
-    inst = generate_instance(n=5, m=2, seed=0)
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
     save_path = str(tmp_path / "ppo_test")
     model = train_ppo(
         [inst], total_timesteps=2, save_path=save_path,
@@ -41,6 +41,3 @@ def test_train_ppo_smoke(tmp_path):
     )
     assert model is not None
     assert os.path.exists(save_path + ".zip")
-
-
-

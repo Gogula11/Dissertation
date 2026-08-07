@@ -128,7 +128,7 @@ class GAHyperHeuristicEnv(gym.Env):
         self.instance = self.instance_pool[
             int(random.randint(0, len(self.instance_pool) - 1))
         ]
-        self._n_norm = self.instance["n"] / 100.0
+        self._n_norm = self.instance["n"] / 250.0
         self._m_norm = self.instance["m"] / 10.0
         self._f1_scale, self._f2_scale = estimate_scales(self.instance)
         self.toolbox = build_toolbox(self.instance, self.alpha, self._f1_scale, self._f2_scale)

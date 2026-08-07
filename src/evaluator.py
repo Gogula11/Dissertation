@@ -89,6 +89,7 @@ def extract_schedule(sigma: List[List[int]], instance: dict) -> List[dict]:
     proc = instance["proc_times"]
     setup_t = instance["setup_time"]
     colours = instance["colour_ids"]
+    categories = instance.get("dye_category", None)
     due = instance["due_dates"]
     release = instance["release"]
 
@@ -110,6 +111,7 @@ def extract_schedule(sigma: List[List[int]], instance: dict) -> List[dict]:
                 "setup_time": setup,
                 "proc_time": float(proc[job]),
                 "colour_id": int(colours[job]),
+                "dye_category": int(categories[job]) if categories is not None else -1,
                 "tardiness": max(0.0, end - due[job]),
             })
     rows.sort(key=lambda r: r["start"])

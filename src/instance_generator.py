@@ -4,106 +4,133 @@ Synthetic instance generator for PMSP-SDSC.
 A 'problem instance' is a dict with:
   n               : int — number of jobs
   m               : int — number of machines
-  proc_times      : np.ndarray shape (n,) — processing time (hours) for each job
+  proc_times      : np.ndarray shape (n,) — processing time (hours) for each job (all 8.0)
   due_dates       : np.ndarray shape (n,) — due date (hours from time zero) for each job
   weights         : np.ndarray shape (n,) — priority weights (1.0 for all)
   release         : np.ndarray shape (n,) — release times (0 for all)
   setup_cost      : np.ndarray shape (n, n) — asymmetric transition cost matrix S
   setup_time      : np.ndarray shape (n, n) — asymmetric transition time (hours)
-  colour_ids      : np.ndarray shape (n,) — integer colour family index for each job
+  colour_ids      : np.ndarray shape (n,) — integer colour index into COLOUR_NAMES
   colour_darkness : np.ndarray shape (n,) — darkness value [1, 7] for each job
+  dye_category    : np.ndarray shape (n,) — dye category index [0, 3]
 
 Justification:
-  - Machines run 168 hrs/week (24/7 continuous textile operation).
-  - Avg processing time = (m * 168) / n, so total work fills exactly one week.
-  - Due dates based on SPT heuristic completion times (parallel processing across m machines).
-  - Setup time averages 1/8 of processing time (vat cleaning ~1-2 hrs vs dye cycle ~8-16 hrs).
-  - Setup cost is asymmetric: dark-to-light transitions are expensive (deep vat cleaning).
+  - Each job takes exactly 8 hours (1 working day).
+  - n = jobs_per_machine * m, so total work fits within one week (168 hrs).
+  - Due dates based on SPT heuristic completion times.
+  - Setup time averages 1/8 of processing time (vat cleaning 1 hr vs dye 8 hrs).
+  - Setup cost: same-category transitions use darkness asymmetry; cross-category
+    transitions incur a flat penalty.
+  - 20 colours across 4 dye categories (reactive, disperse, vat, acid).
 """
 
 import numpy as np
 
+PROC_TIME = 8.0
+WEEKLY_HOURS = 168.0
+JOBS_PER_MACHINE = 21
+CROSS_CATEGORY_PENALTY = 50.0
 
-COLOUR_DARKNESS = {
-    0: 1,   # white
-    1: 2,   # yellow
-    2: 3,   # light blue
-    3: 4,   # green
-    4: 5,   # red
-    5: 6,   # navy
-    6: 7,   # black
+DYE_CATEGORIES = {
+    0: {
+        "name": "reactive",
+        "colours": ["white", "cream", "yellow", "navy", "royal blue"],
+        "darkness": [1, 2, 3, 6, 7],
+    },
+    1: {
+        "name": "disperse",
+        "colours": ["light blue", "sky", "red", "black"],
+        "darkness": [2, 3, 5, 7],
+    },
+    2: {
+        "name": "vat",
+        "colours": ["green", "olive", "teal"],
+        "darkness": [3, 4, 5],
+    },
+    3: {
+        "name": "acid",
+        "colours": ["pink", "orange", "purple", "brown", "magenta", "burgundy", "beige", "rust"],
+        "darkness": [1, 2, 3, 4, 5, 6, 7, 4],
+    },
 }
-N_COLOURS = len(COLOUR_DARKNESS)
 
-COLOUR_HEX = {
-    0: "#FFFACD", 1: "#FFD700", 2: "#87CEEB",
-    3: "#228B22", 4: "#DC143C", 5: "#000080", 6: "#1C1C1C",
-}
+N_DYE_CATEGORIES = len(DYE_CATEGORIES)
+
+GLOBAL_COLOUR_NAMES = {}
+GLOBAL_COLOUR_HEX = {}
+GLOBAL_COLOUR_DARKNESS = {}
+GLOBAL_COLOUR_CATEGORIES = {}
+_cid = 0
+for cat_id, cat in DYE_CATEGORIES.items():
+    for name, d in zip(cat["colours"], cat["darkness"]):
+        GLOBAL_COLOUR_NAMES[_cid] = name
+        GLOBAL_COLOUR_DARKNESS[_cid] = d
+        GLOBAL_COLOUR_CATEGORIES[_cid] = cat_id
+        _cid += 1
+
+N_COLOURS = len(GLOBAL_COLOUR_NAMES)
+
+_hex_palette = [
+    "#FFFACD", "#FFF5E6", "#FFD700", "#000080", "#002366",  # reactive
+    "#87CEEB", "#B0E0E6", "#DC143C", "#1C1C1C",             # disperse
+    "#228B22", "#556B2F", "#008080",                          # vat
+    "#FF69B4", "#FF8C00", "#800080", "#8B4513", "#FF00FF",    # acid
+    "#800020", "#FAEBD7", "#8B4513",
+]
+GLOBAL_COLOUR_HEX = {i: _hex_palette[i] if i < len(_hex_palette) else "#999999" for i in range(N_COLOURS)}
 
 
-def _build_cost_matrix(darkness: np.ndarray, rng: np.random.Generator) -> np.ndarray:
-    """
-    Asymmetric n×n cost matrix S.
-    Dark-to-light transitions are expensive; light-to-dark is cheap.
-    Diagonal is zero (same job = no transition cost).
-    """
-    n = len(darkness)
+def _build_cost_matrix(
+    colour_darkness: np.ndarray,
+    dye_category: np.ndarray,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    n = len(colour_darkness)
     S = np.zeros((n, n), dtype=np.float32)
     for i in range(n):
         for j in range(n):
             if i == j:
                 continue
-            diff = darkness[i] - darkness[j]
-            if diff > 0:
-                darkness_term = diff * 10.0
+            if dye_category[i] == dye_category[j]:
+                diff = colour_darkness[i] - colour_darkness[j]
+                if diff > 0:
+                    darkness_term = diff * 10.0
+                else:
+                    darkness_term = abs(diff) * 3.0
             else:
-                darkness_term = abs(diff) * 3.0
+                darkness_term = CROSS_CATEGORY_PENALTY
             noise = rng.uniform(0.0, 2.0)
             S[i][j] = darkness_term + noise
     return S
 
 
 def generate_instance(
-    n: int,
-    m: int,
+    jobs_per_machine: int = 10,
+    m: int = 1,
     seed: int = None,
-    weekly_hours: float = 168.0,
 ) -> dict:
-    """
-    Generate one synthetic PMSP-SDSC instance grounded in weekly capacity.
-
-    Args:
-        n:             number of jobs
-        m:             number of machines
-        seed:          random seed for reproducibility
-        weekly_hours:  operating hours per machine per week (default 168)
-    """
     rng = np.random.default_rng(seed)
+    n = jobs_per_machine * m
 
-    # Processing time — total work fills one week across all machines
-    avg_proc = (m * weekly_hours) / n
-    proc_times = rng.uniform(avg_proc * 0.3, avg_proc * 1.7, size=n).astype(np.float32)
+    proc_times = np.full(n, PROC_TIME, dtype=np.float32)
 
-    # Colour assignment (uniform across 7 levels)
     colour_ids = rng.integers(0, N_COLOURS, size=n)
-    colour_darkness = np.array([COLOUR_DARKNESS[cid] for cid in colour_ids], dtype=np.float32)
+    colour_darkness = np.array([GLOBAL_COLOUR_DARKNESS[cid] for cid in colour_ids], dtype=np.float32)
+    dye_category = np.array([GLOBAL_COLOUR_CATEGORIES[cid] for cid in colour_ids], dtype=np.int32)
 
-    # Setup cost — darkness asymmetry only
-    setup_cost = _build_cost_matrix(colour_darkness, rng)
+    setup_cost = _build_cost_matrix(colour_darkness, dye_category, rng)
 
-    # Setup time — average = 1/8 of avg proc time, proportional to setup cost
     norm_setup = setup_cost / max(setup_cost.mean(), 1e-8)
-    setup_time = norm_setup * proc_times.mean() / 8.0
+    setup_time = norm_setup * PROC_TIME / 8.0
     np.fill_diagonal(setup_time, 0.0)
 
-    # Due dates — based on SPT heuristic completion times (parallel processing)
-    # This ensures due dates are realistic and achievable with good scheduling
     from src.heuristics import spt
-    sigma_spt = spt({"n": n, "m": m, "proc_times": proc_times,
-                      "setup_time": setup_time, "colour_ids": colour_ids,
-                      "colour_darkness": colour_darkness, "setup_cost": setup_cost})
-    
-    # Compute actual completion times using SPT schedule
+    sigma_spt = spt({
+        "n": n, "m": m, "proc_times": proc_times,
+        "setup_time": setup_time, "colour_ids": colour_ids,
+        "colour_darkness": colour_darkness, "setup_cost": setup_cost,
+    })
+
     C_spt = np.zeros(n, dtype=np.float32)
     for machine_seq in sigma_spt:
         t = 0.0
@@ -112,11 +139,9 @@ def generate_instance(
                 t += setup_time[machine_seq[idx-1]][job]
             t += proc_times[job]
             C_spt[job] = t
-    
-    # Set due dates = SPT completion time + noise, capped at weekly_hours
-    # Tight enough that poor scheduling causes tardiness, loose enough that SPT mostly meets them
+
     noise = rng.uniform(0, C_spt.max() * 0.05, size=n).astype(np.float32)
-    due_dates = np.minimum(C_spt + noise, weekly_hours)
+    due_dates = np.minimum(C_spt + noise, WEEKLY_HOURS)
 
     return {
         "n": n,
@@ -129,19 +154,20 @@ def generate_instance(
         "setup_time": setup_time,
         "colour_ids": colour_ids,
         "colour_darkness": colour_darkness,
+        "dye_category": dye_category,
     }
 
 
 INSTANCE_CONFIGS = [
-    {"n": 5,   "m": 1,  "label": "n5_m1"},
-    {"n": 10,  "m": 1,  "label": "n10_m1"},
-    {"n": 20,  "m": 1,  "label": "n20_m1"},
-    {"n": 50,  "m": 1,  "label": "n50_m1"},
-    {"n": 100, "m": 1,  "label": "n100_m1"},
-    {"n": 20,  "m": 3,  "label": "n20_m3"},
-    {"n": 50,  "m": 5,  "label": "n50_m5"},
-    {"n": 100, "m": 5,  "label": "n100_m5"},
-    {"n": 100, "m": 10, "label": "n100_m10"},
+    {"jobs_per_machine": 5,   "m": 1,  "label": "j5_m1"},
+    {"jobs_per_machine": 10,  "m": 1,  "label": "j10_m1"},
+    {"jobs_per_machine": 20,  "m": 1,  "label": "j20_m1"},
+    {"jobs_per_machine": 50,  "m": 1,  "label": "j50_m1"},
+    {"jobs_per_machine": 100, "m": 1,  "label": "j100_m1"},
+    {"jobs_per_machine": 7,   "m": 3,  "label": "j7_m3"},
+    {"jobs_per_machine": 10,  "m": 5,  "label": "j10_m5"},
+    {"jobs_per_machine": 20,  "m": 5,  "label": "j20_m5"},
+    {"jobs_per_machine": 10,  "m": 10, "label": "j10_m10"},
 ]
 
-INSTANCE_CONFIGS_SMALL = [c for c in INSTANCE_CONFIGS if c["n"] <= 50]
+INSTANCE_CONFIGS_SMALL = [c for c in INSTANCE_CONFIGS if c["jobs_per_machine"] * c["m"] <= 50]

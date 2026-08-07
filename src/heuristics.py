@@ -12,6 +12,9 @@ def spt(instance: dict) -> List[List[int]]:
     Shortest Processing Time (SPT).
     Sort jobs ascending by processing time, assign round-robin to machines.
     Ignores all setup costs.
+
+    Note: with fixed proc_times (all 8.0), order is arbitrary (preserves
+    original index order). SPT becomes a pure round-robin baseline.
     """
     n, m = instance["n"], instance["m"]
     order = np.argsort(instance["proc_times"])

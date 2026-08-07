@@ -7,7 +7,7 @@ from src.ga import run_ga, decode_chromosome, mutInsertion
 
 
 def test_ga_runs_and_returns_dict():
-    inst = generate_instance(n=10, m=2, seed=0)
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
     result = run_ga(inst, n_gen=5, pop_size=10, seed=42)
     assert isinstance(result, dict)
     assert "best_fitness" in result
@@ -18,7 +18,7 @@ def test_ga_runs_and_returns_dict():
 
 
 def test_ga_sigma_valid():
-    inst = generate_instance(n=10, m=2, seed=0)
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
     result = run_ga(inst, n_gen=5, pop_size=10, seed=42)
     sigma = result["best_sigma"]
     all_jobs = sorted([j for seq in sigma for j in seq])
@@ -27,7 +27,7 @@ def test_ga_sigma_valid():
 
 @pytest.mark.parametrize("strategy", ["swap", "inversion", "insertion"])
 def test_ga_mutation_strategies(strategy):
-    inst = generate_instance(n=10, m=2, seed=0)
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
     result = run_ga(inst, n_gen=5, pop_size=10, seed=42, mutation_strategy=strategy)
     assert result["best_fitness"] > 0
 
@@ -36,15 +36,14 @@ def test_mut_insertion_preserves_jobs():
     ind = list(range(10))
     mutated, = mutInsertion(ind[:], indpb=1.0)
     assert sorted(mutated) == list(range(10))
-    assert mutated != ind  # very likely different with indpb=1.0
+    assert mutated != ind
 
 
 def test_ga_different_seeds_different_results():
-    inst = generate_instance(n=10, m=2, seed=0)
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
     r1 = run_ga(inst, n_gen=10, pop_size=20, seed=1)
     r2 = run_ga(inst, n_gen=10, pop_size=20, seed=2)
     assert r1["best_fitness"] != r2["best_fitness"]
-
 
 
 def test_decode_chromosome_preserves_jobs():
@@ -52,6 +51,3 @@ def test_decode_chromosome_preserves_jobs():
     sigma = decode_chromosome(ind, m=2)
     flat = [j for seq in sigma for j in seq]
     assert flat == list(range(10))
-
-
-

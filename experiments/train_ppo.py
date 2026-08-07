@@ -17,7 +17,7 @@ TRAIN_SEEDS = list(range(10))
 def run():
     save_path = "models/ppo_hyperheuristic"
     instance_pool = [
-        generate_instance(n=cfg["n"], m=cfg["m"], seed=s)
+        generate_instance(jobs_per_machine=cfg["jobs_per_machine"], m=cfg["m"], seed=s)
         for cfg in TRAIN_CONFIGS
         for s in TRAIN_SEEDS
     ]
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     TRAIN_CONFIGS = INSTANCE_CONFIGS_SMALL if args.small else INSTANCE_CONFIGS
     if args.smoke:
         TOTAL_TIMESTEPS = 1_000
-        TRAIN_CONFIGS = [c for c in TRAIN_CONFIGS if c["label"] == "n5_m1"]
+        TRAIN_CONFIGS = [c for c in TRAIN_CONFIGS if c["label"] == "j10_m1"]
         TRAIN_SEEDS = list(range(2))
         print("[SMOKE] Overriding training params")
     run()

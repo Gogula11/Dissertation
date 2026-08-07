@@ -10,7 +10,7 @@ from src.visualisation import plot_gantt
 
 
 def test_plot_gantt_returns_ax():
-    inst = generate_instance(n=5, m=2, seed=0)
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
     sigma = spt(inst)
     ax = plot_gantt(sigma, inst, title="Test")
     assert ax is not None

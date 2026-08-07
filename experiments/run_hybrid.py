@@ -26,7 +26,7 @@ def _init_worker(model_path):
 
 def run_one(args):
     cfg, seed = args
-    inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed)
+    inst = generate_instance(jobs_per_machine=cfg["jobs_per_machine"], m=cfg["m"], seed=seed)
     result = run_hybrid(inst, _worker_model, seed=seed, total_gens=TOTAL_GENS, alpha=ALPHA)
     return cfg["label"], {
         "seed":               seed,
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     _CFG_LIST = INSTANCE_CONFIGS_SMALL if args.small else INSTANCE_CONFIGS
     if _SMOKE:
         N_SEEDS = 3
-        _CFG_LIST = [c for c in _CFG_LIST if c["label"] == "n5_m1"]
+        _CFG_LIST = [c for c in _CFG_LIST if c["label"] == "j10_m1"]
         TOTAL_GENS = 10
         print("[SMOKE] Overriding hybrid params")
     run()

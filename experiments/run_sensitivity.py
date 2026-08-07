@@ -21,7 +21,7 @@ TOTAL_GENS = 100
 
 def run_one(args):
     cfg, seed, alpha = args
-    inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed)
+    inst = generate_instance(jobs_per_machine=cfg["jobs_per_machine"], m=cfg["m"], seed=seed)
     ga_result = run_ga(inst, alpha=alpha, seed=seed, n_gen=TOTAL_GENS)
     hybrid_result = run_hybrid(inst, _worker_model, seed=seed, total_gens=TOTAL_GENS, alpha=alpha)
     return {
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     CONFIGS = INSTANCE_CONFIGS_SMALL if args.small else INSTANCE_CONFIGS
     if _SMOKE:
         N_SEEDS = 3
-        CONFIGS = [c for c in CONFIGS if c["label"] == "n5_m1"]
+        CONFIGS = [c for c in CONFIGS if c["label"] == "j10_m1"]
         TOTAL_GENS = 5
         print("[SMOKE] Overriding sensitivity params")
     run()

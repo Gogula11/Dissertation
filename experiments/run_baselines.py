@@ -21,7 +21,7 @@ def run():
     for cfg in _CFG_LIST:
         print(f"Running baselines: {cfg['label']}")
         for seed in range(N_SEEDS):
-            inst = generate_instance(n=cfg["n"], m=cfg["m"], seed=seed)
+            inst = generate_instance(jobs_per_machine=cfg["jobs_per_machine"], m=cfg["m"], seed=seed)
             f1s, f2s = estimate_scales(inst)
             for name, fn in [("spt", spt), ("nn_greedy", nearest_neighbour_greedy)]:
                 sigma = fn(inst)
@@ -48,6 +48,6 @@ if __name__ == "__main__":
     _CFG_LIST = INSTANCE_CONFIGS_SMALL if args.small else INSTANCE_CONFIGS
     if args.smoke:
         N_SEEDS = 3
-        _CFG_LIST = [c for c in _CFG_LIST if c["label"] == "n5_m1"]
+        _CFG_LIST = [c for c in _CFG_LIST if c["label"] == "j10_m1"]
         print("[SMOKE] Overriding baselines params")
     run()
