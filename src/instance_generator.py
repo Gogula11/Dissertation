@@ -124,24 +124,7 @@ def generate_instance(
     setup_time = norm_setup * PROC_TIME / 8.0
     np.fill_diagonal(setup_time, 0.0)
 
-    from src.heuristics import spt
-    sigma_spt = spt({
-        "n": n, "m": m, "proc_times": proc_times,
-        "setup_time": setup_time, "colour_ids": colour_ids,
-        "colour_darkness": colour_darkness, "setup_cost": setup_cost,
-    })
-
-    C_spt = np.zeros(n, dtype=np.float32)
-    for machine_seq in sigma_spt:
-        t = 0.0
-        for idx, job in enumerate(machine_seq):
-            if idx > 0:
-                t += setup_time[machine_seq[idx-1]][job]
-            t += proc_times[job]
-            C_spt[job] = t
-
-    noise = rng.uniform(0, C_spt.max() * 0.05, size=n).astype(np.float32)
-    due_dates = np.minimum(C_spt + noise, WEEKLY_HOURS)
+    due_dates = np.full(n, WEEKLY_HOURS, dtype=np.float32)
 
     return {
         "n": n,
@@ -159,15 +142,18 @@ def generate_instance(
 
 
 INSTANCE_CONFIGS = [
-    {"jobs_per_machine": 5,   "m": 1,  "label": "j5_m1"},
-    {"jobs_per_machine": 10,  "m": 1,  "label": "j10_m1"},
-    {"jobs_per_machine": 20,  "m": 1,  "label": "j20_m1"},
-    {"jobs_per_machine": 50,  "m": 1,  "label": "j50_m1"},
-    {"jobs_per_machine": 100, "m": 1,  "label": "j100_m1"},
-    {"jobs_per_machine": 7,   "m": 3,  "label": "j7_m3"},
-    {"jobs_per_machine": 10,  "m": 5,  "label": "j10_m5"},
-    {"jobs_per_machine": 20,  "m": 5,  "label": "j20_m5"},
-    {"jobs_per_machine": 10,  "m": 10, "label": "j10_m10"},
+    # Easy (underloaded)
+    {"jobs_per_machine": 10, "m": 1,  "label": "j10_m1"},
+    {"jobs_per_machine": 7,  "m": 3,  "label": "j7_m3"},
+    {"jobs_per_machine": 10, "m": 5,  "label": "j10_m5"},
+    # Tight (near capacity)
+    {"jobs_per_machine": 20, "m": 1,  "label": "j20_m1"},
+    {"jobs_per_machine": 14, "m": 3,  "label": "j14_m3"},
+    {"jobs_per_machine": 20, "m": 5,  "label": "j20_m5"},
+    # Overloaded
+    {"jobs_per_machine": 30, "m": 1,  "label": "j30_m1"},
+    {"jobs_per_machine": 21, "m": 3,  "label": "j21_m3"},
+    {"jobs_per_machine": 30, "m": 5,  "label": "j30_m5"},
 ]
 
 INSTANCE_CONFIGS_SMALL = [c for c in INSTANCE_CONFIGS if c["jobs_per_machine"] * c["m"] <= 50]
