@@ -15,3 +15,12 @@ def test_plot_gantt_returns_ax():
     ax = plot_gantt(sigma, inst, title="Test")
     assert ax is not None
     assert len(ax.patches) > 0
+
+
+def test_plot_gantt_single_machine():
+    inst = generate_instance(jobs_per_machine=5, m=2, seed=0)
+    sigma = spt(inst)
+    ax = plot_gantt(sigma, inst, title="Single", machine=0)
+    assert ax is not None
+    assert len(ax.patches) > 0
+    assert ax.get_yticks().tolist() == [0]

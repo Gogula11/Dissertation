@@ -4,7 +4,7 @@ import numpy as np
 
 from src.instance_generator import GLOBAL_COLOUR_HEX, GLOBAL_COLOUR_NAMES, GLOBAL_COLOUR_CATEGORIES, DYE_CATEGORIES
 
-def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None, add_legend=True):
+def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None, add_legend=True, machine=None):
     if ax is None:
         _, ax = plt.subplots(figsize=(14, 7))
 
@@ -14,23 +14,29 @@ def plot_gantt(sigma, instance, title="Schedule", ax=None, alpha_eval=None, add_
     categories = instance.get("dye_category", None)
     m        = instance["m"]
 
-    for k, seq in enumerate(sigma):
+    seqs = [sigma[machine]] if machine is not None else sigma
+    y_offset = 0 if machine is None else machine
+    for k, seq in enumerate(seqs):
         t = 0.0
         for idx, job in enumerate(seq):
             if idx > 0:
                 st = float(setup_t[seq[idx-1]][job])
-                ax.barh(k, st, left=t, height=0.35,
+                ax.barh(k + y_offset, st, left=t, height=0.35,
                         color="lightgrey", edgecolor="black", hatch="//", linewidth=0.5)
                 t += st
             colour = GLOBAL_COLOUR_HEX.get(int(colours[job]), "#cccccc")
-            ax.barh(k, float(proc[job]), left=t, height=0.6,
+            ax.barh(k + y_offset, float(proc[job]), left=t, height=0.6,
                     color=colour, edgecolor="black", linewidth=0.5)
-            ax.text(t + proc[job]/2, k, str(job),
+            ax.text(t + proc[job]/2, k + y_offset, str(job),
                     ha="center", va="center", fontsize=7, color="white", fontweight="bold")
             t += float(proc[job])
 
-    ax.set_yticks(range(m))
-    ax.set_yticklabels([f"Machine {k}" for k in range(m)])
+    if machine is None:
+        ax.set_yticks(range(m))
+        ax.set_yticklabels([f"Machine {k}" for k in range(m)])
+    else:
+        ax.set_yticks([machine])
+        ax.set_yticklabels([f"Machine {machine}"])
     ax.set_xlabel("Time (hours)")
     ax.set_title(title)
 

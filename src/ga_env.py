@@ -42,12 +42,13 @@ class GAHyperHeuristicEnv(gym.Env):
     """
     Gymnasium env where PPO controls the GA's mutation operator selection.
 
-    observation_space: Box(8,) — [best_norm, mean_norm, diversity, stagnation_norm,
-                                  n_norm, m_norm, cost_mean_norm, darkness_mean_norm]
-    action_space:      Discrete(3)
+    observation_space: Box(9,) — [best_norm, mean_norm, diversity, stagnation_norm,
+                                  n_norm, m_norm, cost_mean_norm, darkness_mean_norm, util_norm]
+    action_space:      Discrete(4)
       0 = swap mutation (conservative, indpb=0.05)
       1 = inversion mutation (segment reversal)
       2 = insertion mutation (remove-and-reinsert, indpb=0.15)
+      3 = no-op (keep current mutation operator)
     """
 
     metadata = {"render_modes": []}
@@ -74,8 +75,8 @@ class GAHyperHeuristicEnv(gym.Env):
         self.alpha = alpha
         self.max_steps = total_gens // step_gens
 
-        self.observation_space = spaces.Box(low=0.0, high=1.0, shape=(8,), dtype=np.float32)
-        self.action_space = spaces.Discrete(3)
+        self.observation_space = spaces.Box(low=0.0, high=1.0, shape=(9,), dtype=np.float32)
+        self.action_space = spaces.Discrete(4)
 
         # Initialised in reset()
         self.toolbox = None
@@ -104,10 +105,13 @@ class GAHyperHeuristicEnv(gym.Env):
         off_diag = inst["setup_cost"][~diag_mask]
         cost_mean_norm = off_diag.mean() / max(off_diag.max(), 1e-6)
         darkness_mean_norm = inst["colour_darkness"].mean() / 10.0
+        proc_time = float(inst.get("proc_times", np.full(n_jobs, 8.0)).mean())
+        deadline = 168.0
+        util_norm = np.clip((n_jobs * proc_time) / (max(self._m_norm * 10.0, 1) * deadline) / 1.5, 0.0, 1.0)
 
         return np.array([
             best_norm, mean_norm, div, stag,
-            self._n_norm, self._m_norm, cost_mean_norm, darkness_mean_norm,
+            self._n_norm, self._m_norm, cost_mean_norm, darkness_mean_norm, util_norm,
         ], dtype=np.float32)
 
     def _apply_action(self, action: int):
@@ -115,8 +119,10 @@ class GAHyperHeuristicEnv(gym.Env):
             self.toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.05)
         elif action == 1:
             self.toolbox.register("mutate", tools.mutInversion)
-        else:
+        elif action == 2:
             self.toolbox.register("mutate", mutInsertion, indpb=0.15)
+        else:
+            pass
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
@@ -141,6 +147,7 @@ class GAHyperHeuristicEnv(gym.Env):
 
         self.hof.update(self.pop)
         self.best_at_start = float(self.hof[0].fitness.values[0])
+        self.step_bests = [self.best_at_start]
         self.last_best = self.best_at_start
         self.stagnation_count = 0
         self.current_step = 0
@@ -175,6 +182,7 @@ class GAHyperHeuristicEnv(gym.Env):
             self.hof.update(self.pop)
 
         best_after = float(self.hof[0].fitness.values[0])
+        self.step_bests.append(best_after)
 
         reward = (best_before - best_after) / max(best_before, 1e-6)
         if abs(reward) < 1e-8:
@@ -197,4 +205,5 @@ class GAHyperHeuristicEnv(gym.Env):
         result = evaluate(sigma, self.instance, self.alpha,
                           f1_scale=self._f1_scale, f2_scale=self._f2_scale)
         result["best_sigma"] = sigma
+        result["convergence"] = self.step_bests
         return result

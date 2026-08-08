@@ -71,11 +71,11 @@ for cat_id, cat in DYE_CATEGORIES.items():
 N_COLOURS = len(GLOBAL_COLOUR_NAMES)
 
 _hex_palette = [
-    "#FFFACD", "#FFF5E6", "#FFD700", "#000080", "#002366",  # reactive
-    "#87CEEB", "#B0E0E6", "#DC143C", "#1C1C1C",             # disperse
-    "#228B22", "#556B2F", "#008080",                          # vat
-    "#FF69B4", "#FF8C00", "#800080", "#8B4513", "#FF00FF",    # acid
-    "#800020", "#FAEBD7", "#8B4513",
+    "#FFFFFF", "#FFF5E6", "#FFD700", "#000080", "#4169E1",  # reactive: white, cream, yellow, navy, royal blue
+    "#87CEEB", "#4682B4", "#DC143C", "#1C1C1C",             # disperse: light blue, sky, red, black
+    "#228B22", "#556B2F", "#008080",                          # vat: green, olive, teal
+    "#FF69B4", "#FF8C00", "#800080", "#A0522D", "#FF00FF",    # acid: pink, orange, purple, brown, magenta
+    "#800020", "#DEB887", "#CD853F",                          # acid: burgundy, beige, rust
 ]
 GLOBAL_COLOUR_HEX = {i: _hex_palette[i] if i < len(_hex_palette) else "#999999" for i in range(N_COLOURS)}
 
@@ -150,9 +150,11 @@ INSTANCE_CONFIGS = [
     {"jobs_per_machine": 20, "m": 1,  "label": "j20_m1"},
     {"jobs_per_machine": 14, "m": 3,  "label": "j14_m3"},
     {"jobs_per_machine": 20, "m": 5,  "label": "j20_m5"},
-    # Overloaded
-    {"jobs_per_machine": 30, "m": 1,  "label": "j30_m1"},
+    # Constrained (at capacity)
+    {"jobs_per_machine": 18, "m": 1,  "label": "j18_m1"},
     {"jobs_per_machine": 21, "m": 3,  "label": "j21_m3"},
+    {"jobs_per_machine": 18, "m": 5,  "label": "j18_m5"},
+    # Stress test (overloaded, for limit-behaviour analysis)
     {"jobs_per_machine": 30, "m": 5,  "label": "j30_m5"},
 ]
 

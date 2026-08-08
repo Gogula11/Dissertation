@@ -131,7 +131,7 @@ c_ii = 0                         # same colour: free
 
 The "10 vs 3" multiplier means dark→light costs about 3.3× more than light→dark. The noise (0-2 random) adds real-world variability.
 
-![System flow chart showing the data pipeline from input through cost matrix computation to algorithms and evaluation.](../figures/flow_chart_problem_system.png)
+<!-- Removed: flow_chart_problem_system.png (never existed) -->
 
 *Figure 3.X — System data flow. Top: input parameters. Middle: cost matrix with decision diamond showing the conditional logic. Bottom: four algorithms feed into evaluation. Arrows show what data flows where.*
 
@@ -158,7 +158,7 @@ This wraps the GA so the PPO agent can interact with it. Key design:
 
 **Episode:** One complete GA run (300 generations). Each step = 10 generations with the chosen mutation.
 
-![GA+PPO hybrid execution loop showing the decision process with proper flowchart symbols.](../figures/flowchart_hybrid_loop.png)
+<!-- Removed: flowchart_hybrid_loop.png (never existed) -->
 
 *Figure 3.Y — The hybrid loop. START → initialise population → check if max steps reached → NO: PPO observes state → selects mutation → GA runs 10 generations → compute reward → loop back. YES: output best schedule → END. The diamond shapes are decisions, the parallelograms are input/output, the rectangles are processes.*
 
@@ -205,15 +205,15 @@ The fix: run SPT, NN-Greedy, and a random schedule. Take 1.5× the maximum obser
 
 *Figure 4.1 — What to look at: the purple (SPT) and green (NN-Greedy) boxes are tall and spread out — bad and inconsistent. The red (GA) and blue (Hybrid) boxes are short and low — good and consistent. On large instances, Hybrid is noticeably lower than GA.*
 
-![Gantt chart comparison (SPT vs GA vs Hybrid) on n50_m1 seed=28. SPT achieves composite 0.356, GA 0.285, and Hybrid 0.260.](../figures/06_gantt_comparison.png)
+![Gantt chart comparison (SPT vs GA vs Hybrid) on j20_m5 seed=27. The hybrid saves 18.7h of setup time through better colour-grouping.](../figures/06_gantt_j20_m5.png)
 
 *Figure 4.2 — What to look at: SPT (top) has lots of hatched areas (expensive transitions). GA (middle) is better but still has some. Hybrid (bottom) groups similar colours together, minimising the hatched setup regions.*
 
-![Convergence curves (GA vs Hybrid) on n50_m1 seed=28 (lower is better). Hybrid converges to final composite 0.260 versus GA 0.285.](../figures/06_convergence.png)
+![Convergence curves (GA vs Hybrid) on j20_m5 (lower is better). Hybrid achieves composite 0.123 versus GA 0.135.](../figures/06_convergence_j20_m5.png)
 
 *Figure 4.3 — What to look at: both lines go down (improving), but Hybrid (blue) goes lower and smoother. GA (orange) oscillates more — it's jumping between good and bad solutions. Hybrid's PPO agent keeps it on track.*
 
-![Hybrid improvement percentage over GA per instance configuration (higher is better).](../figures/05_improvement_bars.png)
+<!-- Removed: 05_improvement_bars.png (duplicate of boxplots) -->
 
 *Figure 4.6 — What to look at: the bars get taller as you move right (larger instances). The hyper-heuristic helps more on harder problems. On n50_m1, Hybrid is 42% better than GA.*
 
@@ -266,7 +266,7 @@ Below ~30 jobs, the GA can cover the search space with fixed operators in 300 ge
 
 ### NN-Greedy Fails Badly
 
-![Mean and worst-case composite scores for NN-Greedy, GA, and Hybrid.](../figures/05_nn_greedy_failures.png)
+<!-- Removed: 05_nn_greedy_failures.png (duplicate of boxplots) -->
 
 *Figure 5.6 — What to look at: the green bar (NN-Greedy worst case) is massive — 2.6× the Hybrid mean on n50_m5. The GA and Hybrid worst cases stay close to their averages. NN-Greedy can produce catastrophically bad schedules.*
 
@@ -286,7 +286,7 @@ NN-Greedy makes locally optimal choices that compound into disaster. It might pi
 - **Small training budget:** 100k timesteps might not be enough for optimal policy
 - **Basic baselines:** NEH, Tabu Search, or Ant Colony might outperform the GA
 
-![Scatter plot of weighted tardiness versus setup cost for GA and Hybrid on n50_m1.](../figures/05_scatter_tardiness_setup.png)
+<!-- Removed: 05_scatter_tardiness_setup.png (duplicate of boxplots) -->
 
 *Figure 5.5 — What to look at: GA (blue dots) scattered widely. Hybrid (orange dots) clustered tightly near the origin. Hybrid consistently finds solutions that balance both objectives well.*
 

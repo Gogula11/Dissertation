@@ -33,6 +33,7 @@ def run_one(args):
         "composite":          result["composite"],
         "weighted_tardiness": result["weighted_tardiness"],
         "setup_cost":         result["setup_cost"],
+        "total_setup_time":   result["total_setup_time"],
         "makespan":           result["makespan"],
     }
 

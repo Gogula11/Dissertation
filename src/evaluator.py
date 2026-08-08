@@ -191,7 +191,7 @@ def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5, *,
         f2_scale: normalisation scale for setup cost (use estimate_scales())
 
     Returns:
-        dict with: weighted_tardiness, setup_cost, composite, makespan,
+        dict with: weighted_tardiness, setup_cost, total_setup_time, composite, makespan,
                    tardiness_per_job, completion_times
     """
     validate_sigma(sigma, instance["n"])
@@ -204,9 +204,16 @@ def evaluate(sigma: List[List[int]], instance: dict, alpha: float = 0.5, *,
     f2_norm = f2 / f2_scale
     F = alpha * f1_norm + (1 - alpha) * f2_norm
 
+    setup_t = instance["setup_time"]
+    total_setup_time = 0.0
+    for seq in sigma:
+        for idx in range(1, len(seq)):
+            total_setup_time += float(setup_t[seq[idx - 1]][seq[idx]])
+
     return {
         "weighted_tardiness": f1,
         "setup_cost": f2,
+        "total_setup_time": total_setup_time,
         "composite": F,
         "makespan": compute_makespan(C),
         "tardiness_per_job": T,

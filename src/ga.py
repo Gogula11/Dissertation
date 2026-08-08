@@ -145,6 +145,7 @@ def run_ga(
         "best_fitness": best_result["composite"],
         "weighted_tardiness": best_result["weighted_tardiness"],
         "setup_cost": best_result["setup_cost"],
+        "total_setup_time": best_result["total_setup_time"],
         "makespan": best_result["makespan"],
         "best_sigma": best_sigma,
         "logbook": logbook,

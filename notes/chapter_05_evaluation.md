@@ -41,7 +41,7 @@ The hybrid advantage is most pronounced on single-machine large instances (n50_m
 
 **Alpha sensitivity.** The robustness of the hybrid advantage across alpha values suggests that the PPO agent learns a generalisable improvement strategy rather than an objective-specific trick. Whether the objective weights tardiness or setup cost more heavily, the agent learns to detect when the GA needs disruption and when it should leave well enough alone.
 
-![Figure 5.5: Scatter plot of weighted tardiness versus setup cost for GA (blue) and Hybrid (orange) on n50_m1 (50 seeds each, lower is better — closer to origin). GA solutions scatter across weighted tardiness 218–1395 and setup cost 234–544. Hybrid clusters tightly at tardiness 308–864 and setup cost 131–271.](../figures/05_scatter_tardiness_setup.png)
+<!-- Removed: 05_scatter_tardiness_setup.png (duplicate of boxplots) -->
 
 ![Figure 5.2: Sensitivity analysis across alpha values of 0.3, 0.5, and 0.7 (lower is better). The hybrid advantage is consistent across all three weightings.](../figures/05_sensitivity_alpha.png)
 
@@ -67,7 +67,7 @@ A notable finding is the tendency of NN-Greedy to produce catastrophically poor 
 
 GA and Hybrid never produce such failures. The evolutionary search explores the solution space broadly, and the population-based evaluation naturally filters out catastrophically poor solutions. This robustness is a practical advantage: in a real manufacturing environment, a single catastrophically poor schedule can disrupt production for days, making worst-case performance as important as average-case performance.
 
-![Figure 5.6: Mean and worst-case composite scores for NN-Greedy, GA, and Hybrid across four large instance configurations (lower is better). On n50_m5, NN-Greedy worst-case composite is 2.6× the Hybrid mean. GA and Hybrid worst cases remain within 1.5× their respective means (lower is better).](../figures/05_nn_greedy_failures.png)
+<!-- Removed: 05_nn_greedy_failures.png (duplicate of boxplots) -->
 
 ## 5.5 Practical Implications
 

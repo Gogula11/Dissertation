@@ -13,7 +13,7 @@ The parallel machine scheduling problem deals with a set of jobs where in, a set
 
 ![Figure 1.2: Setup-cost matrices S[i][j] for each instance configuration. The diagonal is zero (same job = free transition). The matrix is asymmetric: S[i][j] ≠ S[j][i], visible in the non-symmetric pattern across the diagonal. Bright cells indicate expensive transitions (dark→light colour changes); dark cells indicate cheap transitions (light→dark or same colour family).](../figures/01_cost_heatmaps.png)
 
-![Figure 1.3: Processing time distributions across instance sizes. Each box shows the spread of processing times derived from weekly capacity calibration.](../figures/01_proc_distributions.png)
+<!-- Removed: 01_proc_distributions.png (trivial: all jobs are 8h) -->
 
 ![Figure 1.4: Due dates versus SPT completion times for all instance configurations. Points below the red diagonal indicate tardy jobs. Due dates are calibrated from the SPT schedule, so most jobs are on time — poor scheduling causes tardiness, not tight due dates.](../figures/01_duedates_vs_completion.png)
 

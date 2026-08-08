@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from src.instance_generator import generate_instance, INSTANCE_CONFIGS, INSTANCE_CONFIGS_SMALL
 from src.drl_agent import train_ppo
 
-TOTAL_TIMESTEPS = 100_000
+TOTAL_TIMESTEPS = 200_000
 TRAIN_CONFIGS = INSTANCE_CONFIGS
 TRAIN_SEEDS = list(range(10))
 

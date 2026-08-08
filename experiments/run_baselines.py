@@ -31,6 +31,7 @@ def run():
                     "composite":          ev["composite"],
                     "weighted_tardiness": ev["weighted_tardiness"],
                     "setup_cost":         ev["setup_cost"],
+                    "total_setup_time":   ev["total_setup_time"],
                     "makespan":           ev["makespan"],
                 })
 

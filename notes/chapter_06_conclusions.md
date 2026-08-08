@@ -2,41 +2,41 @@
 
 ## 6.1 Summary of Contributions
 
-This project investigated a hybrid approach combining Genetic Algorithms with Deep Reinforcement Learning for solving the parallel machine scheduling problem with asymmetric, sequence-dependent setup costs. The core idea was to train a Proximal Policy Optimisation agent as a hyper-heuristic that dynamically selects GA mutation operators, replacing the fixed mutation strategy of a standalone GA with an adaptive policy that responds to the population's convergence state.
+This project investigated a hybrid approach combining Genetic Algorithms with Deep Reinforcement Learning for solving the parallel machine scheduling problem with asymmetric, sequence-dependent setup costs. The core idea was to train a Proximal Policy Optimisation agent as a hyper-heuristic that controls both the GA mutation operator and the tournament-selection size, replacing the fixed parameterisation of a standalone GA with an adaptive policy that responds to the population's convergence state.
 
 The primary contributions of this work are:
 
 1. **Problem formalisation.** The PMSP-SDSC problem with colour-based asymmetric cost structure was formalised, including a synthetic instance generator with weekly capacity calibration, setup-time-to-processing-time ratio of 1/8, and reproducible seeding. The colour-based cost structure provides a realistic model of manufacturing domains such as textile dyeing, where transition costs depend on the colour darkness differential between consecutive jobs.
 
-2. **Environment design.** A Gymnasium environment was designed to wrap the GA execution loop, exposing an 8-dimensional continuous observation space covering fitness progress, population convergence, diversity, stagnation, problem scale, and cost structure. The 3-action discrete space maps to mutation operators with distinct disruption levels (conservative swap, moderate inversion, aggressive insertion). This environment enables any standard DRL algorithm to learn hyper-heuristic control of the GA.
+2. **Environment design.** A Gymnasium environment was designed to wrap the GA execution loop, exposing an 11-dimensional continuous observation space covering fitness progress, population convergence, diversity, stagnation, problem scale, cost structure, and the previous action. A 6-action discrete space controls both the mutation operator (swap, inversion, insertion) and the tournament-selection size. This environment enables any standard DRL algorithm to learn hyper-heuristic control of the GA.
 
-3. **Empirical demonstration.** Through experiments across eight instance configurations with 50 random seeds each, the hybrid approach was shown to significantly outperform both classical heuristics and standalone GA on large instances. The hybrid achieved a 34-42% improvement over GA on large single-machine instances, with statistical significance at p < 0.001. On multi-machine instances, the improvement ranged from 7% to 18%.
+3. **Empirical demonstration.** Through experiments across a 3×3 configuration grid (easy/tight/constrained × 1/3/5 machines, 50 seeds each, plus a j30_m5 stress overload), the hybrid approach was shown to outperform standalone GA on the realistic multi-machine configurations. On the tight configurations the hybrid achieved up to 30% mean improvement over GA (j20_m5: +29.9%), with the advantage concentrated on multi-machine workloads where adaptive mutation matters most.
 
-4. **Scalability.** The hybrid advantage increases with problem size, demonstrating that the hyper-heuristic approach becomes increasingly valuable as the search space grows and the GA's fixed-mutation limitation becomes more constraining.
+4. **Scalability.** The hybrid advantage is largest on constrained multi-machine instances. On tight/constrained 3- and 5-machine configurations (j18_m5, j20_m5, j21_m3, j30_m5) the hybrid consistently beats GA on 90-100% of seeds, demonstrating that the hyper-heuristic becomes more valuable as the search space grows and the GA's fixed parameterisation becomes more constraining.
 
-5. **Behavioural insight.** The action frequency analysis revealed that the PPO agent learns a meaningful and interpretable policy: it applies high-disruption insertion mutation during early generations and transitions to moderate-disruption inversion mutation as the population converges, completely rejecting the conservative swap operator. This adaptive behaviour is precisely the capability that a fixed-mutation GA lacks.
+5. **Behavioural insight.** The action frequency analysis revealed that the PPO agent learns a meaningful and interpretable policy: it applies high-disruption insertion mutation during early generations and transitions to moderate-disruption inversion mutation as the population converges, adapting its disruption level to the search stage. This adaptive behaviour is precisely the capability that a fixed-mutation GA lacks.
 
 ## 6.2 Key Findings
 
 The following key findings emerge from this study:
 
-1. **The hybrid approach significantly outperforms standalone GA on large instances.** On the n50_m1 configuration (n = 100, m = 1), the hybrid achieved composite scores 42% lower than GA (p < 0.001). On xn50_m1 (n = 500, m = 1), the improvement is 34%. This improvement is practically significant: the hybrid finds substantially better schedules than the same GA with any fixed mutation operator.
+1. **The hybrid approach significantly outperforms standalone GA on constrained multi-machine instances.** On j20_m5 (n = 100, m = 5, 95% utilisation), the hybrid achieved composite scores 29.9% lower than GA on average and beat GA on 100% of seeds. On j21_m3 (n = 63, m = 3, 100% utilisation) the improvement is 24.4%.
 
-2. **The performance gap grows with problem size.** On small instances (n = 10-20), GA and Hybrid are equivalent or show marginal improvement (≤ 5%). On large instances (n ≥ 50), the gap is substantial and significant. This suggests that the hyper-heuristic approach becomes increasingly valuable as the search space grows and the GA's fixed-mutation limitation becomes more constraining.
+2. **The performance gap is concentrated where the GA is stretched.** On easy single-machine configurations (j10_m1, j20_m1, j18_m1) GA and Hybrid are effectively equivalent (≤ 2%), because the GA's fixed parameterisation is already adequate when the load is light. On tight and overloaded multi-machine configurations the gap is substantial. This suggests the hyper-heuristic's value comes from adapting operators when the GA struggles, not from uniformly improving every instance.
 
-3. **The PPO agent learns a non-trivial, interpretable policy.** The agent does not simply pick one mutation operator and repeat it. Instead, it starts with exclusive use of insertion mutation for high disruption, then transitions toward inversion mutation as the population converges, completely rejecting swap mutation. This learned behaviour validates the hyper-heuristic design: the agent is not memorising a fixed schedule but learning to adapt.
+3. **The PPO agent learns a non-trivial, interpretable policy.** The agent does not simply pick one mutation operator and repeat it. Instead, it starts with exclusive use of insertion mutation for high disruption, then transitions toward inversion mutation as the population converges. This learned behaviour validates the hyper-heuristic design: the agent is not memorising a fixed schedule but learning to adapt.
 
 4. **The results are robust to objective weighting.** The sensitivity analysis across alpha values of 0.3, 0.5, and 0.7 confirms that the hybrid's advantage is not an artefact of the chosen objective trade-off.
 
-![Figure 6.1: Convergence comparison on n50_m1 seed=28 (lower is better). Hybrid converges to 0.260 versus GA 0.285, a 9% improvement on this specific seed. The Hybrid consistently outperforms GA throughout the run. On average across all seeds, the Hybrid achieves a 47% improvement over GA on this instance (see Figure 4.6).](../figures/06_convergence.png)
+![Figure 6.1: Convergence comparison on j20_m5 seed=20 (lower is better). The hybrid converges to a lower composite score than GA throughout the run, consistent with its mean 29.9% improvement over GA on this configuration.](../figures/06_convergence_j20_m5.png)
 
-![Figure 6.2: Convergence stability comparison (seed=23, n50_m1, lower is better). GA oscillates across a fitness range of 0.272; Hybrid range is 0.219, converging to 0.185 versus GA 0.272. The Hybrid's convergence is smoother and more predictable, with less inter-generation oscillation.](../figures/06_convergence_stability.png)
+<!-- Removed: 06_convergence_j21_m3.png (second convergence chart adds little) -->
 
-![Figure 6.3: Gantt chart comparison (SPT, GA, Hybrid) on a multi-machine instance. The Hybrid schedule shows better colour family clustering, reducing setup time between jobs.](../figures/06_gantt_comparison.png)
+![Figure 6.3: Gantt chart comparison (SPT, GA, Hybrid) on j20_m5 (100 jobs, 5 machines). The GA and Hybrid schedules show better colour-category clustering than SPT, reducing sequence-dependent setup time between jobs.](../figures/06_gantt_j20_m5.png)
 
-![Figure 6.4: Multi-machine Gantt chart on n100_m5 (100 jobs, 5 machines). The Hybrid schedule groups jobs by colour more effectively than SPT or GA.](../figures/06_gantt_multi_5m.png)
+<!-- Removed: 06_gantt_j30_m5.png (stress test, not representative) -->
 
-![Figure 6.5: Multi-machine Gantt chart on n100_m10 (100 jobs, 10 machines). The Hybrid schedule maintains clear family groupings even at larger scale.](../figures/06_gantt_multi_10m_100.png)
+<!-- Removed: 06_gantt_j18_m1.png (benchmark, uninteresting for Gantt) -->
 
 ## 6.3 Future Work
 
