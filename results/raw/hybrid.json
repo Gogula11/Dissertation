@@ -1,0 +1,4022 @@
+{
+  "j3_m1": [
+    {
+      "seed": 0,
+      "composite": 0.23898244863223245,
+      "weighted_tardiness": 1.518960952758789,
+      "setup_cost": 102.5462417602539,
+      "total_setup_time": 5.934723377227783,
+      "makespan": 28.992183685302734
+    },
+    {
+      "seed": 1,
+      "composite": 0.2283559389048681,
+      "weighted_tardiness": 1.0432312488555908,
+      "setup_cost": 101.89468383789062,
+      "total_setup_time": 4.492250204086304,
+      "makespan": 23.9068546295166
+    },
+    {
+      "seed": 2,
+      "composite": 0.2644081519513711,
+      "weighted_tardiness": 1.2898447513580322,
+      "setup_cost": 102.43939208984375,
+      "total_setup_time": 4.552478790283203,
+      "makespan": 23.306026458740234
+    },
+    {
+      "seed": 3,
+      "composite": 0.22125377999234613,
+      "weighted_tardiness": 0.9189397096633911,
+      "setup_cost": 54.35295867919922,
+      "total_setup_time": 3.3691392838954926,
+      "makespan": 24.37368392944336
+    },
+    {
+      "seed": 4,
+      "composite": 0.33034649780831227,
+      "weighted_tardiness": 2.1534805297851562,
+      "setup_cost": 103.40823364257812,
+      "total_setup_time": 5.662349224090576,
+      "makespan": 24.93722152709961
+    },
+    {
+      "seed": 8,
+      "composite": 0.21901272223154997,
+      "weighted_tardiness": 0.8645602464675903,
+      "setup_cost": 100.95940399169922,
+      "total_setup_time": 4.486492156982422,
+      "makespan": 26.944820404052734
+    },
+    {
+      "seed": 5,
+      "composite": 0.22492304647533182,
+      "weighted_tardiness": 0.9503663778305054,
+      "setup_cost": 100.18806457519531,
+      "total_setup_time": 4.4377970695495605,
+      "makespan": 23.94683265686035
+    },
+    {
+      "seed": 7,
+      "composite": 0.22909070391987113,
+      "weighted_tardiness": 0.39653679728507996,
+      "setup_cost": 61.541934967041016,
+      "total_setup_time": 3.8050453662872314,
+      "makespan": 25.52720069885254
+    },
+    {
+      "seed": 12,
+      "composite": 0.27050685047837886,
+      "weighted_tardiness": 1.2656097412109375,
+      "setup_cost": 101.72191619873047,
+      "total_setup_time": 4.485261917114258,
+      "makespan": 21.935026168823242
+    },
+    {
+      "seed": 6,
+      "composite": 0.21045797154287746,
+      "weighted_tardiness": 0.5766152143478394,
+      "setup_cost": 58.36030960083008,
+      "total_setup_time": 3.404503971338272,
+      "makespan": 26.634302139282227
+    },
+    {
+      "seed": 10,
+      "composite": 0.6666666666666666,
+      "weighted_tardiness": 0.8839530944824219,
+      "setup_cost": 60.52744674682617,
+      "total_setup_time": 3.306125223636627,
+      "makespan": 19.550861358642578
+    },
+    {
+      "seed": 9,
+      "composite": 0.2168529019110133,
+      "weighted_tardiness": 0.6163206100463867,
+      "setup_cost": 72.59528350830078,
+      "total_setup_time": 4.23186182975769,
+      "makespan": 24.681293487548828
+    },
+    {
+      "seed": 11,
+      "composite": 0.16570626150106932,
+      "weighted_tardiness": 0.347708523273468,
+      "setup_cost": 57.38460922241211,
+      "total_setup_time": 3.3492733240127563,
+      "makespan": 23.84036636352539
+    },
+    {
+      "seed": 16,
+      "composite": 0.22971899392071188,
+      "weighted_tardiness": 0.5931987762451172,
+      "setup_cost": 82.11885070800781,
+      "total_setup_time": 4.50814151763916,
+      "makespan": 25.451461791992188
+    },
+    {
+      "seed": 17,
+      "composite": 0.22183962454741193,
+      "weighted_tardiness": 0.8383854031562805,
+      "setup_cost": 102.6954574584961,
+      "total_setup_time": 4.541088819503784,
+      "makespan": 25.03064727783203
+    },
+    {
+      "seed": 15,
+      "composite": 0.23138975467501505,
+      "weighted_tardiness": 1.2082738876342773,
+      "setup_cost": 93.38941955566406,
+      "total_setup_time": 4.844506502151489,
+      "makespan": 24.748985290527344
+    },
+    {
+      "seed": 14,
+      "composite": 0.23054889851985483,
+      "weighted_tardiness": 0.7138574719429016,
+      "setup_cost": 102.63755798339844,
+      "total_setup_time": 4.518436670303345,
+      "makespan": 29.16927146911621
+    },
+    {
+      "seed": 18,
+      "composite": 0.2589367945610724,
+      "weighted_tardiness": 1.0816400051116943,
+      "setup_cost": 100.87199401855469,
+      "total_setup_time": 4.454055547714233,
+      "makespan": 23.416278839111328
+    },
+    {
+      "seed": 13,
+      "composite": 0.11785070452933964,
+      "weighted_tardiness": 0.6069096326828003,
+      "setup_cost": 23.82607650756836,
+      "total_setup_time": 2.891951084136963,
+      "makespan": 21.747285842895508
+    },
+    {
+      "seed": 19,
+      "composite": 0.35123218785491417,
+      "weighted_tardiness": 1.551142692565918,
+      "setup_cost": 83.68885040283203,
+      "total_setup_time": 4.577338457107544,
+      "makespan": 22.191265106201172
+    },
+    {
+      "seed": 20,
+      "composite": 0.4364780426025391,
+      "weighted_tardiness": 0.3378257751464844,
+      "setup_cost": 60.92911148071289,
+      "total_setup_time": 3.353522002696991,
+      "makespan": 18.43199348449707
+    },
+    {
+      "seed": 23,
+      "composite": 0.22699923793749865,
+      "weighted_tardiness": 0.7139415740966797,
+      "setup_cost": 101.23400115966797,
+      "total_setup_time": 4.484629154205322,
+      "makespan": 25.65998077392578
+    },
+    {
+      "seed": 22,
+      "composite": 0.23211082013109371,
+      "weighted_tardiness": 0.6761034727096558,
+      "setup_cost": 102.32562255859375,
+      "total_setup_time": 4.5157551765441895,
+      "makespan": 25.622512817382812
+    },
+    {
+      "seed": 25,
+      "composite": 0.2586513728426811,
+      "weighted_tardiness": 1.2108581066131592,
+      "setup_cost": 103.515380859375,
+      "total_setup_time": 4.542848587036133,
+      "makespan": 23.602317810058594
+    },
+    {
+      "seed": 21,
+      "composite": 0.12342364678171393,
+      "weighted_tardiness": 0.4694056808948517,
+      "setup_cost": 57.56892776489258,
+      "total_setup_time": 3.3487811982631683,
+      "makespan": 20.730838775634766
+    },
+    {
+      "seed": 28,
+      "composite": 0.2690697028596449,
+      "weighted_tardiness": 1.2512333393096924,
+      "setup_cost": 102.22892761230469,
+      "total_setup_time": 4.472331762313843,
+      "makespan": 22.79016876220703
+    },
+    {
+      "seed": 24,
+      "composite": 0.244355203264383,
+      "weighted_tardiness": 1.5824216604232788,
+      "setup_cost": 83.38896942138672,
+      "total_setup_time": 4.570817947387695,
+      "makespan": 21.421104431152344
+    },
+    {
+      "seed": 27,
+      "composite": 0.22677566719364484,
+      "weighted_tardiness": 1.5247726440429688,
+      "setup_cost": 101.90687561035156,
+      "total_setup_time": 6.741805076599121,
+      "makespan": 32.9196891784668
+    },
+    {
+      "seed": 26,
+      "composite": 0.2138456290771873,
+      "weighted_tardiness": 0.6772599816322327,
+      "setup_cost": 101.44705963134766,
+      "total_setup_time": 4.493750095367432,
+      "makespan": 25.816936492919922
+    },
+    {
+      "seed": 30,
+      "composite": 0.2397708307753409,
+      "weighted_tardiness": 0.7956497669219971,
+      "setup_cost": 71.15325927734375,
+      "total_setup_time": 4.1647714376449585,
+      "makespan": 29.26871109008789
+    },
+    {
+      "seed": 34,
+      "composite": 0.0577515465486082,
+      "weighted_tardiness": 0.0,
+      "setup_cost": 14.841429710388184,
+      "total_setup_time": 1.7620288729667664,
+      "makespan": 27.456775665283203
+    },
+    {
+      "seed": 29,
+      "composite": 0.23459042111669087,
+      "weighted_tardiness": 1.2637828588485718,
+      "setup_cost": 101.99565124511719,
+      "total_setup_time": 4.51629638671875,
+      "makespan": 23.15618896484375
+    },
+    {
+      "seed": 31,
+      "composite": 0.2462506052206198,
+      "weighted_tardiness": 1.106332778930664,
+      "setup_cost": 103.92500305175781,
+      "total_setup_time": 4.58245062828064,
+      "makespan": 23.356224060058594
+    },
+    {
+      "seed": 32,
+      "composite": 0.2587486477565014,
+      "weighted_tardiness": 2.7428436279296875,
+      "setup_cost": 102.85308074951172,
+      "total_setup_time": 6.689223527908325,
+      "makespan": 28.957502365112305
+    },
+    {
+      "seed": 33,
+      "composite": 0.17871394245806052,
+      "weighted_tardiness": 0.2142181396484375,
+      "setup_cost": 57.51632308959961,
+      "total_setup_time": 3.3669044375419617,
+      "makespan": 19.13033676147461
+    },
+    {
+      "seed": 38,
+      "composite": 0.4927284747362137,
+      "weighted_tardiness": 0.4181835353374481,
+      "setup_cost": 57.02346420288086,
+      "total_setup_time": 3.333607494831085,
+      "makespan": 21.81625747680664
+    },
+    {
+      "seed": 37,
+      "composite": 0.21817305676010268,
+      "weighted_tardiness": 0.2607591152191162,
+      "setup_cost": 51.91386413574219,
+      "total_setup_time": 3.4059245428070426,
+      "makespan": 27.29336166381836
+    },
+    {
+      "seed": 35,
+      "composite": 0.24360189239438193,
+      "weighted_tardiness": 1.1662302017211914,
+      "setup_cost": 103.43463134765625,
+      "total_setup_time": 4.532123565673828,
+      "makespan": 23.515674591064453
+    },
+    {
+      "seed": 39,
+      "composite": 0.23468542218614674,
+      "weighted_tardiness": 0.795071005821228,
+      "setup_cost": 101.83141326904297,
+      "total_setup_time": 4.480535507202148,
+      "makespan": 27.396682739257812
+    },
+    {
+      "seed": 40,
+      "composite": 0.1539182380425395,
+      "weighted_tardiness": 0.5904808044433594,
+      "setup_cost": 66.17588806152344,
+      "total_setup_time": 3.3120458126068115,
+      "makespan": 28.00232696533203
+    },
+    {
+      "seed": 36,
+      "composite": 0.13059553372282112,
+      "weighted_tardiness": 0.22100257873535156,
+      "setup_cost": 61.72809600830078,
+      "total_setup_time": 3.8213455080986023,
+      "makespan": 21.823060989379883
+    },
+    {
+      "seed": 42,
+      "composite": 0.2358783287258337,
+      "weighted_tardiness": 0.8084580898284912,
+      "setup_cost": 102.10975646972656,
+      "total_setup_time": 4.492414236068726,
+      "makespan": 27.58546257019043
+    },
+    {
+      "seed": 41,
+      "composite": 0.4011309802532196,
+      "weighted_tardiness": 0.2873299717903137,
+      "setup_cost": 52.39984893798828,
+      "total_setup_time": 3.4118394553661346,
+      "makespan": 26.316356658935547
+    },
+    {
+      "seed": 43,
+      "composite": 0.6666666666666666,
+      "weighted_tardiness": 0.8128623962402344,
+      "setup_cost": 92.6237564086914,
+      "total_setup_time": 4.8191821575164795,
+      "makespan": 25.7450008392334
+    },
+    {
+      "seed": 46,
+      "composite": 0.23334655930628986,
+      "weighted_tardiness": 0.8204902410507202,
+      "setup_cost": 103.25799560546875,
+      "total_setup_time": 4.5246148109436035,
+      "makespan": 28.002971649169922
+    },
+    {
+      "seed": 44,
+      "composite": 0.21589378599816866,
+      "weighted_tardiness": 0.7611179351806641,
+      "setup_cost": 101.49871826171875,
+      "total_setup_time": 4.473160266876221,
+      "makespan": 28.571044921875
+    },
+    {
+      "seed": 47,
+      "composite": 0.1622703302866574,
+      "weighted_tardiness": 0.757381796836853,
+      "setup_cost": 65.30147552490234,
+      "total_setup_time": 3.4091702699661255,
+      "makespan": 26.97447967529297
+    },
+    {
+      "seed": 45,
+      "composite": 0.21204180344866533,
+      "weighted_tardiness": 0.49619245529174805,
+      "setup_cost": 52.86967468261719,
+      "total_setup_time": 3.4334831088781357,
+      "makespan": 28.059188842773438
+    },
+    {
+      "seed": 48,
+      "composite": 0.18586555749356043,
+      "weighted_tardiness": 0.3640754818916321,
+      "setup_cost": 56.63123321533203,
+      "total_setup_time": 3.3156266808509827,
+      "makespan": 23.124820709228516
+    },
+    {
+      "seed": 49,
+      "composite": 0.6666666666666666,
+      "weighted_tardiness": 0.893031120300293,
+      "setup_cost": 102.2707290649414,
+      "total_setup_time": 4.485214710235596,
+      "makespan": 23.332399368286133
+    }
+  ],
+  "j12_m3": [
+    {
+      "seed": 0,
+      "composite": 0.15443409778810677,
+      "weighted_tardiness": 7.308051586151123,
+      "setup_cost": 232.8746337890625,
+      "total_setup_time": 8.5866519510746,
+      "makespan": 32.21629333496094
+    },
+    {
+      "seed": 3,
+      "composite": 0.14074246343348978,
+      "weighted_tardiness": 1.3679717779159546,
+      "setup_cost": 235.0619659423828,
+      "total_setup_time": 9.599264906719327,
+      "makespan": 32.922000885009766
+    },
+    {
+      "seed": 2,
+      "composite": 0.13743697697363788,
+      "weighted_tardiness": 4.698712348937988,
+      "setup_cost": 203.37010192871094,
+      "total_setup_time": 7.725643314421177,
+      "makespan": 29.837913513183594
+    },
+    {
+      "seed": 1,
+      "composite": 0.16888461061611926,
+      "weighted_tardiness": 5.033616065979004,
+      "setup_cost": 267.1507568359375,
+      "total_setup_time": 10.110158532857895,
+      "makespan": 31.512083053588867
+    },
+    {
+      "seed": 5,
+      "composite": 0.1431355495504102,
+      "weighted_tardiness": 1.1322236061096191,
+      "setup_cost": 287.42535400390625,
+      "total_setup_time": 10.449929006397724,
+      "makespan": 32.90155029296875
+    },
+    {
+      "seed": 6,
+      "composite": 0.15131373852825228,
+      "weighted_tardiness": 3.6214377880096436,
+      "setup_cost": 251.71066284179688,
+      "total_setup_time": 9.797101670876145,
+      "makespan": 30.236526489257812
+    },
+    {
+      "seed": 8,
+      "composite": 0.1668179986725123,
+      "weighted_tardiness": 5.79148530960083,
+      "setup_cost": 281.0060119628906,
+      "total_setup_time": 10.303335949778557,
+      "makespan": 32.644256591796875
+    },
+    {
+      "seed": 4,
+      "composite": 0.1703860488926481,
+      "weighted_tardiness": 11.153582572937012,
+      "setup_cost": 219.3271026611328,
+      "total_setup_time": 8.448200788348913,
+      "makespan": 36.079158782958984
+    },
+    {
+      "seed": 7,
+      "composite": 0.16450042414744925,
+      "weighted_tardiness": 9.169553756713867,
+      "setup_cost": 181.97012329101562,
+      "total_setup_time": 6.986696768552065,
+      "makespan": 32.481544494628906
+    },
+    {
+      "seed": 10,
+      "composite": 0.12803338868088057,
+      "weighted_tardiness": 0.9135701656341553,
+      "setup_cost": 238.59800720214844,
+      "total_setup_time": 9.182566119357944,
+      "makespan": 33.466861724853516
+    },
+    {
+      "seed": 9,
+      "composite": 0.11986727033561465,
+      "weighted_tardiness": 1.6809585094451904,
+      "setup_cost": 234.74215698242188,
+      "total_setup_time": 9.198413990437984,
+      "makespan": 34.786617279052734
+    },
+    {
+      "seed": 16,
+      "composite": 0.12383642108735138,
+      "weighted_tardiness": 7.823807239532471,
+      "setup_cost": 179.53306579589844,
+      "total_setup_time": 6.758655924350023,
+      "makespan": 33.3223876953125
+    },
+    {
+      "seed": 14,
+      "composite": 0.1456791822868561,
+      "weighted_tardiness": 4.488381385803223,
+      "setup_cost": 233.49876403808594,
+      "total_setup_time": 8.854291714727879,
+      "makespan": 32.77928924560547
+    },
+    {
+      "seed": 17,
+      "composite": 0.15932044189136102,
+      "weighted_tardiness": 9.896857261657715,
+      "setup_cost": 196.41635131835938,
+      "total_setup_time": 7.317193278111517,
+      "makespan": 32.76094436645508
+    },
+    {
+      "seed": 15,
+      "composite": 0.14639778573522766,
+      "weighted_tardiness": 6.574546813964844,
+      "setup_cost": 204.62606811523438,
+      "total_setup_time": 7.7417187094688416,
+      "makespan": 34.50780487060547
+    },
+    {
+      "seed": 12,
+      "composite": 0.12841512288694218,
+      "weighted_tardiness": 4.52170991897583,
+      "setup_cost": 226.87744140625,
+      "total_setup_time": 8.89939308911562,
+      "makespan": 34.02891159057617
+    },
+    {
+      "seed": 11,
+      "composite": 0.15415430149646617,
+      "weighted_tardiness": 4.948291301727295,
+      "setup_cost": 223.75564575195312,
+      "total_setup_time": 8.396436974871904,
+      "makespan": 33.54780960083008
+    },
+    {
+      "seed": 13,
+      "composite": 0.14878697102891253,
+      "weighted_tardiness": 5.052854537963867,
+      "setup_cost": 166.52439880371094,
+      "total_setup_time": 7.756831337697804,
+      "makespan": 32.96381378173828
+    },
+    {
+      "seed": 19,
+      "composite": 0.18504421594308038,
+      "weighted_tardiness": 4.38859224319458,
+      "setup_cost": 263.2925720214844,
+      "total_setup_time": 10.416873767971992,
+      "makespan": 30.69189453125
+    },
+    {
+      "seed": 18,
+      "composite": 0.17918008763773796,
+      "weighted_tardiness": 9.261756896972656,
+      "setup_cost": 223.95396423339844,
+      "total_setup_time": 8.489207247272134,
+      "makespan": 35.823421478271484
+    },
+    {
+      "seed": 20,
+      "composite": 0.16104133692076195,
+      "weighted_tardiness": 13.059032440185547,
+      "setup_cost": 192.79098510742188,
+      "total_setup_time": 7.303538220003247,
+      "makespan": 31.191946029663086
+    },
+    {
+      "seed": 23,
+      "composite": 0.19588323577964867,
+      "weighted_tardiness": 7.682222843170166,
+      "setup_cost": 285.3377990722656,
+      "total_setup_time": 11.06660883128643,
+      "makespan": 34.89601516723633
+    },
+    {
+      "seed": 26,
+      "composite": 0.14600345363426248,
+      "weighted_tardiness": 9.039740562438965,
+      "setup_cost": 195.37193298339844,
+      "total_setup_time": 7.166645929217339,
+      "makespan": 34.99198913574219
+    },
+    {
+      "seed": 24,
+      "composite": 0.1516143444234033,
+      "weighted_tardiness": 1.8843395709991455,
+      "setup_cost": 230.2365264892578,
+      "total_setup_time": 8.965579878538847,
+      "makespan": 31.2462158203125
+    },
+    {
+      "seed": 21,
+      "composite": 0.16557330976273238,
+      "weighted_tardiness": 1.892284870147705,
+      "setup_cost": 283.624755859375,
+      "total_setup_time": 11.250230614095926,
+      "makespan": 30.621410369873047
+    },
+    {
+      "seed": 22,
+      "composite": 0.16312525709289147,
+      "weighted_tardiness": 5.212197303771973,
+      "setup_cost": 251.02142333984375,
+      "total_setup_time": 9.369343601167202,
+      "makespan": 33.193851470947266
+    },
+    {
+      "seed": 25,
+      "composite": 0.16448059479644891,
+      "weighted_tardiness": 2.3311710357666016,
+      "setup_cost": 245.15769958496094,
+      "total_setup_time": 10.588155075907707,
+      "makespan": 35.1043701171875
+    },
+    {
+      "seed": 27,
+      "composite": 0.1330918212173235,
+      "weighted_tardiness": 1.345937967300415,
+      "setup_cost": 262.0831604003906,
+      "total_setup_time": 9.499288216233253,
+      "makespan": 31.806171417236328
+    },
+    {
+      "seed": 29,
+      "composite": 0.10638748271731531,
+      "weighted_tardiness": 0.6750622391700745,
+      "setup_cost": 213.7906494140625,
+      "total_setup_time": 8.3414028827101,
+      "makespan": 35.63092803955078
+    },
+    {
+      "seed": 31,
+      "composite": 0.1620253899883904,
+      "weighted_tardiness": 1.87331223487854,
+      "setup_cost": 244.43875122070312,
+      "total_setup_time": 9.734143435955048,
+      "makespan": 33.41748046875
+    },
+    {
+      "seed": 28,
+      "composite": 0.11159190401163002,
+      "weighted_tardiness": 0.42884403467178345,
+      "setup_cost": 183.95330810546875,
+      "total_setup_time": 7.829775355756283,
+      "makespan": 30.51750946044922
+    },
+    {
+      "seed": 33,
+      "composite": 0.11140781766170806,
+      "weighted_tardiness": 1.1096405982971191,
+      "setup_cost": 191.17613220214844,
+      "total_setup_time": 7.994371864944696,
+      "makespan": 26.7344970703125
+    },
+    {
+      "seed": 32,
+      "composite": 0.12716354676256747,
+      "weighted_tardiness": 0.8289586901664734,
+      "setup_cost": 224.90296936035156,
+      "total_setup_time": 8.931588847190142,
+      "makespan": 29.770721435546875
+    },
+    {
+      "seed": 30,
+      "composite": 0.15750715070610094,
+      "weighted_tardiness": 1.5608251094818115,
+      "setup_cost": 262.3360290527344,
+      "total_setup_time": 9.909804552793503,
+      "makespan": 33.981815338134766
+    },
+    {
+      "seed": 36,
+      "composite": 0.13464961952183224,
+      "weighted_tardiness": 6.416214466094971,
+      "setup_cost": 193.745849609375,
+      "total_setup_time": 7.71801077388227,
+      "makespan": 30.789386749267578
+    },
+    {
+      "seed": 34,
+      "composite": 0.14116738056210157,
+      "weighted_tardiness": 4.956674575805664,
+      "setup_cost": 209.43324279785156,
+      "total_setup_time": 8.810106299817562,
+      "makespan": 35.68254470825195
+    },
+    {
+      "seed": 35,
+      "composite": 0.1283599229517268,
+      "weighted_tardiness": 1.6944453716278076,
+      "setup_cost": 271.7273864746094,
+      "total_setup_time": 10.55724747478962,
+      "makespan": 33.4830436706543
+    },
+    {
+      "seed": 37,
+      "composite": 0.1979495358453879,
+      "weighted_tardiness": 9.80341911315918,
+      "setup_cost": 282.10736083984375,
+      "total_setup_time": 10.489628553390503,
+      "makespan": 31.184696197509766
+    },
+    {
+      "seed": 38,
+      "composite": 0.12865389857624562,
+      "weighted_tardiness": 5.231995105743408,
+      "setup_cost": 212.2510986328125,
+      "total_setup_time": 8.491765052080154,
+      "makespan": 32.64621353149414
+    },
+    {
+      "seed": 39,
+      "composite": 0.17897870759418644,
+      "weighted_tardiness": 7.227616310119629,
+      "setup_cost": 275.3600158691406,
+      "total_setup_time": 10.194567531347275,
+      "makespan": 31.956789016723633
+    },
+    {
+      "seed": 40,
+      "composite": 0.10123652939080033,
+      "weighted_tardiness": 0.7221736907958984,
+      "setup_cost": 195.4332275390625,
+      "total_setup_time": 7.715654097497463,
+      "makespan": 32.23356628417969
+    },
+    {
+      "seed": 42,
+      "composite": 0.1152898992504792,
+      "weighted_tardiness": 3.691789150238037,
+      "setup_cost": 194.73841857910156,
+      "total_setup_time": 7.3847206346690655,
+      "makespan": 33.96265411376953
+    },
+    {
+      "seed": 41,
+      "composite": 0.14303202306201865,
+      "weighted_tardiness": 5.73247766494751,
+      "setup_cost": 226.47547912597656,
+      "total_setup_time": 8.725367221981287,
+      "makespan": 30.449169158935547
+    },
+    {
+      "seed": 45,
+      "composite": 0.20399137194421135,
+      "weighted_tardiness": 2.2294442653656006,
+      "setup_cost": 279.4263610839844,
+      "total_setup_time": 13.00552073866129,
+      "makespan": 34.51417541503906
+    },
+    {
+      "seed": 44,
+      "composite": 0.17527380775249213,
+      "weighted_tardiness": 3.186598777770996,
+      "setup_cost": 291.649658203125,
+      "total_setup_time": 10.601124033331871,
+      "makespan": 33.9241943359375
+    },
+    {
+      "seed": 43,
+      "composite": 0.15805945560678503,
+      "weighted_tardiness": 5.8694329261779785,
+      "setup_cost": 250.74610900878906,
+      "total_setup_time": 9.317008897662163,
+      "makespan": 34.57223892211914
+    },
+    {
+      "seed": 48,
+      "composite": 0.14400947289507532,
+      "weighted_tardiness": 9.342549324035645,
+      "setup_cost": 176.26486206054688,
+      "total_setup_time": 6.805872981436551,
+      "makespan": 32.624244689941406
+    },
+    {
+      "seed": 46,
+      "composite": 0.17128586845271257,
+      "weighted_tardiness": 12.152170181274414,
+      "setup_cost": 181.00025939941406,
+      "total_setup_time": 7.1259909346699715,
+      "makespan": 31.294424057006836
+    },
+    {
+      "seed": 47,
+      "composite": 0.12267520813929307,
+      "weighted_tardiness": 4.503297328948975,
+      "setup_cost": 178.4217529296875,
+      "total_setup_time": 6.840300887823105,
+      "makespan": 31.400819778442383
+    },
+    {
+      "seed": 49,
+      "composite": 0.12549790730206598,
+      "weighted_tardiness": 5.848858833312988,
+      "setup_cost": 211.38475036621094,
+      "total_setup_time": 8.182939626276493,
+      "makespan": 34.11188507080078
+    }
+  ],
+  "j12_m1": [
+    {
+      "seed": 0,
+      "composite": 0.18402407183913927,
+      "weighted_tardiness": 9.227190017700195,
+      "setup_cost": 401.548095703125,
+      "total_setup_time": 14.806052029132843,
+      "makespan": 97.12972259521484
+    },
+    {
+      "seed": 1,
+      "composite": 0.16690738728944546,
+      "weighted_tardiness": 9.316353797912598,
+      "setup_cost": 322.13214111328125,
+      "total_setup_time": 12.190893448889256,
+      "makespan": 89.948486328125
+    },
+    {
+      "seed": 4,
+      "composite": 0.1726475057139223,
+      "weighted_tardiness": 32.8395881652832,
+      "setup_cost": 296.1798400878906,
+      "total_setup_time": 11.408469542860985,
+      "makespan": 95.88542938232422
+    },
+    {
+      "seed": 2,
+      "composite": 0.13730230626048562,
+      "weighted_tardiness": 15.733020782470703,
+      "setup_cost": 269.4530944824219,
+      "total_setup_time": 10.236011631786823,
+      "makespan": 88.50628662109375
+    },
+    {
+      "seed": 3,
+      "composite": 0.1622375520586575,
+      "weighted_tardiness": 30.30092430114746,
+      "setup_cost": 249.34169006347656,
+      "total_setup_time": 10.182406993582845,
+      "makespan": 96.50090026855469
+    },
+    {
+      "seed": 5,
+      "composite": 0.18271509391058338,
+      "weighted_tardiness": 28.274372100830078,
+      "setup_cost": 338.45281982421875,
+      "total_setup_time": 12.305136032402515,
+      "makespan": 93.0146484375
+    },
+    {
+      "seed": 6,
+      "composite": 0.16776676681912633,
+      "weighted_tardiness": 20.08176040649414,
+      "setup_cost": 322.14849853515625,
+      "total_setup_time": 12.538687616586685,
+      "makespan": 88.446533203125
+    },
+    {
+      "seed": 7,
+      "composite": 0.12650097860339438,
+      "weighted_tardiness": 1.6135499477386475,
+      "setup_cost": 264.7864685058594,
+      "total_setup_time": 10.16640991345048,
+      "makespan": 93.78652954101562
+    },
+    {
+      "seed": 11,
+      "composite": 0.13192609860091647,
+      "weighted_tardiness": 15.462700843811035,
+      "setup_cost": 295.47314453125,
+      "total_setup_time": 11.087637551594526,
+      "makespan": 96.59329986572266
+    },
+    {
+      "seed": 8,
+      "composite": 0.14865425951711547,
+      "weighted_tardiness": 29.4928035736084,
+      "setup_cost": 219.59510803222656,
+      "total_setup_time": 8.051649995148182,
+      "makespan": 89.4295425415039
+    },
+    {
+      "seed": 9,
+      "composite": 0.1797594900692103,
+      "weighted_tardiness": 16.225112915039062,
+      "setup_cost": 354.2655334472656,
+      "total_setup_time": 13.881959065794945,
+      "makespan": 100.28240966796875
+    },
+    {
+      "seed": 10,
+      "composite": 0.17528643240493624,
+      "weighted_tardiness": 32.662353515625,
+      "setup_cost": 271.206298828125,
+      "total_setup_time": 10.437512559816241,
+      "makespan": 101.41175842285156
+    },
+    {
+      "seed": 12,
+      "composite": 0.12620533678053983,
+      "weighted_tardiness": 15.559002876281738,
+      "setup_cost": 252.66452026367188,
+      "total_setup_time": 9.910905979573727,
+      "makespan": 95.35081481933594
+    },
+    {
+      "seed": 19,
+      "composite": 0.12725527239411302,
+      "weighted_tardiness": 10.892622947692871,
+      "setup_cost": 230.23915100097656,
+      "total_setup_time": 9.10915320366621,
+      "makespan": 82.95993041992188
+    },
+    {
+      "seed": 16,
+      "composite": 0.14270791990046353,
+      "weighted_tardiness": 18.10478401184082,
+      "setup_cost": 272.781005859375,
+      "total_setup_time": 10.269043646752834,
+      "makespan": 95.73080444335938
+    },
+    {
+      "seed": 17,
+      "composite": 0.16379368696640764,
+      "weighted_tardiness": 9.784013748168945,
+      "setup_cost": 372.5668640136719,
+      "total_setup_time": 13.879413068294525,
+      "makespan": 91.97193908691406
+    },
+    {
+      "seed": 20,
+      "composite": 0.139924647194517,
+      "weighted_tardiness": 11.599641799926758,
+      "setup_cost": 344.93975830078125,
+      "total_setup_time": 13.067421212792397,
+      "makespan": 85.9453353881836
+    },
+    {
+      "seed": 15,
+      "composite": 0.17166106698786512,
+      "weighted_tardiness": 23.013280868530273,
+      "setup_cost": 354.4026184082031,
+      "total_setup_time": 13.408288113772869,
+      "makespan": 103.53833770751953
+    },
+    {
+      "seed": 14,
+      "composite": 0.14899054540955795,
+      "weighted_tardiness": 7.983088493347168,
+      "setup_cost": 296.4212646484375,
+      "total_setup_time": 11.240318164229393,
+      "makespan": 98.55564880371094
+    },
+    {
+      "seed": 18,
+      "composite": 0.12867335150635126,
+      "weighted_tardiness": 8.733589172363281,
+      "setup_cost": 291.5599670410156,
+      "total_setup_time": 11.051882641389966,
+      "makespan": 96.04180908203125
+    },
+    {
+      "seed": 13,
+      "composite": 0.21447483020391023,
+      "weighted_tardiness": 62.39568328857422,
+      "setup_cost": 198.67138671875,
+      "total_setup_time": 9.254262243863195,
+      "makespan": 90.89290618896484
+    },
+    {
+      "seed": 23,
+      "composite": 0.16248743635054264,
+      "weighted_tardiness": 9.334421157836914,
+      "setup_cost": 327.9654846191406,
+      "total_setup_time": 12.719892226159573,
+      "makespan": 99.8858642578125
+    },
+    {
+      "seed": 22,
+      "composite": 0.14476540095185142,
+      "weighted_tardiness": 2.5992939472198486,
+      "setup_cost": 348.5096130371094,
+      "total_setup_time": 13.008077934384346,
+      "makespan": 92.59246826171875
+    },
+    {
+      "seed": 24,
+      "composite": 0.12024696324412124,
+      "weighted_tardiness": 19.97122573852539,
+      "setup_cost": 199.31983947753906,
+      "total_setup_time": 7.761661317199469,
+      "makespan": 87.62357330322266
+    },
+    {
+      "seed": 25,
+      "composite": 0.21638914609238824,
+      "weighted_tardiness": 38.18723678588867,
+      "setup_cost": 294.0296325683594,
+      "total_setup_time": 12.69889348372817,
+      "makespan": 102.93144226074219
+    },
+    {
+      "seed": 21,
+      "composite": 0.12339574341183687,
+      "weighted_tardiness": 12.66294002532959,
+      "setup_cost": 254.6363525390625,
+      "total_setup_time": 10.10038054548204,
+      "makespan": 89.29876708984375
+    },
+    {
+      "seed": 26,
+      "composite": 0.1451085010529761,
+      "weighted_tardiness": 20.878772735595703,
+      "setup_cost": 275.3375549316406,
+      "total_setup_time": 10.099948361515999,
+      "makespan": 94.40764617919922
+    },
+    {
+      "seed": 27,
+      "composite": 0.17167922480011927,
+      "weighted_tardiness": 19.440956115722656,
+      "setup_cost": 322.8540344238281,
+      "total_setup_time": 11.701948285102844,
+      "makespan": 96.22200012207031
+    },
+    {
+      "seed": 28,
+      "composite": 0.15009096456245435,
+      "weighted_tardiness": 15.236371994018555,
+      "setup_cost": 257.18646240234375,
+      "total_setup_time": 10.946866005659103,
+      "makespan": 92.0335922241211
+    },
+    {
+      "seed": 29,
+      "composite": 0.20017004251480996,
+      "weighted_tardiness": 40.5390510559082,
+      "setup_cost": 267.19879150390625,
+      "total_setup_time": 10.425212206318974,
+      "makespan": 103.72493743896484
+    },
+    {
+      "seed": 30,
+      "composite": 0.20009897456939785,
+      "weighted_tardiness": 27.815433502197266,
+      "setup_cost": 372.17919921875,
+      "total_setup_time": 14.059156388044357,
+      "makespan": 103.2893295288086
+    },
+    {
+      "seed": 31,
+      "composite": 0.1402354925298394,
+      "weighted_tardiness": 16.701589584350586,
+      "setup_cost": 258.2340087890625,
+      "total_setup_time": 10.2835039999336,
+      "makespan": 95.45597839355469
+    },
+    {
+      "seed": 32,
+      "composite": 0.16138941329643447,
+      "weighted_tardiness": 32.72982406616211,
+      "setup_cost": 222.67942810058594,
+      "total_setup_time": 8.843285135924816,
+      "makespan": 82.76293182373047
+    },
+    {
+      "seed": 33,
+      "composite": 0.13301596075345612,
+      "weighted_tardiness": 20.979310989379883,
+      "setup_cost": 205.28207397460938,
+      "total_setup_time": 8.58423736691475,
+      "makespan": 79.08384704589844
+    },
+    {
+      "seed": 36,
+      "composite": 0.12695457505505714,
+      "weighted_tardiness": 19.68709945678711,
+      "setup_cost": 207.4104766845703,
+      "total_setup_time": 8.262350940145552,
+      "makespan": 82.72637939453125
+    },
+    {
+      "seed": 35,
+      "composite": 0.19983223231175112,
+      "weighted_tardiness": 14.635197639465332,
+      "setup_cost": 347.67694091796875,
+      "total_setup_time": 13.508068263530731,
+      "makespan": 90.61632537841797
+    },
+    {
+      "seed": 34,
+      "composite": 0.20179987817728498,
+      "weighted_tardiness": 28.245872497558594,
+      "setup_cost": 293.6341857910156,
+      "total_setup_time": 12.352137319743633,
+      "makespan": 102.421142578125
+    },
+    {
+      "seed": 41,
+      "composite": 0.13255458473079487,
+      "weighted_tardiness": 3.696340322494507,
+      "setup_cost": 349.44683837890625,
+      "total_setup_time": 13.463053841143847,
+      "makespan": 91.73556518554688
+    },
+    {
+      "seed": 37,
+      "composite": 0.1409918224316644,
+      "weighted_tardiness": 3.512465476989746,
+      "setup_cost": 365.60992431640625,
+      "total_setup_time": 13.594513967633247,
+      "makespan": 91.091552734375
+    },
+    {
+      "seed": 43,
+      "composite": 0.14107248389478463,
+      "weighted_tardiness": 30.385482788085938,
+      "setup_cost": 220.66151428222656,
+      "total_setup_time": 8.199151799082756,
+      "makespan": 94.4692611694336
+    },
+    {
+      "seed": 38,
+      "composite": 0.13209697541976254,
+      "weighted_tardiness": 33.37811279296875,
+      "setup_cost": 188.33706665039062,
+      "total_setup_time": 7.535010237246752,
+      "makespan": 91.0140151977539
+    },
+    {
+      "seed": 42,
+      "composite": 0.160747043979423,
+      "weighted_tardiness": 16.331737518310547,
+      "setup_cost": 344.7443542480469,
+      "total_setup_time": 13.073131065815687,
+      "makespan": 103.38362884521484
+    },
+    {
+      "seed": 40,
+      "composite": 0.1568736095874409,
+      "weighted_tardiness": 20.96540641784668,
+      "setup_cost": 302.80548095703125,
+      "total_setup_time": 11.954682368785143,
+      "makespan": 93.2481918334961
+    },
+    {
+      "seed": 39,
+      "composite": 0.16164190820269192,
+      "weighted_tardiness": 3.897355556488037,
+      "setup_cost": 371.4836730957031,
+      "total_setup_time": 13.753322124481201,
+      "makespan": 93.0161361694336
+    },
+    {
+      "seed": 45,
+      "composite": 0.11892406613053857,
+      "weighted_tardiness": 10.920332908630371,
+      "setup_cost": 211.1602020263672,
+      "total_setup_time": 9.828164022415876,
+      "makespan": 97.29985809326172
+    },
+    {
+      "seed": 44,
+      "composite": 0.183930370786205,
+      "weighted_tardiness": 40.79975509643555,
+      "setup_cost": 296.9443054199219,
+      "total_setup_time": 10.79357860982418,
+      "makespan": 98.22117614746094
+    },
+    {
+      "seed": 48,
+      "composite": 0.15807377255549318,
+      "weighted_tardiness": 37.533878326416016,
+      "setup_cost": 249.82994079589844,
+      "total_setup_time": 9.646340195089579,
+      "makespan": 94.5090103149414
+    },
+    {
+      "seed": 47,
+      "composite": 0.146143381781062,
+      "weighted_tardiness": 29.782529830932617,
+      "setup_cost": 217.35401916503906,
+      "total_setup_time": 8.332879275083542,
+      "makespan": 88.93177795410156
+    },
+    {
+      "seed": 49,
+      "composite": 0.15489107193660093,
+      "weighted_tardiness": 14.375472068786621,
+      "setup_cost": 315.50152587890625,
+      "total_setup_time": 12.21341704018414,
+      "makespan": 96.75
+    },
+    {
+      "seed": 46,
+      "composite": 0.16098848587061204,
+      "weighted_tardiness": 16.091819763183594,
+      "setup_cost": 300.1810302734375,
+      "total_setup_time": 11.818146981298923,
+      "makespan": 95.67228698730469
+    }
+  ],
+  "j36_m3": [
+    {
+      "seed": 2,
+      "composite": 0.10741985367743732,
+      "weighted_tardiness": 43.079673767089844,
+      "setup_cost": 598.0396118164062,
+      "total_setup_time": 21.710407549515367,
+      "makespan": 91.44195556640625
+    },
+    {
+      "seed": 0,
+      "composite": 0.10882827227871411,
+      "weighted_tardiness": 42.958343505859375,
+      "setup_cost": 607.62841796875,
+      "total_setup_time": 23.0326718846336,
+      "makespan": 100.24285888671875
+    },
+    {
+      "seed": 1,
+      "composite": 0.10695151574140078,
+      "weighted_tardiness": 38.156761169433594,
+      "setup_cost": 587.681640625,
+      "total_setup_time": 21.892584210727364,
+      "makespan": 89.29979705810547
+    },
+    {
+      "seed": 4,
+      "composite": 0.12852638360139695,
+      "weighted_tardiness": 40.190284729003906,
+      "setup_cost": 662.16748046875,
+      "total_setup_time": 24.757444988339557,
+      "makespan": 92.37181091308594
+    },
+    {
+      "seed": 3,
+      "composite": 0.14975024143070362,
+      "weighted_tardiness": 66.91431427001953,
+      "setup_cost": 733.8735961914062,
+      "total_setup_time": 26.295528086833656,
+      "makespan": 100.38191223144531
+    },
+    {
+      "seed": 7,
+      "composite": 0.13936918559781958,
+      "weighted_tardiness": 52.117332458496094,
+      "setup_cost": 678.5441284179688,
+      "total_setup_time": 24.866450677625835,
+      "makespan": 91.12071228027344
+    },
+    {
+      "seed": 15,
+      "composite": 0.09270624187332231,
+      "weighted_tardiness": 29.55919647216797,
+      "setup_cost": 532.7257690429688,
+      "total_setup_time": 19.279460528865457,
+      "makespan": 90.72367095947266
+    },
+    {
+      "seed": 5,
+      "composite": 0.12901122319653074,
+      "weighted_tardiness": 46.64096450805664,
+      "setup_cost": 669.185791015625,
+      "total_setup_time": 24.206894141621888,
+      "makespan": 96.219970703125
+    },
+    {
+      "seed": 6,
+      "composite": 0.15053218648341002,
+      "weighted_tardiness": 81.81086730957031,
+      "setup_cost": 610.535888671875,
+      "total_setup_time": 22.222523296251893,
+      "makespan": 97.2354507446289
+    },
+    {
+      "seed": 14,
+      "composite": 0.1371850542103795,
+      "weighted_tardiness": 65.33955383300781,
+      "setup_cost": 672.8860473632812,
+      "total_setup_time": 24.745446568354964,
+      "makespan": 97.36601257324219
+    },
+    {
+      "seed": 8,
+      "composite": 0.10666674353816782,
+      "weighted_tardiness": 35.77568817138672,
+      "setup_cost": 614.0509033203125,
+      "total_setup_time": 22.182523789349943,
+      "makespan": 91.34795379638672
+    },
+    {
+      "seed": 9,
+      "composite": 0.1279035704135844,
+      "weighted_tardiness": 50.732051849365234,
+      "setup_cost": 572.0018920898438,
+      "total_setup_time": 21.431708886753768,
+      "makespan": 88.4046401977539
+    },
+    {
+      "seed": 11,
+      "composite": 0.11618904937879876,
+      "weighted_tardiness": 80.69793701171875,
+      "setup_cost": 512.8941040039062,
+      "total_setup_time": 18.65313529316336,
+      "makespan": 92.77572631835938
+    },
+    {
+      "seed": 10,
+      "composite": 0.12504173273959474,
+      "weighted_tardiness": 35.65239334106445,
+      "setup_cost": 691.7925415039062,
+      "total_setup_time": 26.018521168269217,
+      "makespan": 95.85262298583984
+    },
+    {
+      "seed": 16,
+      "composite": 0.11836995991565083,
+      "weighted_tardiness": 52.55167007446289,
+      "setup_cost": 546.7545166015625,
+      "total_setup_time": 19.972758046351373,
+      "makespan": 93.98393249511719
+    },
+    {
+      "seed": 12,
+      "composite": 0.11592750129349913,
+      "weighted_tardiness": 22.41518783569336,
+      "setup_cost": 648.1738891601562,
+      "total_setup_time": 23.5132504098583,
+      "makespan": 91.32266998291016
+    },
+    {
+      "seed": 17,
+      "composite": 0.14944310491103,
+      "weighted_tardiness": 79.16905212402344,
+      "setup_cost": 635.4381713867188,
+      "total_setup_time": 23.43337101303041,
+      "makespan": 95.00711059570312
+    },
+    {
+      "seed": 13,
+      "composite": 0.1311862817298321,
+      "weighted_tardiness": 61.56572723388672,
+      "setup_cost": 634.0905151367188,
+      "total_setup_time": 24.649084117263556,
+      "makespan": 98.39173889160156
+    },
+    {
+      "seed": 18,
+      "composite": 0.10185277412311604,
+      "weighted_tardiness": 53.601341247558594,
+      "setup_cost": 479.6286315917969,
+      "total_setup_time": 17.927493093535304,
+      "makespan": 96.22449493408203
+    },
+    {
+      "seed": 19,
+      "composite": 0.10940053214479406,
+      "weighted_tardiness": 47.965354919433594,
+      "setup_cost": 433.80511474609375,
+      "total_setup_time": 16.567358801839873,
+      "makespan": 81.94741821289062
+    },
+    {
+      "seed": 20,
+      "composite": 0.13895492162777118,
+      "weighted_tardiness": 48.35478973388672,
+      "setup_cost": 719.3023681640625,
+      "total_setup_time": 25.790181268006563,
+      "makespan": 89.93197631835938
+    },
+    {
+      "seed": 22,
+      "composite": 0.1350188775979954,
+      "weighted_tardiness": 71.17816162109375,
+      "setup_cost": 607.5403442382812,
+      "total_setup_time": 22.18759022699669,
+      "makespan": 94.4894027709961
+    },
+    {
+      "seed": 21,
+      "composite": 0.13467742107298566,
+      "weighted_tardiness": 69.1489486694336,
+      "setup_cost": 607.0020751953125,
+      "total_setup_time": 22.00316628627479,
+      "makespan": 88.2606430053711
+    },
+    {
+      "seed": 24,
+      "composite": 0.12669209272384388,
+      "weighted_tardiness": 69.20643615722656,
+      "setup_cost": 562.9443969726562,
+      "total_setup_time": 21.136386523023248,
+      "makespan": 95.69107055664062
+    },
+    {
+      "seed": 23,
+      "composite": 0.11803243718648007,
+      "weighted_tardiness": 64.37739562988281,
+      "setup_cost": 591.0593872070312,
+      "total_setup_time": 21.993630775250494,
+      "makespan": 96.791015625
+    },
+    {
+      "seed": 27,
+      "composite": 0.13297022028757727,
+      "weighted_tardiness": 53.491878509521484,
+      "setup_cost": 669.4508666992188,
+      "total_setup_time": 24.405942520243116,
+      "makespan": 88.14348602294922
+    },
+    {
+      "seed": 25,
+      "composite": 0.14430297224709468,
+      "weighted_tardiness": 81.30305480957031,
+      "setup_cost": 725.2720947265625,
+      "total_setup_time": 26.67156365700066,
+      "makespan": 93.88362884521484
+    },
+    {
+      "seed": 31,
+      "composite": 0.11230521429153359,
+      "weighted_tardiness": 57.41270065307617,
+      "setup_cost": 549.887451171875,
+      "total_setup_time": 20.033112457953393,
+      "makespan": 97.88599395751953
+    },
+    {
+      "seed": 34,
+      "composite": 0.13647304688454565,
+      "weighted_tardiness": 62.3558464050293,
+      "setup_cost": 681.46728515625,
+      "total_setup_time": 25.412272619083524,
+      "makespan": 94.34918212890625
+    },
+    {
+      "seed": 30,
+      "composite": 0.12225078301732056,
+      "weighted_tardiness": 40.21968078613281,
+      "setup_cost": 644.9501342773438,
+      "total_setup_time": 23.308593877591193,
+      "makespan": 96.30168151855469
+    },
+    {
+      "seed": 28,
+      "composite": 0.12008594487777341,
+      "weighted_tardiness": 64.07197570800781,
+      "setup_cost": 551.786865234375,
+      "total_setup_time": 20.578751993365586,
+      "makespan": 95.39226531982422
+    },
+    {
+      "seed": 26,
+      "composite": 0.1218457522859012,
+      "weighted_tardiness": 41.78627395629883,
+      "setup_cost": 664.3890380859375,
+      "total_setup_time": 24.098909378051758,
+      "makespan": 99.81941223144531
+    },
+    {
+      "seed": 32,
+      "composite": 0.1293395616980742,
+      "weighted_tardiness": 42.35496139526367,
+      "setup_cost": 605.73974609375,
+      "total_setup_time": 22.58820150938118,
+      "makespan": 92.49622344970703
+    },
+    {
+      "seed": 38,
+      "composite": 0.11381094687913568,
+      "weighted_tardiness": 51.91683578491211,
+      "setup_cost": 595.5221557617188,
+      "total_setup_time": 22.332186180865392,
+      "makespan": 92.55193328857422
+    },
+    {
+      "seed": 29,
+      "composite": 0.16091962213275376,
+      "weighted_tardiness": 89.58399963378906,
+      "setup_cost": 692.81787109375,
+      "total_setup_time": 25.575030208099633,
+      "makespan": 100.01040649414062
+    },
+    {
+      "seed": 39,
+      "composite": 0.1584996254112058,
+      "weighted_tardiness": 66.81925964355469,
+      "setup_cost": 716.7841796875,
+      "total_setup_time": 25.699579088017344,
+      "makespan": 95.35408782958984
+    },
+    {
+      "seed": 35,
+      "composite": 0.14046484418039182,
+      "weighted_tardiness": 88.89237976074219,
+      "setup_cost": 568.2388305664062,
+      "total_setup_time": 20.823045250028372,
+      "makespan": 93.51156616210938
+    },
+    {
+      "seed": 36,
+      "composite": 0.10141259449845025,
+      "weighted_tardiness": 48.13423156738281,
+      "setup_cost": 488.8068542480469,
+      "total_setup_time": 17.93860363587737,
+      "makespan": 86.46077728271484
+    },
+    {
+      "seed": 37,
+      "composite": 0.11322943718329612,
+      "weighted_tardiness": 71.2281265258789,
+      "setup_cost": 529.8358764648438,
+      "total_setup_time": 19.24211321864277,
+      "makespan": 90.28933715820312
+    },
+    {
+      "seed": 33,
+      "composite": 0.14453568267977085,
+      "weighted_tardiness": 91.98876953125,
+      "setup_cost": 557.4989624023438,
+      "total_setup_time": 19.967529505491257,
+      "makespan": 100.57838439941406
+    },
+    {
+      "seed": 41,
+      "composite": 0.1628948124965356,
+      "weighted_tardiness": 113.07998657226562,
+      "setup_cost": 649.0621948242188,
+      "total_setup_time": 24.032651521265507,
+      "makespan": 98.96300506591797
+    },
+    {
+      "seed": 40,
+      "composite": 0.1382823658475659,
+      "weighted_tardiness": 56.46235656738281,
+      "setup_cost": 711.19580078125,
+      "total_setup_time": 26.572755784727633,
+      "makespan": 95.2010726928711
+    },
+    {
+      "seed": 45,
+      "composite": 0.1033011080068084,
+      "weighted_tardiness": 40.756797790527344,
+      "setup_cost": 513.575439453125,
+      "total_setup_time": 20.303312796051614,
+      "makespan": 92.08296203613281
+    },
+    {
+      "seed": 43,
+      "composite": 0.10266097263452162,
+      "weighted_tardiness": 28.281631469726562,
+      "setup_cost": 559.4877319335938,
+      "total_setup_time": 21.198137043975294,
+      "makespan": 88.03377532958984
+    },
+    {
+      "seed": 49,
+      "composite": 0.13943481668795069,
+      "weighted_tardiness": 79.20142364501953,
+      "setup_cost": 580.8596801757812,
+      "total_setup_time": 21.10932972014416,
+      "makespan": 97.9752197265625
+    },
+    {
+      "seed": 48,
+      "composite": 0.1272124592684227,
+      "weighted_tardiness": 61.557220458984375,
+      "setup_cost": 647.6915283203125,
+      "total_setup_time": 23.432180470321327,
+      "makespan": 95.1086654663086
+    },
+    {
+      "seed": 47,
+      "composite": 0.1295665083500025,
+      "weighted_tardiness": 60.20384979248047,
+      "setup_cost": 536.5836181640625,
+      "total_setup_time": 19.611951385159045,
+      "makespan": 87.97258758544922
+    },
+    {
+      "seed": 42,
+      "composite": 0.13656876547238828,
+      "weighted_tardiness": 76.13549041748047,
+      "setup_cost": 590.6295166015625,
+      "total_setup_time": 21.46512499715027,
+      "makespan": 98.2663803100586
+    },
+    {
+      "seed": 46,
+      "composite": 0.14631975130451877,
+      "weighted_tardiness": 68.81021881103516,
+      "setup_cost": 681.3220825195312,
+      "total_setup_time": 25.361432787030935,
+      "makespan": 96.3451156616211
+    },
+    {
+      "seed": 44,
+      "composite": 0.1388892596706678,
+      "weighted_tardiness": 45.194313049316406,
+      "setup_cost": 677.3637084960938,
+      "total_setup_time": 24.787064028903842,
+      "makespan": 98.01531219482422
+    }
+  ],
+  "j60_m5": [
+    {
+      "seed": 5,
+      "composite": 0.20105027207122128,
+      "weighted_tardiness": 215.30580139160156,
+      "setup_cost": 1187.58837890625,
+      "total_setup_time": 42.90460518933833,
+      "makespan": 99.72591400146484
+    },
+    {
+      "seed": 0,
+      "composite": 0.19516355672047087,
+      "weighted_tardiness": 237.33851623535156,
+      "setup_cost": 1136.548095703125,
+      "total_setup_time": 41.44596800766885,
+      "makespan": 99.21550750732422
+    },
+    {
+      "seed": 7,
+      "composite": 0.1680768934951178,
+      "weighted_tardiness": 112.30491638183594,
+      "setup_cost": 1381.7900390625,
+      "total_setup_time": 49.99012441933155,
+      "makespan": 95.13601684570312
+    },
+    {
+      "seed": 3,
+      "composite": 0.1875289376289062,
+      "weighted_tardiness": 241.53005981445312,
+      "setup_cost": 1145.997314453125,
+      "total_setup_time": 41.02067912835628,
+      "makespan": 99.27848052978516
+    },
+    {
+      "seed": 1,
+      "composite": 0.17653312610013966,
+      "weighted_tardiness": 168.87326049804688,
+      "setup_cost": 1073.7950439453125,
+      "total_setup_time": 39.64742693211883,
+      "makespan": 94.6778335571289
+    },
+    {
+      "seed": 8,
+      "composite": 0.1404053399788274,
+      "weighted_tardiness": 137.1591033935547,
+      "setup_cost": 1161.491455078125,
+      "total_setup_time": 42.570802511647344,
+      "makespan": 96.25131225585938
+    },
+    {
+      "seed": 4,
+      "composite": 0.18709350180416692,
+      "weighted_tardiness": 150.06903076171875,
+      "setup_cost": 1298.55322265625,
+      "total_setup_time": 47.190143102779984,
+      "makespan": 93.79713439941406
+    },
+    {
+      "seed": 9,
+      "composite": 0.15237236164189966,
+      "weighted_tardiness": 130.0777587890625,
+      "setup_cost": 1196.261962890625,
+      "total_setup_time": 44.993589664809406,
+      "makespan": 96.77190399169922
+    },
+    {
+      "seed": 2,
+      "composite": 0.2092711613321675,
+      "weighted_tardiness": 222.37802124023438,
+      "setup_cost": 1284.39892578125,
+      "total_setup_time": 46.42262213397771,
+      "makespan": 93.14520263671875
+    },
+    {
+      "seed": 6,
+      "composite": 0.20089544083024768,
+      "weighted_tardiness": 234.3507080078125,
+      "setup_cost": 1088.5250244140625,
+      "total_setup_time": 39.49876798503101,
+      "makespan": 98.96134948730469
+    },
+    {
+      "seed": 10,
+      "composite": 0.17493260166205143,
+      "weighted_tardiness": 202.4713897705078,
+      "setup_cost": 1082.7613525390625,
+      "total_setup_time": 39.48123790859245,
+      "makespan": 90.05237579345703
+    },
+    {
+      "seed": 12,
+      "composite": 0.17931563553153318,
+      "weighted_tardiness": 172.42971801757812,
+      "setup_cost": 1374.6356201171875,
+      "total_setup_time": 49.53455564379692,
+      "makespan": 97.16786193847656
+    },
+    {
+      "seed": 16,
+      "composite": 0.17474544222845984,
+      "weighted_tardiness": 177.60450744628906,
+      "setup_cost": 1230.327392578125,
+      "total_setup_time": 44.61890330351889,
+      "makespan": 101.46174621582031
+    },
+    {
+      "seed": 15,
+      "composite": 0.16903408288870495,
+      "weighted_tardiness": 168.3372802734375,
+      "setup_cost": 1327.5904541015625,
+      "total_setup_time": 47.88425815477967,
+      "makespan": 95.24803161621094
+    },
+    {
+      "seed": 17,
+      "composite": 0.17330525063161134,
+      "weighted_tardiness": 197.9500274658203,
+      "setup_cost": 1255.7965087890625,
+      "total_setup_time": 45.54253085888922,
+      "makespan": 97.18877410888672
+    },
+    {
+      "seed": 14,
+      "composite": 0.19685228046149617,
+      "weighted_tardiness": 228.29576110839844,
+      "setup_cost": 1162.751708984375,
+      "total_setup_time": 42.13216830044985,
+      "makespan": 94.5780258178711
+    },
+    {
+      "seed": 18,
+      "composite": 0.16825524375044762,
+      "weighted_tardiness": 166.0542755126953,
+      "setup_cost": 1257.5780029296875,
+      "total_setup_time": 46.380572027526796,
+      "makespan": 107.8606185913086
+    },
+    {
+      "seed": 11,
+      "composite": 0.1917817789733962,
+      "weighted_tardiness": 204.686279296875,
+      "setup_cost": 1241.6368408203125,
+      "total_setup_time": 45.176453521475196,
+      "makespan": 97.29109191894531
+    },
+    {
+      "seed": 13,
+      "composite": 0.169069443106528,
+      "weighted_tardiness": 157.7380828857422,
+      "setup_cost": 1018.86572265625,
+      "total_setup_time": 37.92639232325746,
+      "makespan": 94.82196807861328
+    },
+    {
+      "seed": 20,
+      "composite": 0.18537589065512472,
+      "weighted_tardiness": 174.00807189941406,
+      "setup_cost": 1323.4996337890625,
+      "total_setup_time": 47.52919137454592,
+      "makespan": 97.29000091552734
+    },
+    {
+      "seed": 19,
+      "composite": 0.16843379107782178,
+      "weighted_tardiness": 190.73907470703125,
+      "setup_cost": 1209.199951171875,
+      "total_setup_time": 44.52612326864619,
+      "makespan": 96.45458984375
+    },
+    {
+      "seed": 21,
+      "composite": 0.18804939521270433,
+      "weighted_tardiness": 196.59153747558594,
+      "setup_cost": 1321.40576171875,
+      "total_setup_time": 47.527478836942464,
+      "makespan": 96.84440612792969
+    },
+    {
+      "seed": 22,
+      "composite": 0.17393271785220007,
+      "weighted_tardiness": 194.92669677734375,
+      "setup_cost": 1176.796142578125,
+      "total_setup_time": 42.35566145647317,
+      "makespan": 94.52690887451172
+    },
+    {
+      "seed": 27,
+      "composite": 0.19089400023452746,
+      "weighted_tardiness": 176.41012573242188,
+      "setup_cost": 1250.0543212890625,
+      "total_setup_time": 44.67348174005747,
+      "makespan": 95.61392974853516
+    },
+    {
+      "seed": 25,
+      "composite": 0.1631350215849214,
+      "weighted_tardiness": 122.37882995605469,
+      "setup_cost": 1347.2947998046875,
+      "total_setup_time": 48.69278609007597,
+      "makespan": 104.00283813476562
+    },
+    {
+      "seed": 23,
+      "composite": 0.21984756723615057,
+      "weighted_tardiness": 229.88282775878906,
+      "setup_cost": 1141.839599609375,
+      "total_setup_time": 41.888088924228214,
+      "makespan": 106.20838928222656
+    },
+    {
+      "seed": 24,
+      "composite": 0.174388678826375,
+      "weighted_tardiness": 180.1229248046875,
+      "setup_cost": 1006.716064453125,
+      "total_setup_time": 37.12493680091575,
+      "makespan": 96.16411590576172
+    },
+    {
+      "seed": 28,
+      "composite": 0.15316287546014118,
+      "weighted_tardiness": 143.99334716796875,
+      "setup_cost": 1124.251953125,
+      "total_setup_time": 41.04632048867643,
+      "makespan": 95.56900787353516
+    },
+    {
+      "seed": 26,
+      "composite": 0.16525216967051487,
+      "weighted_tardiness": 191.79989624023438,
+      "setup_cost": 1175.635498046875,
+      "total_setup_time": 42.63291857112199,
+      "makespan": 98.6407470703125
+    },
+    {
+      "seed": 30,
+      "composite": 0.13299179982922493,
+      "weighted_tardiness": 151.27841186523438,
+      "setup_cost": 822.0892333984375,
+      "total_setup_time": 29.492833696538582,
+      "makespan": 99.48077392578125
+    },
+    {
+      "seed": 33,
+      "composite": 0.16998415147538962,
+      "weighted_tardiness": 173.5381622314453,
+      "setup_cost": 1164.77734375,
+      "total_setup_time": 42.48889259295538,
+      "makespan": 100.53985595703125
+    },
+    {
+      "seed": 29,
+      "composite": 0.1678425967645877,
+      "weighted_tardiness": 197.94522094726562,
+      "setup_cost": 1079.658447265625,
+      "total_setup_time": 38.853005473385565,
+      "makespan": 100.07781982421875
+    },
+    {
+      "seed": 35,
+      "composite": 0.1336404459056857,
+      "weighted_tardiness": 164.4544677734375,
+      "setup_cost": 1011.68505859375,
+      "total_setup_time": 36.55975558352657,
+      "makespan": 97.6032485961914
+    },
+    {
+      "seed": 34,
+      "composite": 0.19944171910085656,
+      "weighted_tardiness": 284.1833801269531,
+      "setup_cost": 1188.3885498046875,
+      "total_setup_time": 43.44849110546056,
+      "makespan": 102.17936706542969
+    },
+    {
+      "seed": 31,
+      "composite": 0.16018645181094504,
+      "weighted_tardiness": 162.99456787109375,
+      "setup_cost": 1187.769287109375,
+      "total_setup_time": 43.09052078286186,
+      "makespan": 99.61068725585938
+    },
+    {
+      "seed": 32,
+      "composite": 0.1348997049423749,
+      "weighted_tardiness": 136.33816528320312,
+      "setup_cost": 1004.3734741210938,
+      "total_setup_time": 36.272234152653255,
+      "makespan": 96.11319732666016
+    },
+    {
+      "seed": 36,
+      "composite": 0.17487714802508905,
+      "weighted_tardiness": 200.9264373779297,
+      "setup_cost": 1124.4149169921875,
+      "total_setup_time": 40.87675621296512,
+      "makespan": 92.30754089355469
+    },
+    {
+      "seed": 38,
+      "composite": 0.18044309232537134,
+      "weighted_tardiness": 173.848876953125,
+      "setup_cost": 1222.998291015625,
+      "total_setup_time": 45.15581247396767,
+      "makespan": 93.91924285888672
+    },
+    {
+      "seed": 40,
+      "composite": 0.15820552812863922,
+      "weighted_tardiness": 117.92678833007812,
+      "setup_cost": 1132.6922607421875,
+      "total_setup_time": 40.795539228012785,
+      "makespan": 94.90100860595703
+    },
+    {
+      "seed": 37,
+      "composite": 0.18013792660505068,
+      "weighted_tardiness": 156.51698303222656,
+      "setup_cost": 1226.714599609375,
+      "total_setup_time": 44.23020766861737,
+      "makespan": 93.1851577758789
+    },
+    {
+      "seed": 39,
+      "composite": 0.12197232455892149,
+      "weighted_tardiness": 98.48355102539062,
+      "setup_cost": 956.80078125,
+      "total_setup_time": 34.56733459606767,
+      "makespan": 95.21244049072266
+    },
+    {
+      "seed": 43,
+      "composite": 0.16631685331484106,
+      "weighted_tardiness": 168.2848358154297,
+      "setup_cost": 1178.9718017578125,
+      "total_setup_time": 43.00827537570149,
+      "makespan": 95.29576873779297
+    },
+    {
+      "seed": 42,
+      "composite": 0.1886136153629605,
+      "weighted_tardiness": 208.22047424316406,
+      "setup_cost": 1138.260986328125,
+      "total_setup_time": 41.12890536035411,
+      "makespan": 95.02842712402344
+    },
+    {
+      "seed": 46,
+      "composite": 0.1679316386739561,
+      "weighted_tardiness": 151.88339233398438,
+      "setup_cost": 1181.8861083984375,
+      "total_setup_time": 42.60267907939851,
+      "makespan": 96.09048461914062
+    },
+    {
+      "seed": 44,
+      "composite": 0.20915051447241176,
+      "weighted_tardiness": 227.5470428466797,
+      "setup_cost": 1231.9637451171875,
+      "total_setup_time": 44.890510115772486,
+      "makespan": 105.53022766113281
+    },
+    {
+      "seed": 41,
+      "composite": 0.14454628405553183,
+      "weighted_tardiness": 156.00485229492188,
+      "setup_cost": 1115.3236083984375,
+      "total_setup_time": 40.87517307093367,
+      "makespan": 98.58318328857422
+    },
+    {
+      "seed": 45,
+      "composite": 0.16788607257281868,
+      "weighted_tardiness": 217.3797149658203,
+      "setup_cost": 1067.552734375,
+      "total_setup_time": 39.07894111704081,
+      "makespan": 97.94561004638672
+    },
+    {
+      "seed": 47,
+      "composite": 0.22904357869450048,
+      "weighted_tardiness": 250.96438598632812,
+      "setup_cost": 1310.40576171875,
+      "total_setup_time": 46.8812304623425,
+      "makespan": 94.81295776367188
+    },
+    {
+      "seed": 48,
+      "composite": 0.186726568185221,
+      "weighted_tardiness": 195.2274932861328,
+      "setup_cost": 1187.3358154296875,
+      "total_setup_time": 42.64511699415743,
+      "makespan": 100.63798522949219
+    },
+    {
+      "seed": 49,
+      "composite": 0.16346672557756456,
+      "weighted_tardiness": 216.81741333007812,
+      "setup_cost": 991.961181640625,
+      "total_setup_time": 35.639356093629885,
+      "makespan": 98.17554473876953
+    }
+  ],
+  "j19_m1": [
+    {
+      "seed": 2,
+      "composite": 0.14154575797499358,
+      "weighted_tardiness": 79.7514419555664,
+      "setup_cost": 358.9049377441406,
+      "total_setup_time": 13.020676488056779,
+      "makespan": 142.19781494140625
+    },
+    {
+      "seed": 3,
+      "composite": 0.14176370497772198,
+      "weighted_tardiness": 79.5395736694336,
+      "setup_cost": 311.57806396484375,
+      "total_setup_time": 11.957366173155606,
+      "makespan": 146.61007690429688
+    },
+    {
+      "seed": 0,
+      "composite": 0.1259629921645308,
+      "weighted_tardiness": 42.904788970947266,
+      "setup_cost": 372.52587890625,
+      "total_setup_time": 14.634852460119873,
+      "makespan": 157.3031463623047
+    },
+    {
+      "seed": 1,
+      "composite": 0.12938474528878494,
+      "weighted_tardiness": 46.74485778808594,
+      "setup_cost": 293.3965148925781,
+      "total_setup_time": 11.24542339076288,
+      "makespan": 138.55384826660156
+    },
+    {
+      "seed": 4,
+      "composite": 0.13406763537155442,
+      "weighted_tardiness": 82.94710540771484,
+      "setup_cost": 318.35260009765625,
+      "total_setup_time": 11.984169200062752,
+      "makespan": 150.3792724609375
+    },
+    {
+      "seed": 5,
+      "composite": 0.1912226574704856,
+      "weighted_tardiness": 138.61282348632812,
+      "setup_cost": 471.9356689453125,
+      "total_setup_time": 17.50087768677622,
+      "makespan": 146.38754272460938
+    },
+    {
+      "seed": 6,
+      "composite": 0.17294989766778576,
+      "weighted_tardiness": 58.12186813354492,
+      "setup_cost": 392.0699157714844,
+      "total_setup_time": 15.499520084820688,
+      "makespan": 137.9760284423828
+    },
+    {
+      "seed": 7,
+      "composite": 0.13333131646655955,
+      "weighted_tardiness": 16.76801109313965,
+      "setup_cost": 329.3443298339844,
+      "total_setup_time": 12.790678413584828,
+      "makespan": 137.79360961914062
+    },
+    {
+      "seed": 10,
+      "composite": 0.13244116271408957,
+      "weighted_tardiness": 33.61083221435547,
+      "setup_cost": 426.8977966308594,
+      "total_setup_time": 15.73559683188796,
+      "makespan": 144.70948791503906
+    },
+    {
+      "seed": 8,
+      "composite": 0.16764189122983778,
+      "weighted_tardiness": 115.66133880615234,
+      "setup_cost": 332.00689697265625,
+      "total_setup_time": 12.075071400031447,
+      "makespan": 134.8375244140625
+    },
+    {
+      "seed": 9,
+      "composite": 0.13264448045493302,
+      "weighted_tardiness": 40.196632385253906,
+      "setup_cost": 310.3556823730469,
+      "total_setup_time": 12.835515701211989,
+      "makespan": 151.9713592529297
+    },
+    {
+      "seed": 11,
+      "composite": 0.14946565783360266,
+      "weighted_tardiness": 64.50727844238281,
+      "setup_cost": 381.2303466796875,
+      "total_setup_time": 14.02077111741528,
+      "makespan": 147.1206817626953
+    },
+    {
+      "seed": 12,
+      "composite": 0.14462487990803183,
+      "weighted_tardiness": 39.915016174316406,
+      "setup_cost": 435.63616943359375,
+      "total_setup_time": 16.13695478439331,
+      "makespan": 156.20062255859375
+    },
+    {
+      "seed": 13,
+      "composite": 0.1450501227198339,
+      "weighted_tardiness": 61.13311767578125,
+      "setup_cost": 374.90118408203125,
+      "total_setup_time": 16.083907462656498,
+      "makespan": 150.98497009277344
+    },
+    {
+      "seed": 17,
+      "composite": 0.17709257880895127,
+      "weighted_tardiness": 113.99018096923828,
+      "setup_cost": 388.3642272949219,
+      "total_setup_time": 14.197464473545551,
+      "makespan": 147.0218505859375
+    },
+    {
+      "seed": 15,
+      "composite": 0.12326574268507418,
+      "weighted_tardiness": 29.125226974487305,
+      "setup_cost": 389.5421447753906,
+      "total_setup_time": 14.271847181022167,
+      "makespan": 141.49465942382812
+    },
+    {
+      "seed": 20,
+      "composite": 0.14721261286949244,
+      "weighted_tardiness": 24.211910247802734,
+      "setup_cost": 451.488525390625,
+      "total_setup_time": 16.311835184227675,
+      "makespan": 142.34120178222656
+    },
+    {
+      "seed": 14,
+      "composite": 0.1325034036754835,
+      "weighted_tardiness": 35.25444793701172,
+      "setup_cost": 385.6324157714844,
+      "total_setup_time": 13.973216407001019,
+      "makespan": 149.1409912109375
+    },
+    {
+      "seed": 16,
+      "composite": 0.13540019805427003,
+      "weighted_tardiness": 41.378150939941406,
+      "setup_cost": 388.31964111328125,
+      "total_setup_time": 14.125878557562828,
+      "makespan": 149.51792907714844
+    },
+    {
+      "seed": 21,
+      "composite": 0.11944776828233802,
+      "weighted_tardiness": 57.0123291015625,
+      "setup_cost": 347.8504943847656,
+      "total_setup_time": 12.891145628876984,
+      "makespan": 135.4104461669922
+    },
+    {
+      "seed": 18,
+      "composite": 0.15383953003198858,
+      "weighted_tardiness": 98.93231201171875,
+      "setup_cost": 372.84197998046875,
+      "total_setup_time": 13.974249019287527,
+      "makespan": 144.36578369140625
+    },
+    {
+      "seed": 19,
+      "composite": 0.12787858304613092,
+      "weighted_tardiness": 32.14962387084961,
+      "setup_cost": 421.7201232910156,
+      "total_setup_time": 15.732335974171292,
+      "makespan": 133.96923828125
+    },
+    {
+      "seed": 23,
+      "composite": 0.134256746802653,
+      "weighted_tardiness": 51.55169677734375,
+      "setup_cost": 378.1424560546875,
+      "total_setup_time": 15.050521524623036,
+      "makespan": 160.7145538330078
+    },
+    {
+      "seed": 22,
+      "composite": 0.19431640891138563,
+      "weighted_tardiness": 90.70774841308594,
+      "setup_cost": 433.18243408203125,
+      "total_setup_time": 16.248744450509548,
+      "makespan": 142.15264892578125
+    },
+    {
+      "seed": 27,
+      "composite": 0.17226429056440087,
+      "weighted_tardiness": 75.85509490966797,
+      "setup_cost": 450.17193603515625,
+      "total_setup_time": 16.4185551982373,
+      "makespan": 144.902099609375
+    },
+    {
+      "seed": 26,
+      "composite": 0.2067991286283492,
+      "weighted_tardiness": 153.88641357421875,
+      "setup_cost": 413.84039306640625,
+      "total_setup_time": 15.054848596453667,
+      "makespan": 150.076416015625
+    },
+    {
+      "seed": 24,
+      "composite": 0.20076267673870443,
+      "weighted_tardiness": 130.82034301757812,
+      "setup_cost": 331.7535400390625,
+      "total_setup_time": 12.894845696049742,
+      "makespan": 140.7272186279297
+    },
+    {
+      "seed": 25,
+      "composite": 0.17825243813416336,
+      "weighted_tardiness": 91.19986724853516,
+      "setup_cost": 413.1816101074219,
+      "total_setup_time": 15.898357992991805,
+      "makespan": 152.30670166015625
+    },
+    {
+      "seed": 28,
+      "composite": 0.14870115759242952,
+      "weighted_tardiness": 41.0853157043457,
+      "setup_cost": 433.94915771484375,
+      "total_setup_time": 16.77356084343046,
+      "makespan": 141.6061248779297
+    },
+    {
+      "seed": 31,
+      "composite": 0.11066145426740412,
+      "weighted_tardiness": 14.128274917602539,
+      "setup_cost": 440.4552001953125,
+      "total_setup_time": 16.441854678094387,
+      "makespan": 161.03665161132812
+    },
+    {
+      "seed": 30,
+      "composite": 0.2109347879449655,
+      "weighted_tardiness": 156.7169189453125,
+      "setup_cost": 337.58013916015625,
+      "total_setup_time": 12.66294476762414,
+      "makespan": 141.82066345214844
+    },
+    {
+      "seed": 29,
+      "composite": 0.13614404682877748,
+      "weighted_tardiness": 46.461997985839844,
+      "setup_cost": 367.130615234375,
+      "total_setup_time": 13.917279067478376,
+      "makespan": 155.1659698486328
+    },
+    {
+      "seed": 32,
+      "composite": 0.17116593694022833,
+      "weighted_tardiness": 85.46232604980469,
+      "setup_cost": 422.0978088378906,
+      "total_setup_time": 16.238964322954416,
+      "makespan": 140.4237060546875
+    },
+    {
+      "seed": 33,
+      "composite": 0.12805023412286456,
+      "weighted_tardiness": 43.58433151245117,
+      "setup_cost": 375.1391906738281,
+      "total_setup_time": 14.217043654993176,
+      "makespan": 138.30221557617188
+    },
+    {
+      "seed": 34,
+      "composite": 0.13247581331963515,
+      "weighted_tardiness": 53.32613754272461,
+      "setup_cost": 345.7554931640625,
+      "total_setup_time": 13.152233127504587,
+      "makespan": 143.9655303955078
+    },
+    {
+      "seed": 40,
+      "composite": 0.148987324563889,
+      "weighted_tardiness": 85.5494155883789,
+      "setup_cost": 312.3998107910156,
+      "total_setup_time": 11.732108556199819,
+      "makespan": 137.80079650878906
+    },
+    {
+      "seed": 35,
+      "composite": 0.17664016169453,
+      "weighted_tardiness": 71.68555450439453,
+      "setup_cost": 459.95806884765625,
+      "total_setup_time": 17.109814589843154,
+      "makespan": 139.4692840576172
+    },
+    {
+      "seed": 36,
+      "composite": 0.12193211701579043,
+      "weighted_tardiness": 42.63799285888672,
+      "setup_cost": 299.68572998046875,
+      "total_setup_time": 11.21335486706812,
+      "makespan": 136.5824737548828
+    },
+    {
+      "seed": 39,
+      "composite": 0.258338457574638,
+      "weighted_tardiness": 138.50064086914062,
+      "setup_cost": 464.171630859375,
+      "total_setup_time": 17.003069350495934,
+      "makespan": 144.54464721679688
+    },
+    {
+      "seed": 42,
+      "composite": 0.19099723283880393,
+      "weighted_tardiness": 140.93565368652344,
+      "setup_cost": 375.9571838378906,
+      "total_setup_time": 14.112274494022131,
+      "makespan": 152.61404418945312
+    },
+    {
+      "seed": 37,
+      "composite": 0.1344251986669904,
+      "weighted_tardiness": 71.66432189941406,
+      "setup_cost": 292.2215576171875,
+      "total_setup_time": 10.848905507475138,
+      "makespan": 142.16824340820312
+    },
+    {
+      "seed": 38,
+      "composite": 0.13900674868374105,
+      "weighted_tardiness": 62.90308380126953,
+      "setup_cost": 354.0655822753906,
+      "total_setup_time": 13.181094263214618,
+      "makespan": 141.70143127441406
+    },
+    {
+      "seed": 41,
+      "composite": 0.18464843903161532,
+      "weighted_tardiness": 84.6973876953125,
+      "setup_cost": 455.1133728027344,
+      "total_setup_time": 16.58919975697063,
+      "makespan": 147.0563507080078
+    },
+    {
+      "seed": 43,
+      "composite": 0.11817448547068299,
+      "weighted_tardiness": 46.69208908081055,
+      "setup_cost": 319.696533203125,
+      "total_setup_time": 12.00416128989309,
+      "makespan": 134.35398864746094
+    },
+    {
+      "seed": 46,
+      "composite": 0.15662903374251888,
+      "weighted_tardiness": 68.04730224609375,
+      "setup_cost": 425.0714111328125,
+      "total_setup_time": 15.95546842366457,
+      "makespan": 152.40013122558594
+    },
+    {
+      "seed": 45,
+      "composite": 0.14384039074633162,
+      "weighted_tardiness": 50.973628997802734,
+      "setup_cost": 367.3004150390625,
+      "total_setup_time": 15.659194918349385,
+      "makespan": 142.3091583251953
+    },
+    {
+      "seed": 44,
+      "composite": 0.16239246461446358,
+      "weighted_tardiness": 78.43659973144531,
+      "setup_cost": 428.7499084472656,
+      "total_setup_time": 15.51114166714251,
+      "makespan": 146.3292694091797
+    },
+    {
+      "seed": 47,
+      "composite": 0.12632302803304077,
+      "weighted_tardiness": 33.687686920166016,
+      "setup_cost": 438.0787353515625,
+      "total_setup_time": 16.07146307453513,
+      "makespan": 147.7789306640625
+    },
+    {
+      "seed": 48,
+      "composite": 0.1552608270532292,
+      "weighted_tardiness": 68.8290786743164,
+      "setup_cost": 410.88287353515625,
+      "total_setup_time": 16.00499965623021,
+      "makespan": 153.0084991455078
+    },
+    {
+      "seed": 49,
+      "composite": 0.17357563543753823,
+      "weighted_tardiness": 90.56455993652344,
+      "setup_cost": 345.1195983886719,
+      "total_setup_time": 12.674012865871191,
+      "makespan": 142.23529052734375
+    }
+  ],
+  "j57_m3": [
+    {
+      "seed": 0,
+      "composite": 0.14938311020977885,
+      "weighted_tardiness": 250.37969970703125,
+      "setup_cost": 992.2987060546875,
+      "total_setup_time": 36.156346363946795,
+      "makespan": 152.50912475585938
+    },
+    {
+      "seed": 3,
+      "composite": 0.1346458633434292,
+      "weighted_tardiness": 223.37669372558594,
+      "setup_cost": 998.37646484375,
+      "total_setup_time": 35.84140012972057,
+      "makespan": 146.02288818359375
+    },
+    {
+      "seed": 5,
+      "composite": 0.14030314930720578,
+      "weighted_tardiness": 199.06715393066406,
+      "setup_cost": 1085.5172119140625,
+      "total_setup_time": 39.28961194306612,
+      "makespan": 149.5409698486328
+    },
+    {
+      "seed": 1,
+      "composite": 0.16147805132080584,
+      "weighted_tardiness": 251.1892852783203,
+      "setup_cost": 1051.1131591796875,
+      "total_setup_time": 38.42135287099518,
+      "makespan": 143.31137084960938
+    },
+    {
+      "seed": 2,
+      "composite": 0.16391121948564588,
+      "weighted_tardiness": 262.9027404785156,
+      "setup_cost": 1144.580322265625,
+      "total_setup_time": 41.42207193700597,
+      "makespan": 142.91470336914062
+    },
+    {
+      "seed": 7,
+      "composite": 0.1643999599494541,
+      "weighted_tardiness": 237.25897216796875,
+      "setup_cost": 1213.0731201171875,
+      "total_setup_time": 44.06773997563869,
+      "makespan": 144.1436767578125
+    },
+    {
+      "seed": 9,
+      "composite": 0.1495099306364952,
+      "weighted_tardiness": 204.89036560058594,
+      "setup_cost": 1116.6392822265625,
+      "total_setup_time": 41.68824376468547,
+      "makespan": 148.86549377441406
+    },
+    {
+      "seed": 4,
+      "composite": 0.18597397253695283,
+      "weighted_tardiness": 279.4820251464844,
+      "setup_cost": 961.1292724609375,
+      "total_setup_time": 35.147172700148076,
+      "makespan": 140.28179931640625
+    },
+    {
+      "seed": 14,
+      "composite": 0.173665828725377,
+      "weighted_tardiness": 267.3614807128906,
+      "setup_cost": 1190.947021484375,
+      "total_setup_time": 43.035586854442954,
+      "makespan": 150.61279296875
+    },
+    {
+      "seed": 8,
+      "composite": 0.15095247825627922,
+      "weighted_tardiness": 215.14736938476562,
+      "setup_cost": 983.080322265625,
+      "total_setup_time": 35.84206229541451,
+      "makespan": 137.5159149169922
+    },
+    {
+      "seed": 10,
+      "composite": 0.1705314949621931,
+      "weighted_tardiness": 258.8518981933594,
+      "setup_cost": 1184.17529296875,
+      "total_setup_time": 43.77064927620813,
+      "makespan": 152.9641876220703
+    },
+    {
+      "seed": 6,
+      "composite": 0.20256169739090152,
+      "weighted_tardiness": 263.9183044433594,
+      "setup_cost": 1307.84521484375,
+      "total_setup_time": 47.575097262859344,
+      "makespan": 151.16201782226562
+    },
+    {
+      "seed": 12,
+      "composite": 0.1678928645341019,
+      "weighted_tardiness": 279.04638671875,
+      "setup_cost": 1191.8135986328125,
+      "total_setup_time": 43.04116915166378,
+      "makespan": 146.13267517089844
+    },
+    {
+      "seed": 19,
+      "composite": 0.1590975551487971,
+      "weighted_tardiness": 273.5672912597656,
+      "setup_cost": 985.2313842773438,
+      "total_setup_time": 36.31083266530186,
+      "makespan": 142.09686279296875
+    },
+    {
+      "seed": 13,
+      "composite": 0.1440681403443859,
+      "weighted_tardiness": 187.95108032226562,
+      "setup_cost": 1003.5699462890625,
+      "total_setup_time": 37.689749631237646,
+      "makespan": 145.41009521484375
+    },
+    {
+      "seed": 11,
+      "composite": 0.17703090946499023,
+      "weighted_tardiness": 255.25840759277344,
+      "setup_cost": 1176.0355224609375,
+      "total_setup_time": 42.42388416628819,
+      "makespan": 154.07728576660156
+    },
+    {
+      "seed": 18,
+      "composite": 0.19185655845919009,
+      "weighted_tardiness": 364.51837158203125,
+      "setup_cost": 1032.0865478515625,
+      "total_setup_time": 38.22027898672968,
+      "makespan": 149.91224670410156
+    },
+    {
+      "seed": 15,
+      "composite": 0.18806237487467725,
+      "weighted_tardiness": 280.6819763183594,
+      "setup_cost": 1196.6190185546875,
+      "total_setup_time": 43.19747828121763,
+      "makespan": 149.18923950195312
+    },
+    {
+      "seed": 16,
+      "composite": 0.1286517850885694,
+      "weighted_tardiness": 181.06101989746094,
+      "setup_cost": 1038.3096923828125,
+      "total_setup_time": 37.85898382298183,
+      "makespan": 147.8531494140625
+    },
+    {
+      "seed": 17,
+      "composite": 0.14337123626033207,
+      "weighted_tardiness": 231.2400360107422,
+      "setup_cost": 1089.4532470703125,
+      "total_setup_time": 39.681972147198394,
+      "makespan": 157.8420867919922
+    },
+    {
+      "seed": 20,
+      "composite": 0.18958589982632063,
+      "weighted_tardiness": 394.3842468261719,
+      "setup_cost": 1107.2230224609375,
+      "total_setup_time": 39.78629955975339,
+      "makespan": 156.35646057128906
+    },
+    {
+      "seed": 22,
+      "composite": 0.19770104429297236,
+      "weighted_tardiness": 286.7387390136719,
+      "setup_cost": 1304.337158203125,
+      "total_setup_time": 47.12540850881487,
+      "makespan": 159.88343811035156
+    },
+    {
+      "seed": 21,
+      "composite": 0.1665768226906018,
+      "weighted_tardiness": 223.4859619140625,
+      "setup_cost": 1217.7734375,
+      "total_setup_time": 44.27825378533453,
+      "makespan": 144.7930145263672
+    },
+    {
+      "seed": 25,
+      "composite": 0.1972988974898034,
+      "weighted_tardiness": 323.36016845703125,
+      "setup_cost": 1197.8258056640625,
+      "total_setup_time": 43.478966284310445,
+      "makespan": 152.3633575439453
+    },
+    {
+      "seed": 26,
+      "composite": 0.17317508579577867,
+      "weighted_tardiness": 313.5819091796875,
+      "setup_cost": 1054.29638671875,
+      "total_setup_time": 38.679185952059925,
+      "makespan": 150.57781982421875
+    },
+    {
+      "seed": 23,
+      "composite": 0.18023679846346757,
+      "weighted_tardiness": 305.37774658203125,
+      "setup_cost": 1075.5845947265625,
+      "total_setup_time": 39.78668592098984,
+      "makespan": 151.84356689453125
+    },
+    {
+      "seed": 28,
+      "composite": 0.15345832482623306,
+      "weighted_tardiness": 343.2713928222656,
+      "setup_cost": 993.3304443359375,
+      "total_setup_time": 36.09717034175992,
+      "makespan": 145.34622192382812
+    },
+    {
+      "seed": 24,
+      "composite": 0.13863526927082415,
+      "weighted_tardiness": 227.35545349121094,
+      "setup_cost": 923.2133178710938,
+      "total_setup_time": 34.024538102326915,
+      "makespan": 148.0930633544922
+    },
+    {
+      "seed": 27,
+      "composite": 0.18268896534889312,
+      "weighted_tardiness": 314.2032775878906,
+      "setup_cost": 1082.4052734375,
+      "total_setup_time": 38.56874007009901,
+      "makespan": 148.3085174560547
+    },
+    {
+      "seed": 35,
+      "composite": 0.1623595022715647,
+      "weighted_tardiness": 274.41131591796875,
+      "setup_cost": 1060.3797607421875,
+      "total_setup_time": 38.52520296629518,
+      "makespan": 149.43893432617188
+    },
+    {
+      "seed": 31,
+      "composite": 0.1757148658544867,
+      "weighted_tardiness": 325.2053527832031,
+      "setup_cost": 1209.6295166015625,
+      "total_setup_time": 43.799743256065995,
+      "makespan": 151.6577606201172
+    },
+    {
+      "seed": 29,
+      "composite": 0.20962986475847256,
+      "weighted_tardiness": 268.6524658203125,
+      "setup_cost": 1296.64453125,
+      "total_setup_time": 46.26184827508405,
+      "makespan": 151.82525634765625
+    },
+    {
+      "seed": 30,
+      "composite": 0.12150895790992144,
+      "weighted_tardiness": 211.82998657226562,
+      "setup_cost": 882.8377075195312,
+      "total_setup_time": 31.928179943817668,
+      "makespan": 151.52133178710938
+    },
+    {
+      "seed": 40,
+      "composite": 0.16248518124919992,
+      "weighted_tardiness": 189.35511779785156,
+      "setup_cost": 1213.06787109375,
+      "total_setup_time": 43.83654963038862,
+      "makespan": 151.51583862304688
+    },
+    {
+      "seed": 32,
+      "composite": 0.1500484463985699,
+      "weighted_tardiness": 145.4759979248047,
+      "setup_cost": 1096.754638671875,
+      "total_setup_time": 39.74923600954935,
+      "makespan": 150.37347412109375
+    },
+    {
+      "seed": 34,
+      "composite": 0.17687873562200798,
+      "weighted_tardiness": 313.27801513671875,
+      "setup_cost": 1070.05517578125,
+      "total_setup_time": 38.91883718594909,
+      "makespan": 154.69715881347656
+    },
+    {
+      "seed": 38,
+      "composite": 0.140056133829508,
+      "weighted_tardiness": 241.11849975585938,
+      "setup_cost": 879.9141235351562,
+      "total_setup_time": 32.197998730494874,
+      "makespan": 148.14154052734375
+    },
+    {
+      "seed": 33,
+      "composite": 0.15353723499199387,
+      "weighted_tardiness": 248.616943359375,
+      "setup_cost": 985.4099731445312,
+      "total_setup_time": 35.770907958969474,
+      "makespan": 148.10316467285156
+    },
+    {
+      "seed": 37,
+      "composite": 0.14397282898782485,
+      "weighted_tardiness": 267.7459716796875,
+      "setup_cost": 991.8831176757812,
+      "total_setup_time": 35.87173791482928,
+      "makespan": 146.74172973632812
+    },
+    {
+      "seed": 36,
+      "composite": 0.16540114083257812,
+      "weighted_tardiness": 245.93896484375,
+      "setup_cost": 1022.9786987304688,
+      "total_setup_time": 37.197654230636545,
+      "makespan": 139.8056640625
+    },
+    {
+      "seed": 39,
+      "composite": 0.20459573860955896,
+      "weighted_tardiness": 325.19793701171875,
+      "setup_cost": 1071.40380859375,
+      "total_setup_time": 38.747690150048584,
+      "makespan": 142.47898864746094
+    },
+    {
+      "seed": 41,
+      "composite": 0.19424988009035932,
+      "weighted_tardiness": 329.2756652832031,
+      "setup_cost": 1149.0218505859375,
+      "total_setup_time": 42.05795001145452,
+      "makespan": 149.76321411132812
+    },
+    {
+      "seed": 44,
+      "composite": 0.1508019748820087,
+      "weighted_tardiness": 326.3770446777344,
+      "setup_cost": 888.8936157226562,
+      "total_setup_time": 32.40862228255719,
+      "makespan": 152.65985107421875
+    },
+    {
+      "seed": 42,
+      "composite": 0.1820401074875888,
+      "weighted_tardiness": 309.58740234375,
+      "setup_cost": 1199.6007080078125,
+      "total_setup_time": 43.36862349230796,
+      "makespan": 147.5802001953125
+    },
+    {
+      "seed": 45,
+      "composite": 0.15499271475932974,
+      "weighted_tardiness": 244.01776123046875,
+      "setup_cost": 1092.9371337890625,
+      "total_setup_time": 40.53665504290257,
+      "makespan": 145.7460479736328
+    },
+    {
+      "seed": 43,
+      "composite": 0.1536234878172785,
+      "weighted_tardiness": 198.15184020996094,
+      "setup_cost": 1178.175048828125,
+      "total_setup_time": 43.13551351556089,
+      "makespan": 146.8459930419922
+    },
+    {
+      "seed": 46,
+      "composite": 0.16072943945866333,
+      "weighted_tardiness": 294.1160583496094,
+      "setup_cost": 1002.7142333984375,
+      "total_setup_time": 36.38914273586124,
+      "makespan": 152.5396270751953
+    },
+    {
+      "seed": 49,
+      "composite": 0.16493791249496204,
+      "weighted_tardiness": 247.81019592285156,
+      "setup_cost": 1190.0504150390625,
+      "total_setup_time": 42.83995845931349,
+      "makespan": 147.896728515625
+    },
+    {
+      "seed": 47,
+      "composite": 0.19563748232181272,
+      "weighted_tardiness": 256.9344787597656,
+      "setup_cost": 1232.7392578125,
+      "total_setup_time": 44.694870475679636,
+      "makespan": 147.8940887451172
+    },
+    {
+      "seed": 48,
+      "composite": 0.20253503560462968,
+      "weighted_tardiness": 301.44573974609375,
+      "setup_cost": 1087.2469482421875,
+      "total_setup_time": 39.113079571165144,
+      "makespan": 144.90150451660156
+    }
+  ],
+  "j95_m5": [
+    {
+      "seed": 1,
+      "composite": 0.25834921477369144,
+      "weighted_tardiness": 910.5654907226562,
+      "setup_cost": 2328.58544921875,
+      "total_setup_time": 84.64953999780118,
+      "makespan": 156.90623474121094
+    },
+    {
+      "seed": 3,
+      "composite": 0.26100719411160456,
+      "weighted_tardiness": 828.3652954101562,
+      "setup_cost": 2418.74560546875,
+      "total_setup_time": 86.81024277303368,
+      "makespan": 155.1361846923828
+    },
+    {
+      "seed": 6,
+      "composite": 0.2668116917342367,
+      "weighted_tardiness": 918.9796142578125,
+      "setup_cost": 2313.31201171875,
+      "total_setup_time": 83.59003186319023,
+      "makespan": 156.90867614746094
+    },
+    {
+      "seed": 5,
+      "composite": 0.24627142923566503,
+      "weighted_tardiness": 754.0726318359375,
+      "setup_cost": 2226.74951171875,
+      "total_setup_time": 79.4395651742816,
+      "makespan": 150.94960021972656
+    },
+    {
+      "seed": 2,
+      "composite": 0.2675264646605755,
+      "weighted_tardiness": 989.1207275390625,
+      "setup_cost": 2266.39794921875,
+      "total_setup_time": 82.07046761922538,
+      "makespan": 152.24241638183594
+    },
+    {
+      "seed": 0,
+      "composite": 0.28753782679961937,
+      "weighted_tardiness": 961.1657104492188,
+      "setup_cost": 2255.3447265625,
+      "total_setup_time": 81.27737478539348,
+      "makespan": 154.21707153320312
+    },
+    {
+      "seed": 7,
+      "composite": 0.23804831496797108,
+      "weighted_tardiness": 971.15966796875,
+      "setup_cost": 2022.9991455078125,
+      "total_setup_time": 72.5982105852454,
+      "makespan": 153.32330322265625
+    },
+    {
+      "seed": 9,
+      "composite": 0.2454119330431963,
+      "weighted_tardiness": 828.8722534179688,
+      "setup_cost": 2213.241455078125,
+      "total_setup_time": 81.3511825799942,
+      "makespan": 150.37136840820312
+    },
+    {
+      "seed": 8,
+      "composite": 0.2591930647696884,
+      "weighted_tardiness": 1026.304443359375,
+      "setup_cost": 2364.948486328125,
+      "total_setup_time": 85.18107909231912,
+      "makespan": 152.64292907714844
+    },
+    {
+      "seed": 4,
+      "composite": 0.23882713223585939,
+      "weighted_tardiness": 701.4408569335938,
+      "setup_cost": 2281.56396484375,
+      "total_setup_time": 81.95303960517049,
+      "makespan": 154.04910278320312
+    },
+    {
+      "seed": 13,
+      "composite": 0.24783509680483862,
+      "weighted_tardiness": 714.9580078125,
+      "setup_cost": 2335.192138671875,
+      "total_setup_time": 84.56253728456795,
+      "makespan": 155.14883422851562
+    },
+    {
+      "seed": 16,
+      "composite": 0.27079795861183664,
+      "weighted_tardiness": 968.0157470703125,
+      "setup_cost": 2056.4453125,
+      "total_setup_time": 74.45957399811596,
+      "makespan": 151.120849609375
+    },
+    {
+      "seed": 12,
+      "composite": 0.26755525925041845,
+      "weighted_tardiness": 773.25048828125,
+      "setup_cost": 2483.77099609375,
+      "total_setup_time": 89.45424606086453,
+      "makespan": 149.2990264892578
+    },
+    {
+      "seed": 11,
+      "composite": 0.2271848396877073,
+      "weighted_tardiness": 766.6857299804688,
+      "setup_cost": 2233.565185546875,
+      "total_setup_time": 80.02698092162609,
+      "makespan": 157.19314575195312
+    },
+    {
+      "seed": 10,
+      "composite": 0.2508393818403192,
+      "weighted_tardiness": 877.3350830078125,
+      "setup_cost": 2102.11962890625,
+      "total_setup_time": 75.98973339656368,
+      "makespan": 149.01904296875
+    },
+    {
+      "seed": 14,
+      "composite": 0.2510252244708187,
+      "weighted_tardiness": 897.4884643554688,
+      "setup_cost": 2233.81884765625,
+      "total_setup_time": 81.08982414705679,
+      "makespan": 153.28318786621094
+    },
+    {
+      "seed": 17,
+      "composite": 0.26142760103365453,
+      "weighted_tardiness": 913.1574096679688,
+      "setup_cost": 2515.11474609375,
+      "total_setup_time": 89.79748076153919,
+      "makespan": 160.5133514404297
+    },
+    {
+      "seed": 15,
+      "composite": 0.23516261807700717,
+      "weighted_tardiness": 893.1307373046875,
+      "setup_cost": 1909.8839111328125,
+      "total_setup_time": 68.66415542922914,
+      "makespan": 151.6853790283203
+    },
+    {
+      "seed": 19,
+      "composite": 0.28726034625320773,
+      "weighted_tardiness": 978.5618286132812,
+      "setup_cost": 2579.31103515625,
+      "total_setup_time": 93.37645570933819,
+      "makespan": 150.80538940429688
+    },
+    {
+      "seed": 18,
+      "composite": 0.24392776143672876,
+      "weighted_tardiness": 747.228515625,
+      "setup_cost": 2312.8720703125,
+      "total_setup_time": 83.43657617992721,
+      "makespan": 157.22576904296875
+    },
+    {
+      "seed": 21,
+      "composite": 0.2824762035562714,
+      "weighted_tardiness": 999.9275512695312,
+      "setup_cost": 2447.799072265625,
+      "total_setup_time": 87.33182155259419,
+      "makespan": 150.2133026123047
+    },
+    {
+      "seed": 20,
+      "composite": 0.23821721440262525,
+      "weighted_tardiness": 675.748779296875,
+      "setup_cost": 2397.723876953125,
+      "total_setup_time": 86.50028815213591,
+      "makespan": 168.14659118652344
+    },
+    {
+      "seed": 22,
+      "composite": 0.2759359475995252,
+      "weighted_tardiness": 838.8646240234375,
+      "setup_cost": 2611.9443359375,
+      "total_setup_time": 94.13287174142897,
+      "makespan": 154.20518493652344
+    },
+    {
+      "seed": 26,
+      "composite": 0.24570156451123762,
+      "weighted_tardiness": 889.2245483398438,
+      "setup_cost": 2183.259521484375,
+      "total_setup_time": 78.15529176860582,
+      "makespan": 153.68858337402344
+    },
+    {
+      "seed": 23,
+      "composite": 0.28919885187033817,
+      "weighted_tardiness": 962.6884765625,
+      "setup_cost": 2341.843994140625,
+      "total_setup_time": 85.11176039651036,
+      "makespan": 159.77647399902344
+    },
+    {
+      "seed": 24,
+      "composite": 0.24317581720747092,
+      "weighted_tardiness": 829.6524047851562,
+      "setup_cost": 2182.131103515625,
+      "total_setup_time": 78.73408311873209,
+      "makespan": 154.51370239257812
+    },
+    {
+      "seed": 28,
+      "composite": 0.21814112229595065,
+      "weighted_tardiness": 724.54248046875,
+      "setup_cost": 2291.06787109375,
+      "total_setup_time": 83.80103060603142,
+      "makespan": 150.33135986328125
+    },
+    {
+      "seed": 27,
+      "composite": 0.21575903551356757,
+      "weighted_tardiness": 682.8087158203125,
+      "setup_cost": 2032.591796875,
+      "total_setup_time": 73.13025642652065,
+      "makespan": 151.64134216308594
+    },
+    {
+      "seed": 29,
+      "composite": 0.2622379880531781,
+      "weighted_tardiness": 925.7297973632812,
+      "setup_cost": 2227.11865234375,
+      "total_setup_time": 80.56807323673274,
+      "makespan": 163.82980346679688
+    },
+    {
+      "seed": 25,
+      "composite": 0.25930668591712724,
+      "weighted_tardiness": 760.2879638671875,
+      "setup_cost": 2421.511474609375,
+      "total_setup_time": 87.08946586959064,
+      "makespan": 157.68792724609375
+    },
+    {
+      "seed": 38,
+      "composite": 0.26293996539814185,
+      "weighted_tardiness": 832.3339233398438,
+      "setup_cost": 2468.811279296875,
+      "total_setup_time": 89.19769536610693,
+      "makespan": 156.2406768798828
+    },
+    {
+      "seed": 35,
+      "composite": 0.2574011045787522,
+      "weighted_tardiness": 1032.20751953125,
+      "setup_cost": 2215.122802734375,
+      "total_setup_time": 79.74374041706324,
+      "makespan": 157.97108459472656
+    },
+    {
+      "seed": 34,
+      "composite": 0.27770900822592587,
+      "weighted_tardiness": 992.390380859375,
+      "setup_cost": 2541.95556640625,
+      "total_setup_time": 91.93631513859145,
+      "makespan": 166.3342742919922
+    },
+    {
+      "seed": 31,
+      "composite": 0.24252218065289852,
+      "weighted_tardiness": 892.4622192382812,
+      "setup_cost": 2328.6826171875,
+      "total_setup_time": 83.7946100058034,
+      "makespan": 157.73301696777344
+    },
+    {
+      "seed": 33,
+      "composite": 0.2611542699558027,
+      "weighted_tardiness": 839.5516967773438,
+      "setup_cost": 2532.729248046875,
+      "total_setup_time": 90.56989717681427,
+      "makespan": 156.34707641601562
+    },
+    {
+      "seed": 36,
+      "composite": 0.253399041270546,
+      "weighted_tardiness": 806.6641845703125,
+      "setup_cost": 2451.533935546875,
+      "total_setup_time": 87.96121415356174,
+      "makespan": 151.58428955078125
+    },
+    {
+      "seed": 30,
+      "composite": 0.2649750940739709,
+      "weighted_tardiness": 899.1463012695312,
+      "setup_cost": 2213.98876953125,
+      "total_setup_time": 79.89167377538979,
+      "makespan": 150.73277282714844
+    },
+    {
+      "seed": 32,
+      "composite": 0.23462500111802473,
+      "weighted_tardiness": 710.0523071289062,
+      "setup_cost": 2224.123291015625,
+      "total_setup_time": 80.12555247719865,
+      "makespan": 150.9457244873047
+    },
+    {
+      "seed": 37,
+      "composite": 0.25102721623148716,
+      "weighted_tardiness": 933.1097412109375,
+      "setup_cost": 2243.518798828125,
+      "total_setup_time": 80.23969820397906,
+      "makespan": 150.92007446289062
+    },
+    {
+      "seed": 40,
+      "composite": 0.2501855969847015,
+      "weighted_tardiness": 783.28662109375,
+      "setup_cost": 2416.8701171875,
+      "total_setup_time": 86.75181505922228,
+      "makespan": 154.21986389160156
+    },
+    {
+      "seed": 39,
+      "composite": 0.26167965500383805,
+      "weighted_tardiness": 864.1231689453125,
+      "setup_cost": 2343.671630859375,
+      "total_setup_time": 84.88342222338542,
+      "makespan": 154.99298095703125
+    },
+    {
+      "seed": 43,
+      "composite": 0.26131359591196557,
+      "weighted_tardiness": 939.9298706054688,
+      "setup_cost": 2447.874755859375,
+      "total_setup_time": 87.48959475691663,
+      "makespan": 158.25564575195312
+    },
+    {
+      "seed": 41,
+      "composite": 0.25102126205564335,
+      "weighted_tardiness": 895.1272583007812,
+      "setup_cost": 2065.164306640625,
+      "total_setup_time": 75.43411420355551,
+      "makespan": 157.58522033691406
+    },
+    {
+      "seed": 42,
+      "composite": 0.2643690836728921,
+      "weighted_tardiness": 882.5845947265625,
+      "setup_cost": 2504.017822265625,
+      "total_setup_time": 89.88961838325486,
+      "makespan": 156.9578857421875
+    },
+    {
+      "seed": 45,
+      "composite": 0.2202914246845462,
+      "weighted_tardiness": 702.1520385742188,
+      "setup_cost": 2283.84619140625,
+      "total_setup_time": 82.23524702712893,
+      "makespan": 158.9811248779297
+    },
+    {
+      "seed": 48,
+      "composite": 0.2887962861435691,
+      "weighted_tardiness": 1077.463134765625,
+      "setup_cost": 2293.1875,
+      "total_setup_time": 81.96654623094946,
+      "makespan": 161.1597900390625
+    },
+    {
+      "seed": 44,
+      "composite": 0.2557276874338685,
+      "weighted_tardiness": 758.13037109375,
+      "setup_cost": 2458.010986328125,
+      "total_setup_time": 88.36693139164709,
+      "makespan": 153.37889099121094
+    },
+    {
+      "seed": 47,
+      "composite": 0.2429690315109505,
+      "weighted_tardiness": 908.0857543945312,
+      "setup_cost": 2199.583740234375,
+      "total_setup_time": 79.20158500829712,
+      "makespan": 158.25083923339844
+    },
+    {
+      "seed": 46,
+      "composite": 0.24988166926275818,
+      "weighted_tardiness": 785.5421142578125,
+      "setup_cost": 1993.375,
+      "total_setup_time": 71.53595814481378,
+      "makespan": 158.24972534179688
+    },
+    {
+      "seed": 49,
+      "composite": 0.21412540917728085,
+      "weighted_tardiness": 586.7938232421875,
+      "setup_cost": 2087.203369140625,
+      "total_setup_time": 74.52185455150902,
+      "makespan": 151.90650939941406
+    }
+  ],
+  "j21_m1": [
+    {
+      "seed": 1,
+      "composite": 0.10248359623431985,
+      "weighted_tardiness": 29.970918655395508,
+      "setup_cost": 332.8589172363281,
+      "total_setup_time": 12.661847048439085,
+      "makespan": 157.11032104492188
+    },
+    {
+      "seed": 0,
+      "composite": 0.16353751538122016,
+      "weighted_tardiness": 105.8394775390625,
+      "setup_cost": 451.9080810546875,
+      "total_setup_time": 16.8110787011683,
+      "makespan": 172.3542022705078
+    },
+    {
+      "seed": 2,
+      "composite": 0.18515309271738195,
+      "weighted_tardiness": 143.6700439453125,
+      "setup_cost": 477.1817626953125,
+      "total_setup_time": 17.5250010099262,
+      "makespan": 164.35726928710938
+    },
+    {
+      "seed": 3,
+      "composite": 0.251273329413032,
+      "weighted_tardiness": 246.69009399414062,
+      "setup_cost": 371.4120178222656,
+      "total_setup_time": 13.951511422172189,
+      "makespan": 166.345947265625
+    },
+    {
+      "seed": 4,
+      "composite": 0.13736030225470722,
+      "weighted_tardiness": 34.54365158081055,
+      "setup_cost": 468.16375732421875,
+      "total_setup_time": 17.641415484249592,
+      "makespan": 167.37362670898438
+    },
+    {
+      "seed": 7,
+      "composite": 0.22198353564686546,
+      "weighted_tardiness": 124.2461929321289,
+      "setup_cost": 382.75799560546875,
+      "total_setup_time": 14.817696940153837,
+      "makespan": 148.13714599609375
+    },
+    {
+      "seed": 5,
+      "composite": 0.14509572047537822,
+      "weighted_tardiness": 120.38150787353516,
+      "setup_cost": 414.38043212890625,
+      "total_setup_time": 15.367339719086885,
+      "makespan": 162.62857055664062
+    },
+    {
+      "seed": 6,
+      "composite": 0.16295838318795403,
+      "weighted_tardiness": 152.8412628173828,
+      "setup_cost": 379.29901123046875,
+      "total_setup_time": 14.561553274281323,
+      "makespan": 154.36849975585938
+    },
+    {
+      "seed": 8,
+      "composite": 0.2039939460970053,
+      "weighted_tardiness": 116.75852966308594,
+      "setup_cost": 504.6105041503906,
+      "total_setup_time": 18.043286948930472,
+      "makespan": 151.37100219726562
+    },
+    {
+      "seed": 10,
+      "composite": 0.1047877463895462,
+      "weighted_tardiness": 22.51504135131836,
+      "setup_cost": 415.37548828125,
+      "total_setup_time": 15.426144201308489,
+      "makespan": 160.45004272460938
+    },
+    {
+      "seed": 9,
+      "composite": 0.0953990667312994,
+      "weighted_tardiness": 41.758705139160156,
+      "setup_cost": 296.40423583984375,
+      "total_setup_time": 11.647336047142744,
+      "makespan": 161.26296997070312
+    },
+    {
+      "seed": 11,
+      "composite": 0.14808490815883527,
+      "weighted_tardiness": 59.88311767578125,
+      "setup_cost": 501.1263427734375,
+      "total_setup_time": 18.837613833136857,
+      "makespan": 162.010009765625
+    },
+    {
+      "seed": 12,
+      "composite": 0.15476868811659178,
+      "weighted_tardiness": 122.57936096191406,
+      "setup_cost": 344.5570068359375,
+      "total_setup_time": 12.707881573587656,
+      "makespan": 164.80259704589844
+    },
+    {
+      "seed": 15,
+      "composite": 0.11442751484160152,
+      "weighted_tardiness": 77.55376434326172,
+      "setup_cost": 295.8248596191406,
+      "total_setup_time": 10.61229425156489,
+      "makespan": 149.89471435546875
+    },
+    {
+      "seed": 14,
+      "composite": 0.12163214255629748,
+      "weighted_tardiness": 92.25582122802734,
+      "setup_cost": 308.243408203125,
+      "total_setup_time": 11.247297678142786,
+      "makespan": 163.21316528320312
+    },
+    {
+      "seed": 18,
+      "composite": 0.22270538153549713,
+      "weighted_tardiness": 217.4420928955078,
+      "setup_cost": 401.625,
+      "total_setup_time": 14.84772727638483,
+      "makespan": 157.910400390625
+    },
+    {
+      "seed": 13,
+      "composite": 0.1259556435784649,
+      "weighted_tardiness": 12.876494407653809,
+      "setup_cost": 425.5478210449219,
+      "total_setup_time": 18.497402451001108,
+      "makespan": 169.83782958984375
+    },
+    {
+      "seed": 17,
+      "composite": 0.12660337548518436,
+      "weighted_tardiness": 66.1596450805664,
+      "setup_cost": 370.6318054199219,
+      "total_setup_time": 13.757062909193337,
+      "makespan": 165.2304229736328
+    },
+    {
+      "seed": 16,
+      "composite": 0.15303296953414827,
+      "weighted_tardiness": 39.548828125,
+      "setup_cost": 487.49456787109375,
+      "total_setup_time": 17.941933506168425,
+      "makespan": 167.72048950195312
+    },
+    {
+      "seed": 19,
+      "composite": 0.10705201129706511,
+      "weighted_tardiness": 66.06507873535156,
+      "setup_cost": 324.4840393066406,
+      "total_setup_time": 12.032292429357767,
+      "makespan": 147.1300811767578
+    },
+    {
+      "seed": 22,
+      "composite": 0.13870550439305046,
+      "weighted_tardiness": 85.17552185058594,
+      "setup_cost": 359.4938659667969,
+      "total_setup_time": 13.328667260240763,
+      "makespan": 154.10684204101562
+    },
+    {
+      "seed": 21,
+      "composite": 0.1382853842222944,
+      "weighted_tardiness": 129.87828063964844,
+      "setup_cost": 319.55767822265625,
+      "total_setup_time": 11.772813323303126,
+      "makespan": 146.6104736328125
+    },
+    {
+      "seed": 20,
+      "composite": 0.1632381502057392,
+      "weighted_tardiness": 113.42206573486328,
+      "setup_cost": 441.03936767578125,
+      "total_setup_time": 15.899321220815182,
+      "makespan": 158.3333740234375
+    },
+    {
+      "seed": 23,
+      "composite": 0.18848136419695968,
+      "weighted_tardiness": 170.6695556640625,
+      "setup_cost": 340.74993896484375,
+      "total_setup_time": 12.98751014051959,
+      "makespan": 170.37582397460938
+    },
+    {
+      "seed": 24,
+      "composite": 0.08972620235391486,
+      "weighted_tardiness": 27.363431930541992,
+      "setup_cost": 305.9175109863281,
+      "total_setup_time": 11.62401877483353,
+      "makespan": 150.88587951660156
+    },
+    {
+      "seed": 25,
+      "composite": 0.22275567825756107,
+      "weighted_tardiness": 164.15635681152344,
+      "setup_cost": 452.7139892578125,
+      "total_setup_time": 18.282516995212063,
+      "makespan": 168.01553344726562
+    },
+    {
+      "seed": 27,
+      "composite": 0.14837733658736543,
+      "weighted_tardiness": 84.42056274414062,
+      "setup_cost": 451.8750915527344,
+      "total_setup_time": 16.51473918184638,
+      "makespan": 154.34413146972656
+    },
+    {
+      "seed": 26,
+      "composite": 0.12889987218609322,
+      "weighted_tardiness": 51.01076126098633,
+      "setup_cost": 469.4860534667969,
+      "total_setup_time": 17.064663220662624,
+      "makespan": 167.0020751953125
+    },
+    {
+      "seed": 29,
+      "composite": 0.17812785401369946,
+      "weighted_tardiness": 174.10421752929688,
+      "setup_cost": 332.8984069824219,
+      "total_setup_time": 12.734095375053585,
+      "makespan": 164.82144165039062
+    },
+    {
+      "seed": 30,
+      "composite": 0.11605198543078292,
+      "weighted_tardiness": 41.96974563598633,
+      "setup_cost": 397.0096130371094,
+      "total_setup_time": 14.689529223367572,
+      "makespan": 161.85752868652344
+    },
+    {
+      "seed": 33,
+      "composite": 0.2426326319288707,
+      "weighted_tardiness": 153.72877502441406,
+      "setup_cost": 453.92724609375,
+      "total_setup_time": 17.182567225769162,
+      "makespan": 156.2951202392578
+    },
+    {
+      "seed": 28,
+      "composite": 0.1885300607312515,
+      "weighted_tardiness": 101.0776596069336,
+      "setup_cost": 452.0598449707031,
+      "total_setup_time": 17.311930619180202,
+      "makespan": 158.35157775878906
+    },
+    {
+      "seed": 35,
+      "composite": 0.1749517765281865,
+      "weighted_tardiness": 83.24555206298828,
+      "setup_cost": 466.783935546875,
+      "total_setup_time": 17.22436112165451,
+      "makespan": 153.12261962890625
+    },
+    {
+      "seed": 32,
+      "composite": 0.13775936942836559,
+      "weighted_tardiness": 69.08776092529297,
+      "setup_cost": 396.92523193359375,
+      "total_setup_time": 14.601504205260426,
+      "makespan": 156.0149688720703
+    },
+    {
+      "seed": 31,
+      "composite": 0.1114679898161927,
+      "weighted_tardiness": 60.72053909301758,
+      "setup_cost": 348.1131896972656,
+      "total_setup_time": 12.764502737671137,
+      "makespan": 163.6785125732422
+    },
+    {
+      "seed": 37,
+      "composite": 0.13808427348086655,
+      "weighted_tardiness": 67.52861022949219,
+      "setup_cost": 430.55615234375,
+      "total_setup_time": 15.9098974338267,
+      "makespan": 159.76705932617188
+    },
+    {
+      "seed": 36,
+      "composite": 0.1146775953931934,
+      "weighted_tardiness": 54.884002685546875,
+      "setup_cost": 312.0798034667969,
+      "total_setup_time": 11.541248171590269,
+      "makespan": 147.40765380859375
+    },
+    {
+      "seed": 34,
+      "composite": 0.1515180791288898,
+      "weighted_tardiness": 33.415252685546875,
+      "setup_cost": 495.8808288574219,
+      "total_setup_time": 18.639358153566718,
+      "makespan": 163.7373504638672
+    },
+    {
+      "seed": 39,
+      "composite": 0.1512175701489074,
+      "weighted_tardiness": 51.48356628417969,
+      "setup_cost": 473.47662353515625,
+      "total_setup_time": 17.491686885012314,
+      "makespan": 160.52011108398438
+    },
+    {
+      "seed": 40,
+      "composite": 0.10587158922160199,
+      "weighted_tardiness": 57.148834228515625,
+      "setup_cost": 293.88775634765625,
+      "total_setup_time": 10.982033414300531,
+      "makespan": 153.331298828125
+    },
+    {
+      "seed": 42,
+      "composite": 0.1271319672085161,
+      "weighted_tardiness": 73.64409637451172,
+      "setup_cost": 331.9071044921875,
+      "total_setup_time": 12.147316943854094,
+      "makespan": 163.56149291992188
+    },
+    {
+      "seed": 43,
+      "composite": 0.08348872713665557,
+      "weighted_tardiness": 11.860665321350098,
+      "setup_cost": 321.27374267578125,
+      "total_setup_time": 11.877577690407634,
+      "makespan": 147.935302734375
+    },
+    {
+      "seed": 44,
+      "composite": 0.16959707959006104,
+      "weighted_tardiness": 84.0256576538086,
+      "setup_cost": 387.34002685546875,
+      "total_setup_time": 14.219999589025974,
+      "makespan": 161.45574951171875
+    },
+    {
+      "seed": 38,
+      "composite": 0.11097252204841657,
+      "weighted_tardiness": 47.386959075927734,
+      "setup_cost": 339.71417236328125,
+      "total_setup_time": 12.747533240355551,
+      "makespan": 154.64401245117188
+    },
+    {
+      "seed": 41,
+      "composite": 0.18629327562549047,
+      "weighted_tardiness": 133.1006622314453,
+      "setup_cost": 361.2190856933594,
+      "total_setup_time": 13.358657103963196,
+      "makespan": 158.7929229736328
+    },
+    {
+      "seed": 45,
+      "composite": 0.17264907091372955,
+      "weighted_tardiness": 87.70233154296875,
+      "setup_cost": 380.2078857421875,
+      "total_setup_time": 16.49700033478439,
+      "makespan": 161.78976440429688
+    },
+    {
+      "seed": 47,
+      "composite": 0.1438294133767366,
+      "weighted_tardiness": 57.87444305419922,
+      "setup_cost": 412.550537109375,
+      "total_setup_time": 15.180691882967949,
+      "makespan": 166.9197235107422
+    },
+    {
+      "seed": 49,
+      "composite": 0.17083033698921762,
+      "weighted_tardiness": 106.01677703857422,
+      "setup_cost": 416.0922546386719,
+      "total_setup_time": 14.991707429289818,
+      "makespan": 160.89810180664062
+    },
+    {
+      "seed": 48,
+      "composite": 0.14385101537247802,
+      "weighted_tardiness": 104.54204559326172,
+      "setup_cost": 415.2711181640625,
+      "total_setup_time": 15.970382330939174,
+      "makespan": 168.02146911621094
+    },
+    {
+      "seed": 46,
+      "composite": 0.16078945113041054,
+      "weighted_tardiness": 111.53529357910156,
+      "setup_cost": 417.119384765625,
+      "total_setup_time": 15.590438891202211,
+      "makespan": 169.11984252929688
+    }
+  ],
+  "j63_m3": [
+    {
+      "seed": 2,
+      "composite": 0.16215251280723247,
+      "weighted_tardiness": 252.5842742919922,
+      "setup_cost": 1316.3623046875,
+      "total_setup_time": 47.60013201646507,
+      "makespan": 161.01173400878906
+    },
+    {
+      "seed": 1,
+      "composite": 0.15787218520955065,
+      "weighted_tardiness": 401.85760498046875,
+      "setup_cost": 1033.9521484375,
+      "total_setup_time": 37.813738860189915,
+      "makespan": 165.93148803710938
+    },
+    {
+      "seed": 5,
+      "composite": 0.18463033232025589,
+      "weighted_tardiness": 386.81390380859375,
+      "setup_cost": 1258.8907470703125,
+      "total_setup_time": 45.27680704370141,
+      "makespan": 163.85052490234375
+    },
+    {
+      "seed": 8,
+      "composite": 0.1729827929242585,
+      "weighted_tardiness": 369.5774841308594,
+      "setup_cost": 1328.226806640625,
+      "total_setup_time": 48.55217498354614,
+      "makespan": 164.9779510498047
+    },
+    {
+      "seed": 0,
+      "composite": 0.17797725363418632,
+      "weighted_tardiness": 430.20428466796875,
+      "setup_cost": 1171.59619140625,
+      "total_setup_time": 42.822362799430266,
+      "makespan": 169.83853149414062
+    },
+    {
+      "seed": 3,
+      "composite": 0.17055908354578658,
+      "weighted_tardiness": 384.98638916015625,
+      "setup_cost": 1353.74658203125,
+      "total_setup_time": 48.41378410323523,
+      "makespan": 172.6975860595703
+    },
+    {
+      "seed": 6,
+      "composite": 0.18903450279524653,
+      "weighted_tardiness": 398.0517272949219,
+      "setup_cost": 1272.944091796875,
+      "total_setup_time": 45.96181161876302,
+      "makespan": 173.29225158691406
+    },
+    {
+      "seed": 13,
+      "composite": 0.21466985900045937,
+      "weighted_tardiness": 445.6357116699219,
+      "setup_cost": 1124.381591796875,
+      "total_setup_time": 41.6161052933312,
+      "makespan": 161.0807342529297
+    },
+    {
+      "seed": 10,
+      "composite": 0.174550546845608,
+      "weighted_tardiness": 417.0505065917969,
+      "setup_cost": 1160.7401123046875,
+      "total_setup_time": 42.21669487772306,
+      "makespan": 163.98715209960938
+    },
+    {
+      "seed": 9,
+      "composite": 0.17634578245977672,
+      "weighted_tardiness": 450.61212158203125,
+      "setup_cost": 1131.589599609375,
+      "total_setup_time": 42.5582032809034,
+      "makespan": 165.8509521484375
+    },
+    {
+      "seed": 7,
+      "composite": 0.21646373454357024,
+      "weighted_tardiness": 439.6751403808594,
+      "setup_cost": 1502.7685546875,
+      "total_setup_time": 54.43146531516686,
+      "makespan": 160.47572326660156
+    },
+    {
+      "seed": 12,
+      "composite": 0.15960349865444223,
+      "weighted_tardiness": 284.86224365234375,
+      "setup_cost": 1272.277587890625,
+      "total_setup_time": 46.02503309157328,
+      "makespan": 159.3292999267578
+    },
+    {
+      "seed": 15,
+      "composite": 0.16768778929399664,
+      "weighted_tardiness": 346.4201354980469,
+      "setup_cost": 1156.79638671875,
+      "total_setup_time": 41.70876412559301,
+      "makespan": 158.3342742919922
+    },
+    {
+      "seed": 11,
+      "composite": 0.219220323089723,
+      "weighted_tardiness": 503.04052734375,
+      "setup_cost": 1281.894287109375,
+      "total_setup_time": 46.33056142926216,
+      "makespan": 169.6942138671875
+    },
+    {
+      "seed": 4,
+      "composite": 0.16383594772997256,
+      "weighted_tardiness": 261.0330810546875,
+      "setup_cost": 1273.9610595703125,
+      "total_setup_time": 46.02461468987167,
+      "makespan": 159.20919799804688
+    },
+    {
+      "seed": 14,
+      "composite": 0.2162148971419552,
+      "weighted_tardiness": 397.7692565917969,
+      "setup_cost": 1518.534912109375,
+      "total_setup_time": 55.21583431772888,
+      "makespan": 168.40328979492188
+    },
+    {
+      "seed": 16,
+      "composite": 0.185881721482471,
+      "weighted_tardiness": 360.55999755859375,
+      "setup_cost": 1298.296875,
+      "total_setup_time": 47.01264801854268,
+      "makespan": 164.4327392578125
+    },
+    {
+      "seed": 19,
+      "composite": 0.1916288823498623,
+      "weighted_tardiness": 494.0559997558594,
+      "setup_cost": 1263.4049072265625,
+      "total_setup_time": 46.44529372942634,
+      "makespan": 158.42469787597656
+    },
+    {
+      "seed": 17,
+      "composite": 0.15553854468763798,
+      "weighted_tardiness": 297.463134765625,
+      "setup_cost": 1249.4052734375,
+      "total_setup_time": 45.20908405818045,
+      "makespan": 162.30287170410156
+    },
+    {
+      "seed": 18,
+      "composite": 0.17543506013654953,
+      "weighted_tardiness": 342.8421630859375,
+      "setup_cost": 1147.4775390625,
+      "total_setup_time": 42.12409511813894,
+      "makespan": 169.45062255859375
+    },
+    {
+      "seed": 20,
+      "composite": 0.16688017313449377,
+      "weighted_tardiness": 324.0076599121094,
+      "setup_cost": 1392.4742431640625,
+      "total_setup_time": 49.81539913173765,
+      "makespan": 163.69248962402344
+    },
+    {
+      "seed": 21,
+      "composite": 0.17014970711722127,
+      "weighted_tardiness": 450.4128723144531,
+      "setup_cost": 1228.2427978515625,
+      "total_setup_time": 44.18597527989186,
+      "makespan": 159.98081970214844
+    },
+    {
+      "seed": 24,
+      "composite": 0.14735783370783967,
+      "weighted_tardiness": 334.982421875,
+      "setup_cost": 1035.4462890625,
+      "total_setup_time": 37.97324611339718,
+      "makespan": 163.27903747558594
+    },
+    {
+      "seed": 23,
+      "composite": 0.1959255378968191,
+      "weighted_tardiness": 398.35400390625,
+      "setup_cost": 1215.6138916015625,
+      "total_setup_time": 44.82526501920074,
+      "makespan": 170.46066284179688
+    },
+    {
+      "seed": 22,
+      "composite": 0.18875736367638443,
+      "weighted_tardiness": 314.4533996582031,
+      "setup_cost": 1372.052490234375,
+      "total_setup_time": 49.22833765624091,
+      "makespan": 158.21046447753906
+    },
+    {
+      "seed": 28,
+      "composite": 0.15329518607825637,
+      "weighted_tardiness": 346.6356201171875,
+      "setup_cost": 1015.9401245117188,
+      "total_setup_time": 37.27058304275852,
+      "makespan": 166.28094482421875
+    },
+    {
+      "seed": 29,
+      "composite": 0.16079081124788014,
+      "weighted_tardiness": 372.8868103027344,
+      "setup_cost": 1159.921142578125,
+      "total_setup_time": 41.7205906631425,
+      "makespan": 163.66558837890625
+    },
+    {
+      "seed": 27,
+      "composite": 0.1950956218351586,
+      "weighted_tardiness": 352.6603088378906,
+      "setup_cost": 1444.965087890625,
+      "total_setup_time": 51.73818767629564,
+      "makespan": 164.5860595703125
+    },
+    {
+      "seed": 32,
+      "composite": 0.1971471610490278,
+      "weighted_tardiness": 434.88153076171875,
+      "setup_cost": 1283.3505859375,
+      "total_setup_time": 46.43387221090961,
+      "makespan": 159.235595703125
+    },
+    {
+      "seed": 25,
+      "composite": 0.16687215306982645,
+      "weighted_tardiness": 395.7651062011719,
+      "setup_cost": 1029.02001953125,
+      "total_setup_time": 37.18048529245425,
+      "makespan": 180.6746063232422
+    },
+    {
+      "seed": 31,
+      "composite": 0.18054611463224732,
+      "weighted_tardiness": 372.8412780761719,
+      "setup_cost": 1400.2783203125,
+      "total_setup_time": 50.72258499707095,
+      "makespan": 166.5939483642578
+    },
+    {
+      "seed": 26,
+      "composite": 0.19184067531357296,
+      "weighted_tardiness": 555.6143798828125,
+      "setup_cost": 1115.042724609375,
+      "total_setup_time": 40.38690294418484,
+      "makespan": 166.43215942382812
+    },
+    {
+      "seed": 35,
+      "composite": 0.16773056416573695,
+      "weighted_tardiness": 320.64739990234375,
+      "setup_cost": 1209.99365234375,
+      "total_setup_time": 43.714605474378914,
+      "makespan": 169.10873413085938
+    },
+    {
+      "seed": 34,
+      "composite": 0.19702492848658792,
+      "weighted_tardiness": 329.7942199707031,
+      "setup_cost": 1590.9503173828125,
+      "total_setup_time": 58.3197833225131,
+      "makespan": 175.41165161132812
+    },
+    {
+      "seed": 30,
+      "composite": 0.17892249651971645,
+      "weighted_tardiness": 412.9493408203125,
+      "setup_cost": 1282.461181640625,
+      "total_setup_time": 46.17218474205583,
+      "makespan": 176.49510192871094
+    },
+    {
+      "seed": 39,
+      "composite": 0.14586008779976856,
+      "weighted_tardiness": 325.7960205078125,
+      "setup_cost": 1033.6875,
+      "total_setup_time": 37.50171768153086,
+      "makespan": 157.9257049560547
+    },
+    {
+      "seed": 33,
+      "composite": 0.20173350039327065,
+      "weighted_tardiness": 467.68853759765625,
+      "setup_cost": 1359.45849609375,
+      "total_setup_time": 49.47100095823407,
+      "makespan": 161.86785888671875
+    },
+    {
+      "seed": 38,
+      "composite": 0.18366135222130697,
+      "weighted_tardiness": 459.4734802246094,
+      "setup_cost": 1087.2528076171875,
+      "total_setup_time": 40.01467273104936,
+      "makespan": 164.12811279296875
+    },
+    {
+      "seed": 36,
+      "composite": 0.19145089252234238,
+      "weighted_tardiness": 382.0579833984375,
+      "setup_cost": 1282.483154296875,
+      "total_setup_time": 46.732360650319606,
+      "makespan": 159.60243225097656
+    },
+    {
+      "seed": 37,
+      "composite": 0.1615163475718498,
+      "weighted_tardiness": 348.44873046875,
+      "setup_cost": 1187.7117919921875,
+      "total_setup_time": 42.91900538187474,
+      "makespan": 164.11000061035156
+    },
+    {
+      "seed": 40,
+      "composite": 0.1626187216323961,
+      "weighted_tardiness": 332.95660400390625,
+      "setup_cost": 1077.548095703125,
+      "total_setup_time": 38.888877847231925,
+      "makespan": 170.47726440429688
+    },
+    {
+      "seed": 42,
+      "composite": 0.18537048836591163,
+      "weighted_tardiness": 375.15802001953125,
+      "setup_cost": 1412.0093994140625,
+      "total_setup_time": 51.04452912369743,
+      "makespan": 169.61842346191406
+    },
+    {
+      "seed": 41,
+      "composite": 0.16548723816131475,
+      "weighted_tardiness": 393.4920349121094,
+      "setup_cost": 1073.9793701171875,
+      "total_setup_time": 39.10770053882152,
+      "makespan": 166.6075897216797
+    },
+    {
+      "seed": 43,
+      "composite": 0.180366720461664,
+      "weighted_tardiness": 436.8724670410156,
+      "setup_cost": 1228.16845703125,
+      "total_setup_time": 44.651468145661056,
+      "makespan": 167.877197265625
+    },
+    {
+      "seed": 48,
+      "composite": 0.19494356784080946,
+      "weighted_tardiness": 416.66790771484375,
+      "setup_cost": 1364.24365234375,
+      "total_setup_time": 49.08500490570441,
+      "makespan": 165.59988403320312
+    },
+    {
+      "seed": 44,
+      "composite": 0.18573926211539207,
+      "weighted_tardiness": 415.3241882324219,
+      "setup_cost": 1097.872802734375,
+      "total_setup_time": 39.694412176613696,
+      "makespan": 161.21197509765625
+    },
+    {
+      "seed": 45,
+      "composite": 0.16776627602614697,
+      "weighted_tardiness": 293.7013854980469,
+      "setup_cost": 1266.8282470703125,
+      "total_setup_time": 46.37044477555901,
+      "makespan": 164.21658325195312
+    },
+    {
+      "seed": 46,
+      "composite": 0.1907427890110704,
+      "weighted_tardiness": 379.9964904785156,
+      "setup_cost": 1387.209716796875,
+      "total_setup_time": 50.215936688065995,
+      "makespan": 166.82785034179688
+    },
+    {
+      "seed": 49,
+      "composite": 0.17865829251035364,
+      "weighted_tardiness": 334.37371826171875,
+      "setup_cost": 1293.8546142578125,
+      "total_setup_time": 46.433781306259334,
+      "makespan": 168.50778198242188
+    },
+    {
+      "seed": 47,
+      "composite": 0.16928577154679883,
+      "weighted_tardiness": 430.2915954589844,
+      "setup_cost": 1254.863037109375,
+      "total_setup_time": 44.86312973883469,
+      "makespan": 171.2715301513672
+    }
+  ]
+}

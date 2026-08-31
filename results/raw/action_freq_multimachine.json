@@ -1,0 +1,36 @@
+{
+  "j63_m3": {
+    "n_runs": 10,
+    "thirds": [
+      {
+        "inversion": 35.0,
+        "swap": 65.0
+      },
+      {
+        "swap": 74.0,
+        "inversion": 26.0
+      },
+      {
+        "inversion": 24.0,
+        "swap": 76.0
+      }
+    ]
+  },
+  "j95_m5": {
+    "n_runs": 10,
+    "thirds": [
+      {
+        "inversion": 41.0,
+        "swap": 59.0
+      },
+      {
+        "inversion": 23.0,
+        "swap": 77.0
+      },
+      {
+        "swap": 80.0,
+        "inversion": 20.0
+      }
+    ]
+  }
+}
